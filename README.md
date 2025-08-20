@@ -16,6 +16,19 @@ This DSL can be widely used by people from different backgrounds, as it uses nat
 
 The biggest issues are the vast number of flavors, subtle differences, and partially supported advanced features. Due to the complexity of implementing a DSL that handles advanced features and multiple engine flavors, support will be added gradually.
 
+In the first time only Python flavor will be supported covering its concepts.
+Some of advanced supported concepts:
+- `[named] backreference`
+- `group`
+- `[negative] lookahead | lookbehind`
+- `if then [else]`
+
+
+- flags
+- test
+- flavor
+- and more...
+
 ## Examples
 #### Task 1: Match phone number 
 ``` py
