@@ -16,5 +16,429 @@ This DSL can be widely used by people from different backgrounds, as it uses nat
 
 The biggest issues are the vast number of flavors, subtle differences, and partially supported advanced features. Due to the complexity of implementing a DSL that handles advanced features and multiple engine flavors, support will be added gradually.
 
+In the beginning, only the Python flavor will be supported, covering its concepts.
+Some of the advanced supported concepts include:
+- `[named] backreference`
+- `group`
+- `[negative] lookahead | lookbehind`
+- `if then [else]`
+
+A user can also test regular expression by using `test:`, define desired flags with `flags:`, and specify the desired flavor using `flavor:`.
+
+## Examples
+#### Task 1: Match phone number 
+``` py
+""" 
+    MATCH: +381 62 123 4567
+    MATCH: 062/123-4567
+    MATCH: 062-123-4567
+    MATCH: 0621234567
+    MATCH: 062 123 4567
+    SKIP:  062/123/4567
+"""
+
+carrier:
+      digit repeat 2 times
+
+state:
+      '+'
+      digit between 1 to 9
+      digit repeat 2 to 3 times
+      carrier
+
+no_state:
+      '0'
+      carrier
+
+local: 
+      digit repeat 3 times
+      maybe '-'
+      digit repeat 4 times
+
+separator:
+      maybe either '/' or '-' or whitespace 
+
+phone_number:
+      starts
+      either state or no_state
+      maybe separator
+      local
+      ends
+
+      flags:
+              'global match'
+              'multiline'
+      flavor:
+              'python'
+      test:
+              '+381 62 123 4567'   
+
+phone_number 
+```
+
+#### Task 2: Are files found?
+
+``` py
+"""  
+    MATCH: 1 file found?
+    MATCH: 2 files found? 
+    MATCH: 24 files found? 
+    SKIP:  No files found
+"""
+
+_whitespaces: 
+    whitespace repeat 1 or more times
+
+number_one:
+    '1'
+    _whitespaces   
+
+condition:
+    lookbehind number_one
+
+other_numbers:
+    digit between 2 and 9
+    digit repeat zero or more times
+    _whitespaces
+
+file_found:
+    number_one
+    'file'
+    _whitespaces
+    'found?'
+
+files_found:  
+    other_numbers
+    'files'
+    _whitespaces
+    'found?'
+
+match:
+    starts
+    if condition then file_found else files_found 
+
+match
+```
+
+#### Task 3: Match repeated numbers from head and tail 
+``` py
+""" 
+    MATCH: 12asda12
+    MATCH: 54asdasd54
+    SKIP:  32asdsad43
+    SKIP:  43asdsadsa22
+"""
+head:
+      digit repeat 1 or more times
+
+tail:
+      backreference head   # (or `named backreference``, they are not the same!)
+  
+body:
+      letter repeat 1 or more times
+
+match:
+      head 
+      body
+      tail
+
+match
+```
+
+#### Task 4: Match correct email format
+``` py
+"""  
+    MATCH: user@gmail.com 
+    MATCH: user@gmail.co.uk
+    SKIP:  .user@gmail.com
+    SKIP:  user!user@gmail.com
+    SKIP:  user!user@gmailcom.
+"""
+
+user:
+      base_case:
+          letter repeat 1 or more times
+
+      base_case 
+      maybe '.' base_case repeat 1 or more times
+
+domain:
+      letter repeat 1 or more times
+      
+tld:
+      '.' 
+      letter repeat 1 or more times
+
+email: 
+      user
+      '@'
+      domain
+      '.'
+      tld
+
+email
+```
+
+#### Task 5: Match all the coefficients of x²
+``` py
+""" 
+    x³ + x² + x + 1
+    3x² - 125x + 12
+    2x³ + 5x² + 8x - 15
+    6x² + 18 - 35x
+    12x³ + 95x² - 115
+
+    MATCH: 3
+    MATCH: 5
+    MATCH: 6
+    MATCH: 95
+""" 
+
+variable:
+      lookahead x²
+
+coefficient:
+      digit repeat 1 or more times 
+
+monomial:
+      coefficient 
+      variable
+
+      flags:
+              'global match'
+              'multiline'
+      flavor:
+              'python'
+
+monomial
+```
+
+#### Task 6: Match various date formats and capture year
+``` py
+
+""" 
+    MATCH: 04/06/25    CAPTURE: 25
+    MATCH: 18/12/05    CAPTURE: 05           
+    MATCH: 25/05/1998  CAPTURE: 1998     
+    SKIP:  99/99/9999
+"""
+
+month:
+      either '0' or '1'
+      digit between 0 and 2
+
+day:
+      digit between 0 and 3
+      digit
+
+year:
+      short_format:
+          digit repeat 2 times
+      long_format:    
+          digit repeat 4 times
+
+      either short_format or long_format
+
+date:
+      day
+      '/'
+      month
+      '/'
+      group year
+
+date
+```
+
+#### Task 7: Match all the positive numbers only
+``` py
+"""
+    10 -25 -35 45
+    -150 25 -35 -147
+    8 -88 -888 -8888
+    -3 -33 -333 -333
+
+    MATCH: 10
+    MATCH: 45
+    MATCH: 25
+    MATCH: 8
+""" 
+
+minus_sign:
+      negative lookbehind '-' 
+
+number:
+      digit repeat 1 or more times
+
+positive_number:
+      boundary 
+      minus_sign
+      number
+      
+      flags:
+              'global match'
+      flavor:
+              'multiline'
+              'python'
+
+positive_number
+```
+
+#### Task 8: Match simple number
+``` py
+""" 
+    MATCH: 1000 
+    MATCH: 99
+    SKIP:  0 
+"""
+
+non_zero_digit:
+      digit between 1 to 9 
+
+number:
+      non_zero_digit repeat 1 or more times
+      digit repeat 0 or more times
+
+number
+```
+
+#### Task 9: Match file with correct format
+``` py
+"""
+    MATCH: fajl_v1.pdf 
+    MATCH: fajl_v2.png
+    MATCH: fajl_v3.jpeg
+    SKIP:  random_name.gif
+"""
+
+version:
+      digit repeat 0 or more times     
+
+format:
+      either 'png' or 'pdf' or 'jpeg'
+  
+file:
+      boundary
+      'fajl_v' 
+      version
+      '.'
+      format
+      boundary
+
+file
+```
+
+#### Task 10: Match the price
+``` py
+""" 
+    MATCH: $3.45
+    MATCH: $23.32
+    MATCH: $400
+    SKIP:  €3.44
+    SKIP:  $.23
+"""
+
+whole_value:
+      digit between 1 to 9 repeat 0 or more times
+
+decimal_value:
+      '.' digit repeat 0 or more times
+
+price:
+      '$'
+      whole_value 
+      maybe decimal_value
+
+price
+```
+
+#### Task 11: Based upon condition, match number or message
+``` py
+""" 
+    MATCH: enabled 06012345678
+    MATCH: disabled 06012345678 disturbing
+    MATCH: enabled 06012345678
+    MATCH: enabled 06012345678
+    SKIP:  123#@$
+"""
+
+condition:
+      lookbehind 'enabled'
+
+read_number:
+      digit repeat 1 or more times
+  
+read_message:
+      letter repeat 1 or more times
+
+match:
+      if condition then read_number else read_message
+      ends 
+
+match
+```
+
+#### Task 12: Match exact characters
+``` py
+""" 
+    MATCH: one              
+    MATCH: two              
+    MATCH: three
+    MATCH: !    
+    MATCH: .    
+    MATCH: 3    
+    MATCH: 6    
+    MATCH: 9
+    SKIP:  ^
+"""
+
+number:
+      either 'one' or 'two' or 'three' or one of '369'
+
+char:
+      one of '!.'
+
+match:
+      either number or char      
+
+match
+```
+
+#### Task 13: Match various date formats and capture year
+``` py
+
+""" 
+    MATCH: 04/06/25    CAPTURE: 25
+    MATCH: 18/12/05    CAPTURE: 05           
+    MATCH: 25/05/1998  CAPTURE: 1998     
+    SKIP:  99/99/9999
+"""
+
+month:
+      either '0' or '1'
+      digit between 0 and 2
+
+day:
+      digit between 0 and 3
+      digit
+
+year:
+      short_format:
+          digit repeat 2 times
+      long_format:    
+          digit repeat 4 times
+
+      either short_format or long_format
+
+date:
+      day
+      '/'
+      month
+      '/'
+      group year
+
+date
+```
+
+
 ## References:
 [1] [Source of the famous “Now you have two problems” quote](https://regex.info/blog/2006-09-15/247) _(Author: Jeffrey Friedl, Accessed: _July 19, 2025_)_
