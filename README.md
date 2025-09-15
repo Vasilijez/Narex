@@ -441,6 +441,23 @@ date:
 date
 ```
 
+## Getting started:
+1. Create a virtual environment:
+``` sh
+python -m venv .venv
+```
+2. Activate the virtual environment (Windows):
+``` sh
+.\.venv\Scripts\activate 
+```
+3. Install textX:
+``` sh
+pip install textx[dev]
+```
+4. Run the project:
+``` sh
+python.exe .\main.py
+```
 
 ## References:
 [1] [Source of the famous “Now you have two problems” quote](https://regex.info/blog/2006-09-15/247) _(Author: Jeffrey Friedl, Accessed: _July 19, 2025_)_
