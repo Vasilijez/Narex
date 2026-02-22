@@ -459,5 +459,20 @@ pip install textx[dev]
 python.exe .\main.py
 ```
 
+### Automatic releasing:
+You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
+1. Make sure to pull the changes before tagging:
+``` sh 
+git pull
+```
+2. Create a new tag:
+``` sh
+git tag <tag-name>
+```
+3. Push the tag to the remote repository:
+``` sh
+git push origin <tag-name>
+```
+
 ## References:
 [1] [Source of the famous “Now you have two problems” quote](https://regex.info/blog/2006-09-15/247) _(Author: Jeffrey Friedl, Accessed: _July 19, 2025_)_
