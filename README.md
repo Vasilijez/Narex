@@ -450,16 +450,16 @@ python -m venv .venv
 ``` sh
 .\.venv\Scripts\activate 
 ```
-3. Install textX:
+3. Install dependencies:
 ``` sh
-pip install textx[dev]
+pip install -r requirements.txt
 ```
 4. Run the project:
 ``` sh
 python.exe .\main.py
 ```
 
-### Automatic releasing:
+### Automatic releasing
 You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
 1. Make sure to pull the changes before tagging:
 ``` sh 
@@ -473,6 +473,16 @@ git tag <tag-name>
 ``` sh
 git push origin <tag-name>
 ```
+
+### Static analysis
+You can do it on your own.
+
+Run the static analysis locally:
+``` sh
+mypy --strict <file-name>
+```
+Caveat: Static analysis is triggered automatically by GitHub Actions; therefore, it is smart to run a type checker from time to time before creating a pull request.
+
 
 ## References:
 [1] [Source of the famous “Now you have two problems” quote](https://regex.info/blog/2006-09-15/247) _(Author: Jeffrey Friedl, Accessed: _July 19, 2025_)_
