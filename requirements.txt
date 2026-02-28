@@ -1,1 +1,4 @@
+textx
+textx[cli]
+textx[dev]
 mypy

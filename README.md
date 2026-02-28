@@ -450,9 +450,9 @@ python -m venv .venv
 ``` sh
 .\.venv\Scripts\activate 
 ```
-3. Install textX:
+3. Install dependencies:
 ``` sh
-pip install textx[dev]
+pip install -r requirements.txt
 ```
 4. Run the project:
 ``` sh
@@ -477,11 +477,7 @@ git push origin <tag-name>
 ### Static analysis
 You can do it on your own.
 
-First, run:
-``` sh
-pip install -r requirements.txt
-```
-Next, run the static analysis locally:
+Run the static analysis locally:
 ``` sh
 mypy --strict <file-name>
 ```
