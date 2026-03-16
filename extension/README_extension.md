@@ -1,6 +1,6 @@
 # narex README
 
-This is the README for your extension "narex". After writing up a brief description, we recommend including the following sections.
+This is a source code for a Narex VS Code extension.
 
 ## Features
 

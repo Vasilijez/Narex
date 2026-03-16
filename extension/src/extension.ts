@@ -1,26 +1,30 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as path from 'path';
+import { ExtensionContext,  Uri } from "vscode";
+import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
+	
+	const serverPath = context.asAbsolutePath(path.join('src', 'server.py'));
+	{}console.log(serverPath);
+	console.log('actove');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "narex" is now active!');
+	const pythonPath = path.resolve(context.extensionPath, '..', '.venv', 'Scripts', 'python.exe')
+	// const pythonPath = context.asAbsolutePath(path.join('.venv', 'Scripts', 'python.exe'));
+	console.log(pythonPath);
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('narex.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from narex!');
-	});
+	const serverOptions: ServerOptions = {
+		command: pythonPath,
+		args: [serverPath],
+	};
 
-	context.subscriptions.push(disposable);
+	const clientOptions: LanguageClientOptions = {
+		documentSelector: [{
+			scheme: 'file',
+			language: 'narex_dsl'
+		}]
+	};
+
+	const client = new LanguageClient('myLsp', 'hover-server', serverOptions, clientOptions);
+	client.start();
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
