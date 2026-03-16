@@ -23,6 +23,66 @@ class NarexLanguageServer(LanguageServer):
 
 server = NarexLanguageServer("narex-server", "v1")
 
+
+@server.feature(types.TEXT_DOCUMENT_DID_OPEN)
+@server.feature(types.TEXT_DOCUMENT_DID_CHANGE)
+def grammar_check(ls: NarexLanguageServer, params):
+
+    ### Processing the grammar rules validation ###
+
+    document_uri = params.text_document.uri
+    document = ls.workspace.get_text_document(document_uri)
+    content = document.source
+    diagnostics = []
+
+    try:
+        ls.mm.model_from_str(content)
+    except TextXSyntaxError as e:
+        d = types.Diagnostic(
+            range=types.Range(
+                start=types.Position(line=e.line-1, character=e.col-1),
+                end=types.Position(line=e.line-1, character=e.col)
+            ),
+            message=e.message,
+            source="textX"
+        )
+        diagnostics.append(d)
+
+    ls.text_document_publish_diagnostics(
+        types.PublishDiagnosticsParams(
+            uri=document_uri,
+            diagnostics=diagnostics
+        )
+    )
+    
+
+@server.feature(types.TEXT_DOCUMENT_COMPLETION)
+def code_completion(ls: NarexLanguageServer, params):
+
+    ### Based on the textX parser prediction it offers the completion rules ###
+ 
+    document_uri = params.text_document.uri
+    document = ls.workspace.get_text_document(document_uri)
+    content = document.source
+    items = []
+
+    try:
+        ls.mm.model_from_str(content)
+    except TextXSyntaxError as e:
+        for r in e.expected_rules:
+            print(f"rule {r}")
+            if hasattr(r, 'rule_name') and r.rule_name:
+                label = r.rule_name
+            elif hasattr(r, 'to_match') and r.to_match:
+                label = r.to_match
+            items.append(types.CompletionItem(
+                label=label,
+                kind=types.CompletionItemKind.Keyword
+            ))
+
+    return types.CompletionList(is_incomplete=False, items=items) # maybe True
+
+
 @server.feature(types.TEXT_DOCUMENT_HOVER)
 def hover(ls: NarexLanguageServer, params: types.HoverParams):
     
