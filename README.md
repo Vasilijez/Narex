@@ -460,13 +460,16 @@ python.exe .\main.py
 ```
 
 ### VSCode extension
-1. If you want to play with the extension, open the `extension` sub-project in VSCode and run the following command:
+1. If you want to play with the extension, open the `extension` subproject in VSCode and run the following command:
 ``` sh
 npm install
 ```
-NOTE: Don't forget to activate the root project `.venv` from the sub-project directory. If something went wrong use `CTRL` + `SHIFT` + `P` -> `Select intepreter: ...` and select `python.exe` from `.venv/Scripts` directory.
-2. Click on the button `F5` on the Windows for running extension debugging.
+NOTE: Don't forget to activate the root project `.venv` from the subproject directory. If something goes wrong use `CTRL` + `SHIFT` + `P` -> `Select intepreter: ...` and select `python.exe` from the `.venv/Scripts` directory.
+2. Click on the `F5` key in Windows to start extension debugging.
+3. Packaging is possible by running the following:
+``` sh
 
+```
 
 ### Automatic releasing
 You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
