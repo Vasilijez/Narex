@@ -1,0 +1,9 @@
+{
+    "scopeName": "source.narex",
+    "patterns": [
+        {
+            "name": "keyword.control.narex",
+            "match": "\\bbegin\\b"
+        }
+    ]
+}

@@ -36,7 +36,7 @@
       {
         "language": "narex_dsl",
         "scopeName": "source.narex",
-        "path": "./syntaxes/narex.tmlanguage.json"
+        "path": "./src/syntaxes/narex.tmlanguage.json"
       }
     ]
   },
