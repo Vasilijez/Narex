@@ -1,21 +1,30 @@
-import * as path from 'path';
-import { ExtensionContext,  Uri } from "vscode";
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
+import * as vscode from 'vscode';
+import * as path from 'path';
 
-export function activate(context: ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
 	
-	const serverPath = context.asAbsolutePath(path.join('src', 'server.py'));
-	{}console.log(serverPath);
-	console.log('actove');
+	// Get Python path from the environment by
+	// leveraging Python VSCode extension context awareness.
+	const pythonExt = vscode.extensions.getExtension('ms-python.python');
+    if (!pythonExt) {
+        vscode.window.showErrorMessage("Please install the Python extension.");
+        return;
+    }
+    await pythonExt.activate();
+    const api: any = pythonExt.exports;
 
-	const pythonPath = path.resolve(context.extensionPath, '..', '.venv', 'Scripts', 'python.exe')
-	// const pythonPath = context.asAbsolutePath(path.join('.venv', 'Scripts', 'python.exe'));
-	console.log(pythonPath);
+    const pythonPath = api.settings.getExecutionDetails().execCommand[0];
 
-	const serverOptions: ServerOptions = {
-		command: pythonPath,
-		args: [serverPath],
-	};
+    const serverPath = context.asAbsolutePath(path.join('src', 'server.py'));
+
+	console.log("python path is ", pythonPath);
+	console.log("server path is ", serverPath);
+
+    const serverOptions: ServerOptions = {
+        command: pythonPath,
+        args: [serverPath],
+    };
 
 	const clientOptions: LanguageClientOptions = {
 		documentSelector: [{
@@ -23,8 +32,7 @@ export function activate(context: ExtensionContext) {
 			language: 'narex_dsl'
 		}]
 	};
-
-	const client = new LanguageClient('myLsp', 'hover-server', serverOptions, clientOptions);
-	client.start();
+	
+    const client = new LanguageClient('myLsp', 'Narex LSP', serverOptions, clientOptions);
+    await client.start();
 }
-

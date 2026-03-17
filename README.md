@@ -442,6 +442,9 @@ date
 ```
 
 ## Getting started:
+Prerequsities:
+- Python.
+
 1. Create a virtual environment:
 ``` sh
 python -m venv .venv
@@ -460,16 +463,22 @@ python.exe .\main.py
 ```
 
 ### VSCode extension
+Prequsities:
+- Python VSCode extension (don't care now, it will be prompted if missing).
+
 1. If you want to play with the extension, open the `extension` subproject in VSCode and run the following command:
 ``` sh
 npm install
 ```
-NOTE: Don't forget to activate the root project `.venv` from the subproject directory. If something goes wrong use `CTRL` + `SHIFT` + `P` -> `Select intepreter: ...` and select `python.exe` from the `.venv/Scripts` directory.
+NOTE: Don't forget to activate the root project `.venv` from the subproject directory. If something goes wrong use `CTRL` + `SHIFT` + `P` -> `Select intepreter: ...` and select `python.exe` from the `.venv/Scripts` directory (_very importantly_).
 2. Click on the `F5` key in Windows to start extension debugging.
 3. Packaging is possible by running the following:
 ``` sh
-
+vsce package
 ```
+4. After packaging, extension's `.vsix` file will be available. Install the extension by choosing an option `Install from vsix`. 
+![alt text](image.png)
+NOTE: Don't move the extension `.vsix` file out of the the extension directory before installation, as it is relatively positioned. If something goes bad, then very likely dependencies make the headache, thus go back to the step 1.
 
 ### Automatic releasing
 You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
