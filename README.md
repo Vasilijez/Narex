@@ -463,7 +463,7 @@ python.exe .\main.py
 ```
 
 ### VSCode extension
-Prequsities:
+Prerequsities:
 - Python VSCode extension (don't care now, it will be prompted if missing).
 
 1. If you want to play with the extension, open the `extension` subproject in VSCode and run the following command:
@@ -476,9 +476,9 @@ NOTE: Don't forget to activate the root project `.venv` from the subproject dire
 ``` sh
 vsce package
 ```
-4. After packaging, extension's `.vsix` file will be available. Install the extension by choosing an option `Install from vsix`. 
+4. After packaging, the extension's `.vsix` file will be available. Install the extension by choosing the option `Install from vsix`. 
 ![alt text](image.png)
-NOTE: Don't move the extension `.vsix` file out of the the extension directory before installation, as it is relatively positioned. If something goes bad, then very likely dependencies make the headache, thus go back to the step 1.
+NOTE: Don't move the extension `.vsix` file out of the the extension directory before installation, as it is relatively positioned. If something goes bad, then very likely dependencies cause the headaches, thus go back to step 1.
 
 ### Automatic releasing
 You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
