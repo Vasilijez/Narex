@@ -478,7 +478,7 @@ pip install -r requirements.txt
 ```
 4. Run the project:
 ``` sh
-python.exe .\main.py
+narex
 ```
 
 ### VSCode extension

@@ -1,3 +1,14 @@
 [tool.mypy]
 strict = true
 ignore_missing_imports = true
+
+[project]
+name = "narex"
+version = "0.1.0"
+dependencies = [
+    "textX",
+    "click",
+]
+
+[project.scripts]
+narex = "narex.cli.main:run"
