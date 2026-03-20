@@ -441,6 +441,25 @@ date:
 date
 ```
 
+## Structure
+```
+Narex/
+|
+├── src/narex/
+|         ├── grammar/
+|         ├── validators/
+|         ├── generators/
+|         ├── cli/
+|
+├── extension/
+├── examples/
+├── tests/
+|
+├── .github/workflows/
+├── pyproject.toml
+├── LICENSE
+├── README.md
+```
 ## Getting started:
 Prerequsities:
 - Python.
@@ -459,7 +478,7 @@ pip install -r requirements.txt
 ```
 4. Run the project:
 ``` sh
-python.exe .\main.py
+narex
 ```
 
 ### VSCode extension

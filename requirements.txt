@@ -4,3 +4,5 @@ textx[dev]
 mypy
 pygls
 textmate-grammar-python
+-e .
+pytest
