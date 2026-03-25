@@ -1,1 +1,14 @@
-Literal: value = STRING;
+
+Anchor:
+    clauses+=Clause 
+    result=[Clause] // Maybe safe-scoping? Yeah it is important especially later on, I can do it easily by intercepting objects, smth like that I had it in the example related to the state machine.
+;
+
+Clause:
+    name=ID ':' 
+        clauses*=Clause 
+        rules+=Rule[eolterm]
+;
+
+Rule:
+;
