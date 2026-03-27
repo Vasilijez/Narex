@@ -23,7 +23,7 @@ Maybe:
 ;
 
 OneOf:
-    'one' 'of' set=STRING
+    'one' 'of' STRING
 ;
 
 Letter:
