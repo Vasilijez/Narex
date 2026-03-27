@@ -11,4 +11,12 @@ Clause:
 ;
 
 Rule:
+    Digit
+;
+Digit:
+    'digit' (between=Between)?
+;
+
+Between:
+    'between' start=INT 'and' end=INT
 ;
