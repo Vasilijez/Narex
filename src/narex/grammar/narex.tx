@@ -7,11 +7,28 @@ Anchor:
 Clause:
     name=ID ':' 
         clauses*=Clause 
-        rules+=Rule[eolterm]
+        inlineRules+=InlineRule['\n']
+;
+
+InlineRule:
+    rules+=Rule
 ;
 
 Rule:
-    Digit
+    maybe?=Maybe (OneOf | Letter)
+;
+
+Maybe:
+    'maybe'
+;
+
+OneOf:
+    'one' 'of' set=STRING
+;
+
+Letter:
+    'letter'
+;
 ;
 Digit:
     'digit' (between=Between)?
