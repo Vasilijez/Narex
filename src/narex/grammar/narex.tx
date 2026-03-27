@@ -1,6 +1,7 @@
 
 Anchor:
     clauses+=Clause 
+    optional=Optional
     result=[Clause] // Maybe safe-scoping? Yeah it is important especially later on, I can do it easily by intercepting objects, smth like that I had it in the example related to the state machine.
 ;
 
@@ -36,4 +37,17 @@ Digit:
 
 Between:
     'between' start=INT 'and' end=INT
+;
+Optional:
+    ((tests=Tests)? (flavor=Flavor)?)#
+;
+
+Tests:
+    'tests:' 
+        sample*=STRING
+;
+
+Flavor:
+    'flavor:'
+        'python'
 ;
