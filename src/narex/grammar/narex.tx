@@ -16,7 +16,7 @@ InlineRule:
 ;
 
 Rule:
-    maybe?=Maybe (rule=OneOf | Letter | rule=Either | rule=Repeat )
+    maybe?=Maybe (rule=OneOf | Letter | rule=Either) (repeat=Repeat)?
 ;
 
 Maybe:
@@ -43,6 +43,8 @@ Between:
     'between' start=INT 'and' end=INT
 ;
 
+// Repeat rule only checks if it has a subject.
+// Simple rules (e.g. digit) don't need parentheses, complex ones do.
 Repeat:
     'repeat' times=Times more?=OrMore 'times'
 ;
