@@ -16,7 +16,7 @@ InlineRule:
 ;
 
 Rule:
-    maybe?=Maybe (OneOf | Letter)
+    maybe?=Maybe (rule=OneOf | Letter | rule=Repeat)
 ;
 
 Maybe:
@@ -37,6 +37,18 @@ Digit:
 
 Between:
     'between' start=INT 'and' end=INT
+;
+
+Repeat:
+    'repeat' times=Times more?=OrMore 'times'
+;
+
+Times:
+    '0' | '1' | INT
+;
+
+OrMore:
+    'or' 'more'
 ;
 Optional:
     ((tests=Tests)? (flavor=Flavor)?)#
