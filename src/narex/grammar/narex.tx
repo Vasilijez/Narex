@@ -16,7 +16,7 @@ InlineRule:
 ;
 
 Rule:
-    maybe?=Maybe (rule=OneOf | rule=Domain | rule=Either) (repeat=Repeat)?
+    maybe?=Maybe (rule=OneOf | rule=Domain | rule=Either | Starts | Ends) (repeat=Repeat)?
 ;
 
 Maybe:
@@ -27,12 +27,16 @@ OneOf:
     'one' 'of' STRING
 ;
 
-Letter:
-    'letter'
-;
-
 Either:
     'either' alternatives=Rule ('or' alternatives=Rule)+
+;
+
+Starts:
+    'starts'
+;
+
+Ends:
+    'ends'
 ;
 
 //////////////////// Domain ////////////////////
