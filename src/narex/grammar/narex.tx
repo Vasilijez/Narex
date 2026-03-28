@@ -16,7 +16,7 @@ InlineRule:
 ;
 
 Rule:
-    maybe?=Maybe (rule=OneOf | Letter | rule=Repeat)
+    maybe?=Maybe (rule=OneOf | Letter | rule=Either | rule=Repeat )
 ;
 
 Maybe:
@@ -30,6 +30,10 @@ OneOf:
 Letter:
     'letter'
 ;
+Either:
+    'either' alternatives=Rule ('or' alternatives=Rule)+
+;
+
 ;
 Digit:
     'digit' (between=Between)?
