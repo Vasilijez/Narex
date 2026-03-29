@@ -16,7 +16,7 @@ InlineRule:
 ;
 
 Rule:
-    maybe?=Maybe (rule=OneOf | rule=Domain | rule=Either | Starts | Ends | rule=Lookaround | rule=Group | STRING) (repeat=Repeat)?
+    maybe?=Maybe (rule=OneOf | rule=Domain | rule=Either | Starts | Ends | rule=Lookaround | rule=Group | rule=Backreference | STRING) (repeat=Repeat)?
 ;
 
 Maybe:
@@ -29,6 +29,10 @@ Group:
 
 Uncaptured:
     'uncaptured'
+;
+
+Backreference:
+    'backreference' group=[Group]
 ;
 
 OneOf:
