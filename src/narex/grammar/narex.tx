@@ -16,7 +16,7 @@ InlineRule:
 ;
 
 Rule:
-    maybe?=Maybe (rule=OneOf | rule=Domain | rule=Either | Starts | Ends) (repeat=Repeat)?
+    maybe?=Maybe (rule=OneOf | rule=Domain | rule=Either | Starts | Ends | rule=Lookaround) (repeat=Repeat)?
 ;
 
 Maybe:
@@ -37,6 +37,22 @@ Starts:
 
 Ends:
     'ends'
+;
+
+Lookaround:
+    Lookbehind | Lookahead
+;
+
+Lookbehind:
+    negative?=Negative 'lookbehind' rule=Rule
+;
+
+Lookahead:
+    negative?=Negative 'lookahead' rule=Rule
+;
+
+Negative:
+    'negative'
 ;
 
 //////////////////// Domain ////////////////////
