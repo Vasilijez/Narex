@@ -20,12 +20,12 @@ The biggest issues are the vast number of flavors, subtle differences, and parti
 
 In the beginning, only the Python flavor will be supported, covering its concepts.
 Some of the advanced supported concepts include:
-- `[named] backreference`
-- `group`
+- `[uncaptured] group [<name> of]`
+- `backreference <group_name>`
 - `[negative] lookahead | lookbehind`
 - `if then [else]`
 
-A user can also test regular expression by using `test:`, define desired flags with `flags:`, and specify the desired flavor using `flavor:`.
+A user can also test regular expression by using `tests:`, define desired flags with `flags:`, and specify the desired flavor using `flavor:`.
 
 ## Examples
 #### Task 1: Match phone number 
@@ -130,11 +130,17 @@ match
     SKIP:  32asdsad43
     SKIP:  43asdsadsa22
 """
+
+# Even though  a  group seems similar to just 
+# referencing a previously defined clause, it 
+# is not.  It requires the same value matched 
+# within the group to be repeated.
+
 head:
-      digit repeat 1 or more times
+      group g1 of digit repeat 1 or more times
 
 tail:
-      backreference head   # (or `named backreference``, they are not the same!)
+      backreference g1
   
 body:
       letter repeat 1 or more times
