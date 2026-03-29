@@ -5,7 +5,6 @@ def test_starts():
     m = """
         c:
             starts maybe one of 'something2' maybe letter  maybe one of 'something3'
-        
         c
     """
 
@@ -19,7 +18,6 @@ def test_ends():
             starts
             maybe one of 'something2' maybe letter  maybe one of 'something3' 
             ends
-        
         c
     """
 
