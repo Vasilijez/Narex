@@ -16,11 +16,19 @@ InlineRule:
 ;
 
 Rule:
-    maybe?=Maybe (rule=OneOf | rule=Domain | rule=Either | Starts | Ends | rule=Lookaround) (repeat=Repeat)?
+    maybe?=Maybe (rule=OneOf | rule=Domain | rule=Either | Starts | Ends | rule=Lookaround | rule=Group | STRING) (repeat=Repeat)?
 ;
 
 Maybe:
     'maybe'
+;
+
+Group:
+    uncaptured?=Uncaptured 'group' rule=Rule
+;
+
+Uncaptured:
+    'uncaptured'
 ;
 
 OneOf:
