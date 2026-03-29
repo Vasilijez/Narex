@@ -5,7 +5,9 @@ def test_group_rules_recognition():
     m = """
         c1:        
             group 'x'
+            group g1 of 'y'
             uncaptured group 'y'
+            uncaptured group g2 of 'y'
 
         c
     """
@@ -21,6 +23,20 @@ def test_lookaround_nested_form():
             maybe one of 'something2' group 'x'
             lookbehind 'x' uncaptured group 'y' lookahead 'y'
             ends
+            
+        c
+    """
+
+    mm = get_metamodel()
+    m = mm.model_from_str(m)
+    r = generate(m)
+
+def test_lookaround_group_name():
+    m = """
+        c:
+            starts
+            maybe one of 'something2' group g1 of 'x'
+            group g2 of letter
             
         c
     """

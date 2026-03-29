@@ -24,7 +24,7 @@ Maybe:
 ;
 
 Group:
-    uncaptured?=Uncaptured 'group' rule=Rule
+    uncaptured?=Uncaptured 'group' (name=ID 'of')? rule=Rule
 ;
 
 Uncaptured:
