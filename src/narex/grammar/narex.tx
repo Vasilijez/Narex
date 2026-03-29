@@ -80,11 +80,11 @@ DomainType:
 ;
 
 BoundedDomain:
-    Digit | Letter | SmallLetter | BigLetter
+    Digit | SmallLetter | BigLetter
 ;
 
 SimpleDomain:
-    (Space | Whitespace | Alphanumeric | Anything) !Between
+    (Space | Whitespace | Alphanumeric | Anything | Letter) !Between
 ;
 
 Not:

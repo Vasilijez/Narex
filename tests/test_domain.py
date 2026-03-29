@@ -103,8 +103,6 @@ def test_domain_complex():
     m = """
         c1:
             digit between 1 and 3
-        c2:
-            letter between a and z digit between 2 and 4
         c3:
             big_letter between A and Z
         c4:
@@ -117,3 +115,22 @@ def test_domain_complex():
     mm = get_metamodel()
     m = mm.model_from_str(m)
     r = generate(m)
+
+
+def test_domain_letter_doesnt_have_between():
+    m = """
+        c:
+            letter between a and z
+        
+        c
+    """
+
+    mm = get_metamodel()
+    try:
+        m = mm.model_from_str(m)
+    except Exception as e:
+        assert isinstance(e, TextXSyntaxError)
+
+    r = generate(m)
+
+        
