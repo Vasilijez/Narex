@@ -96,11 +96,11 @@ number_one:
     _whitespaces   
 
 condition:
-    lookbehind number_one
+    (lookahead) number_one
 
 other_numbers:
     digit between 2 and 9
-    digit repeat zero or more times
+    digit repeat 1 or more times
     _whitespaces
 
 file_found:
