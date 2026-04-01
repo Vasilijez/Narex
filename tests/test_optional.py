@@ -39,3 +39,26 @@ def test_optional_tests_first():
     mm = get_metamodel()
     m = mm.model_from_str(m)
     r = generate(m)
+
+
+def test_optional_flags():
+    m = """
+        clause1:
+            letter
+
+        tests:
+            'test1' 
+            'test2'
+
+        flags:
+            multiline
+            case insensitive
+            single line
+            global match
+
+        clause1
+    """
+
+    mm = get_metamodel()
+    m = mm.model_from_str(m)
+    r = generate(m)
