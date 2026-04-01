@@ -67,13 +67,15 @@ phone_number:
       local
       ends
 
-      flags:
-              'global match'
-              'multiline'
-      flavor:
-              'python'
-      test:
-              '+381 62 123 4567'   
+flags:
+      "global match"
+      "multiline"
+
+flavor:
+      "python"
+
+tests:
+      "+381 62 123 4567"
 
 phone_number 
 ```
@@ -212,11 +214,12 @@ monomial:
       coefficient 
       variable
 
-      flags:
-              'global match'
-              'multiline'
-      flavor:
-              'python'
+flags:
+      "global match"
+      "multiline"
+      
+flavor:
+      "python"
 
 monomial
 ```
@@ -282,11 +285,12 @@ positive_number:
       minus_sign
       number
       
-      flags:
-              'global match'
-      flavor:
-              'multiline'
-              'python'
+flags:
+      "global match"
+      "multiline"
+
+flavor:
+      "python"
 
 positive_number
 ```
