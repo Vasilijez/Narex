@@ -150,7 +150,7 @@ Optional:
 
 Tests:
     'tests:' 
-        sample*=STRING
+        sample+=STRING
 ;
 
 Flavor:
