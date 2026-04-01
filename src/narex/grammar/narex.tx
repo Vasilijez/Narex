@@ -145,7 +145,7 @@ OrMore:
     'or' 'more'
 ;
 Optional:
-    ((tests=Tests)? (flavor=Flavor)?)#
+    ((tests=Tests)? (flavor=Flavor)? (flags=Flags)?)#
 ;
 
 Tests:
@@ -156,4 +156,28 @@ Tests:
 Flavor:
     'flavor:'
         'python'
+;
+
+Flags:
+   'flags:' values += FlagValue 
+;
+
+FlagValue:
+    GlobalMatch | Multiline | CaseInsensitive | SingleLine  
+;
+
+GlobalMatch:
+    'global' 'match'
+;
+
+Multiline:
+    'multiline'
+;
+
+CaseInsensitive:
+    'case' 'insensitive'
+;
+
+SingleLine:
+    'single' 'line'
 ;
