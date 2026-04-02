@@ -6,7 +6,8 @@ def test_either():
         clause1:
             one of 'something' either letter or letter or one of 'something2' letter
 
-        clause2
+        target:
+            clause1
     """
 
     mm = get_metamodel()

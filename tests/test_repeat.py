@@ -7,7 +7,8 @@ def test_repeat_something_or_more():
     c1:
         letter repeat 1 or more times
     
-    c1
+    target:
+        c1
     """
 
     mm = get_metamodel()
@@ -23,7 +24,8 @@ def test_repeat_something_times():
     c2:
         maybe one of 'something2' repeat 0 or more times maybe letter  maybe one of 'something3'
         
-    c1
+    target:
+        c1
     """
 
     mm = get_metamodel()
@@ -35,7 +37,8 @@ def test_repeat_invalid_missing_subject_rule():
     c1:
         maybe repeat 99 times
 
-    c1
+    target:
+        c1
     """
     mm = get_metamodel()
     try:

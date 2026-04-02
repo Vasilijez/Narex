@@ -14,7 +14,8 @@ def test_domain_domain_types():
             small_letter
             big_letter
 
-        c1
+        target:
+            c1
     """
 
     mm = get_metamodel()
@@ -28,7 +29,8 @@ def test_domain_with_not():
         c2:
             not anything not letter
         
-        c1
+        target:
+            c1
     """
 
     mm = get_metamodel()
@@ -44,7 +46,8 @@ def test_domain_with_between():
         c3:
             letter between A and Z
         
-        c1
+        target:
+            c1
     """
 
     mm = get_metamodel()
@@ -57,7 +60,9 @@ def test_domain_forbidden_rules_before_between():
     m = """
         c:
             space between 1 and 3
-        c
+
+        target:
+            c1
     """
     m = mm.model_from_str(m)
     try:
@@ -68,7 +73,9 @@ def test_domain_forbidden_rules_before_between():
     m = """
         c:
             whitespace between 1 and 3
-        c
+
+        target:
+            c
     """
     m = mm.model_from_str(m)
     try:
@@ -79,7 +86,9 @@ def test_domain_forbidden_rules_before_between():
     m = """
         c:
             alphanumeric between 1 and 3
-        c
+
+        target:
+            c
     """
     m = mm.model_from_str(m)
     try:
@@ -90,7 +99,9 @@ def test_domain_forbidden_rules_before_between():
     m = """
         c:
             anything between 1 and 3
-        c
+
+        target:
+            c
     """
     m = mm.model_from_str(m)
     try:
@@ -108,8 +119,9 @@ def test_domain_complex():
         c4:
             small_letter between a and z
             digit between 1 and 9
-        
-        c1
+
+        target:
+            c1
     """
 
     mm = get_metamodel()
@@ -122,7 +134,8 @@ def test_domain_letter_doesnt_have_between():
         c:
             letter between a and z
         
-        c
+        target:
+            c
     """
 
     mm = get_metamodel()

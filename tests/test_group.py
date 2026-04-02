@@ -9,7 +9,8 @@ def test_group_rules_recognition():
             uncaptured group 'y'
             uncaptured group g2 of 'y'
 
-        c
+        target:
+            c1
     """
 
     mm = get_metamodel()
@@ -24,7 +25,8 @@ def test_lookaround_nested_form():
             lookbehind 'x' uncaptured group 'y' lookahead 'y'
             ends
             
-        c
+        target:
+            c
     """
 
     mm = get_metamodel()
@@ -38,7 +40,8 @@ def test_lookaround_group_name():
             maybe one of 'something2' group g1 of 'x'
             group g2 of letter
             
-        c
+        target:
+            c
     """
 
     mm = get_metamodel()

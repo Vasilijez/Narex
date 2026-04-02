@@ -77,7 +77,8 @@ flavor:
 tests:
       "+381 62 123 4567"
 
-phone_number 
+target:
+      phone_number 
 ```
 
 #### Task 2: Are files found?
@@ -121,7 +122,8 @@ match:
     starts
     if condition then file_found else files_found 
 
-match
+target:
+      match
 ```
 
 #### Task 3: Match repeated numbers from head and tail 
@@ -152,7 +154,8 @@ match:
       body
       tail
 
-match
+target:
+      match
 ```
 
 #### Task 4: Match correct email format
@@ -186,7 +189,8 @@ email:
       '.'
       tld
 
-email
+target:
+      email
 ```
 
 #### Task 5: Match all the coefficients of x²
@@ -217,11 +221,12 @@ monomial:
 flags:
       "global match"
       "multiline"
-      
+
 flavor:
       "python"
 
-monomial
+target:
+      monomial
 ```
 
 #### Task 6: Match various date formats and capture year
@@ -257,7 +262,8 @@ date:
       '/'
       group year
 
-date
+target:
+      date
 ```
 
 #### Task 7: Match all the positive numbers only
@@ -292,7 +298,8 @@ flags:
 flavor:
       "python"
 
-positive_number
+target:
+      positive_number
 ```
 
 #### Task 8: Match simple number
@@ -310,7 +317,8 @@ number:
       non_zero_digit repeat 1 or more times
       digit repeat 0 or more times
 
-number
+target:
+      number
 ```
 
 #### Task 9: Match file with correct format
@@ -336,7 +344,8 @@ file:
       format
       boundary
 
-file
+target:
+      file
 ```
 
 #### Task 10: Match the price
@@ -360,7 +369,8 @@ price:
       whole_value 
       maybe decimal_value
 
-price
+target:
+      price
 ```
 
 #### Task 11: Based upon condition, match number or message
@@ -386,7 +396,8 @@ match:
       if condition then read_number else read_message
       ends 
 
-match
+target:
+      match
 ```
 
 #### Task 12: Match exact characters
@@ -412,7 +423,9 @@ char:
 match:
       either number or char      
 
-match
+target:
+      match
+```
 ```
 
 ## Structure

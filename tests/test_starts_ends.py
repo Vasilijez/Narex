@@ -5,7 +5,9 @@ def test_starts():
     m = """
         c:
             starts maybe one of 'something2' maybe letter  maybe one of 'something3'
-        c
+        
+        target:
+            c
     """
 
     mm = get_metamodel()
@@ -18,7 +20,9 @@ def test_ends():
             starts
             maybe one of 'something2' maybe letter  maybe one of 'something3' 
             ends
-        c
+
+        target:
+            c
     """
 
     mm = get_metamodel()

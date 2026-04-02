@@ -15,7 +15,8 @@ def test_lookaround_rules_recognition():
             c1
             c2
 
-        c
+        target:
+            c
     """
 
     mm = get_metamodel()
@@ -30,7 +31,8 @@ def test_lookaround_nested_form():
             lookbehind 'x' big_letter between A and C negative lookahead letter
             ends
             
-        c
+        target:
+            c
     """
 
     mm = get_metamodel()

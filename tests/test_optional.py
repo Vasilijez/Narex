@@ -13,7 +13,8 @@ def test_optional_flavor_first():
         tests:
             'test1' 'test2'
         
-        clause1
+        target:
+            clause1
     """
 
     mm = get_metamodel()
@@ -33,7 +34,8 @@ def test_optional_tests_first():
         flavor:
             python
 
-        clause1
+        target:
+            clause1
     """
 
     mm = get_metamodel()
@@ -56,7 +58,8 @@ def test_optional_flags():
             single line
             global match
 
-        clause1
+        target:
+            clause1
     """
 
     mm = get_metamodel()
