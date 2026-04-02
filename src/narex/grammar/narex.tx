@@ -6,7 +6,7 @@ Anchor:
 ;
 
 Clause:
-    name=ID ':' 
+    name=ValidName ':' 
         clauses*=Clause 
         inlineRules+=InlineRule['\n']
 ;
@@ -16,11 +16,42 @@ InlineRule:
 ;
 
 Rule:
-    maybe?=Maybe (rule=OneOf | rule=Domain | rule=Either | Starts | Ends | rule=Lookaround | rule=Group | rule=Backreference | STRING) (repeat=Repeat)?
+    maybe?=Maybe 
+    type=RuleType
+    (repeat=Repeat)?
+;
+
+RuleType:
+    OneOf           | 
+    Domain          |
+    Either          |
+    Starts          |
+    Ends            |
+    Lookaround      |
+    Group           |
+    Backreference   |
+    STRING          |       
+    ClauseReference
 ;
 
 Maybe:
     'maybe'
+;
+
+Keyword:
+    'target' | 'tests' | 'flavor' | 'flags'
+;
+
+ValidName:
+    !Keyword ID
+;
+
+ValidReference:
+    ID !':'
+;
+
+ClauseReference:
+    value=[Clause:ValidReference]
 ;
 
 Group:
