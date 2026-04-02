@@ -12,7 +12,8 @@ def test_backreference():
             c1
             c2
 
-        c
+        target:
+            c
     """
 
     mm = get_metamodel()

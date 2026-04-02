@@ -11,7 +11,8 @@ def test_inline_rule():
             one of 'yey' letter
             one of 'wewe' maybe letter  maybe one of 'popopo'
         
-        clause2
+        target:
+            clause2
     """
 
     mm = get_metamodel()
