@@ -182,7 +182,7 @@ Optional:
 
 Tests:
     'tests:' 
-        sample+=STRING
+        sample+=STRING[',']
 ;
 
 Flavor:
@@ -191,7 +191,7 @@ Flavor:
 ;
 
 Flags:
-   'flags:' values += FlagValue 
+   'flags:' values += FlagValue[',']
 ;
 
 FlagValue:
