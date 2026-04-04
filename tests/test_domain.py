@@ -74,7 +74,6 @@ def test_domain_forbidden_rules_before_between():
         target:
             c1
     """
-    m = mm.model_from_str(m)
     try:
         m = mm.model_from_str(m)
     except Exception as e:
@@ -88,7 +87,6 @@ def test_domain_forbidden_rules_before_between():
         target:
             c
     """
-    m = mm.model_from_str(m)
     try:
         m = mm.model_from_str(m)
     except Exception as e:
@@ -102,7 +100,6 @@ def test_domain_forbidden_rules_before_between():
         target:
             c
     """
-    m = mm.model_from_str(m)
     try:
         m = mm.model_from_str(m)
     except Exception as e:
@@ -116,7 +113,6 @@ def test_domain_forbidden_rules_before_between():
         target:
             c
     """
-    m = mm.model_from_str(m)
     try:
         m = mm.model_from_str(m)
     except Exception as e:
