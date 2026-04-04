@@ -1,6 +1,6 @@
 from narex import get_metamodel
 from narex.generators.python import generate
-from textx import TextXSyntaxError
+from textx import TextXSyntaxError, TextXSemanticError
 
 def test_domain_domain_types():
     m = """
@@ -48,11 +48,11 @@ def test_domain_with_between():
         }
 
         c2 {
-            letter between a and z
+            letter
         }
 
         c3 {
-            letter between A and Z
+            letter
         }
         
         target:
@@ -161,7 +161,7 @@ def test_domain_letter_doesnt_have_between():
     try:
         m = mm.model_from_str(m)
     except Exception as e:
-        assert isinstance(e, TextXSyntaxError)
+        assert isinstance(e, TextXSemanticError)
 
     r = generate(m)
 
