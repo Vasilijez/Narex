@@ -67,9 +67,8 @@ def test_clause_references_illegal_keywords():
         }
 
         target:
-            c1
+            c
     """
-    m = mm.model_from_str(m)
     try:
         m = mm.model_from_str(m)
     except Exception as e:
@@ -82,9 +81,8 @@ def test_clause_references_illegal_keywords():
         }
 
         target:
-            c1
+            c
     """
-    m = mm.model_from_str(m)
     try:
         m = mm.model_from_str(m)
     except Exception as e:
@@ -97,9 +95,8 @@ def test_clause_references_illegal_keywords():
         }
 
         target:
-            c1
+            c
     """
-    m = mm.model_from_str(m)
     try:
         m = mm.model_from_str(m)
     except Exception as e:
@@ -112,9 +109,8 @@ def test_clause_references_illegal_keywords():
         }
 
         target:
-            c1
+            c
     """
-    m = mm.model_from_str(m)
     try:
         m = mm.model_from_str(m)
     except Exception as e:

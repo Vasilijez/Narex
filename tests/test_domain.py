@@ -72,7 +72,7 @@ def test_domain_forbidden_rules_before_between():
         }
 
         target:
-            c1
+            c
     """
     try:
         m = mm.model_from_str(m)
