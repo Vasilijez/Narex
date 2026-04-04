@@ -20,12 +20,12 @@ The biggest issues are the vast number of flavors, subtle differences, and parti
 
 In the beginning, only the Python flavor will be supported, covering its concepts.
 Some of the advanced supported concepts include:
-- `[named] backreference`
-- `group`
+- `[uncaptured] group [<name> of]`
+- `backreference <group_name>`
 - `[negative] lookahead | lookbehind`
 - `if then [else]`
 
-A user can also test regular expression by using `test:`, define desired flags with `flags:`, and specify the desired flavor using `flavor:`.
+A user can also test regular expression by using `tests:`, define desired flags with `flags:`, and specify the desired flavor using `flavor:`.
 
 ## Examples
 #### Task 1: Match phone number 
@@ -39,43 +39,52 @@ A user can also test regular expression by using `test:`, define desired flags w
     SKIP:  062/123/4567
 """
 
-carrier:
+carrier {
       digit repeat 2 times
+}
 
-state:
+state {
       '+'
       digit between 1 to 9
       digit repeat 2 to 3 times
       carrier
+}
 
-no_state:
+no_state {
       '0'
       carrier
+}
 
-local: 
+local {
       digit repeat 3 times
       maybe '-'
       digit repeat 4 times
+}
 
-separator:
+separator {
       maybe either '/' or '-' or whitespace 
+}
 
-phone_number:
+phone_number {
       starts
       either state or no_state
       maybe separator
       local
       ends
+}
 
-      flags:
-              'global match'
-              'multiline'
-      flavor:
-              'python'
-      test:
-              '+381 62 123 4567'   
+flags:
+      global match,
+      multiline
 
-phone_number 
+flavor:
+      python
+
+tests:
+      "+381 62 123 4567"
+
+target:
+      phone_number 
 ```
 
 #### Task 2: Are files found?
@@ -88,38 +97,46 @@ phone_number
     SKIP:  No files found
 """
 
-_whitespaces: 
+_whitespaces {
     whitespace repeat 1 or more times
+}
 
-number_one:
+number_one {
     '1'
     _whitespaces   
+}
 
-condition:
-    lookbehind number_one
+condition {
+    (lookahead) number_one
+}
 
-other_numbers:
+other_numbers {
     digit between 2 and 9
-    digit repeat zero or more times
+    digit repeat 1 or more times
     _whitespaces
+}
 
-file_found:
+file_found {
     number_one
     'file'
     _whitespaces
     'found?'
+}
 
-files_found:  
+files_found {  
     other_numbers
     'files'
     _whitespaces
     'found?'
+}
 
-match:
+match {
     starts
     if condition then file_found else files_found 
+}
 
-match
+target:
+      match
 ```
 
 #### Task 3: Match repeated numbers from head and tail 
@@ -130,21 +147,32 @@ match
     SKIP:  32asdsad43
     SKIP:  43asdsadsa22
 """
-head:
-      digit repeat 1 or more times
 
-tail:
-      backreference head   # (or `named backreference``, they are not the same!)
+# Even though  a  group seems similar to just 
+# referencing a previously defined clause, it 
+# is not.  It requires the same value matched 
+# within the group to be repeated.
+
+head {
+      group g1 of digit repeat 1 or more times
+}
+
+tail {
+      backreference g1
+}
   
-body:
+body {
       letter repeat 1 or more times
+}
 
-match:
+match {
       head 
       body
       tail
+}
 
-match
+target:
+      match
 ```
 
 #### Task 4: Match correct email format
@@ -157,28 +185,34 @@ match
     SKIP:  user!user@gmailcom.
 """
 
-user:
-      base_case:
+user {
+      base_case {
           letter repeat 1 or more times
+      }
 
       base_case 
       maybe '.' base_case repeat 1 or more times
+}
 
-domain:
+domain {
       letter repeat 1 or more times
+}
       
-tld:
+tld {
       '.' 
       letter repeat 1 or more times
+}
 
-email: 
+email { 
       user
       '@'
       domain
       '.'
       tld
+}
 
-email
+target:
+      email
 ```
 
 #### Task 5: Match all the coefficients of x²
@@ -196,23 +230,32 @@ email
     MATCH: 95
 """ 
 
-variable:
+variable {
       lookahead x²
+}
 
-coefficient:
+coefficient {
       digit repeat 1 or more times 
+}
 
-monomial:
+monomial {
       coefficient 
       variable
+}
 
-      flags:
-              'global match'
-              'multiline'
-      flavor:
-              'python'
+flags:
+      global match,
+      multiline
 
-monomial
+tests:
+      "x³ + x² + x + 2",
+      "x³ + x² + x + 1"
+
+flavor: 
+      python
+
+target: 
+      monomial
 ```
 
 #### Task 6: Match various date formats and capture year
@@ -225,30 +268,38 @@ monomial
     SKIP:  99/99/9999
 """
 
-month:
+month {
       either '0' or '1'
       digit between 0 and 2
+}
 
-day:
+day {
       digit between 0 and 3
       digit
+}
 
-year:
-      short_format:
+year {
+      short_format {
           digit repeat 2 times
-      long_format:    
+      }
+
+      long_format {  
           digit repeat 4 times
+      }
 
       either short_format or long_format
+}
 
-date:
+date {
       day
       '/'
       month
       '/'
       group year
+}
 
-date
+target:
+      date
 ```
 
 #### Task 7: Match all the positive numbers only
@@ -265,24 +316,29 @@ date
     MATCH: 8
 """ 
 
-minus_sign:
+minus_sign {
       negative lookbehind '-' 
+}
 
-number:
+number {
       digit repeat 1 or more times
+}
 
-positive_number:
+positive_number {
       boundary 
       minus_sign
       number
+}
       
-      flags:
-              'global match'
-      flavor:
-              'multiline'
-              'python'
+flags:
+      global match,
+      multiline
 
-positive_number
+flavor:
+      python
+
+target:
+      positive_number
 ```
 
 #### Task 8: Match simple number
@@ -293,14 +349,17 @@ positive_number
     SKIP:  0 
 """
 
-non_zero_digit:
+non_zero_digit {
       digit between 1 to 9 
+}
 
-number:
+number {
       non_zero_digit repeat 1 or more times
       digit repeat 0 or more times
+}
 
-number
+target:
+      number
 ```
 
 #### Task 9: Match file with correct format
@@ -312,21 +371,25 @@ number
     SKIP:  random_name.gif
 """
 
-version:
+version {
       digit repeat 0 or more times     
+}
 
-format:
+format {
       either 'png' or 'pdf' or 'jpeg'
+}
   
-file:
+file {
       boundary
       'fajl_v' 
       version
       '.'
       format
       boundary
+}
 
-file
+target:
+      file
 ```
 
 #### Task 10: Match the price
@@ -339,18 +402,22 @@ file
     SKIP:  $.23
 """
 
-whole_value:
+whole_value {
       digit between 1 to 9 repeat 0 or more times
+}
 
-decimal_value:
+decimal_value {
       '.' digit repeat 0 or more times
+}
 
-price:
+price {
       '$'
       whole_value 
       maybe decimal_value
+}
 
-price
+target:
+      price
 ```
 
 #### Task 11: Based upon condition, match number or message
@@ -363,20 +430,25 @@ price
     SKIP:  123#@$
 """
 
-condition:
+condition {
       lookbehind 'enabled'
+}
 
-read_number:
+read_number {
       digit repeat 1 or more times
+}
   
-read_message:
+read_message {
       letter repeat 1 or more times
+}
 
-match:
+match {
       if condition then read_number else read_message
       ends 
+}
 
-match
+target:
+      match
 ```
 
 #### Task 12: Match exact characters
@@ -393,52 +465,21 @@ match
     SKIP:  ^
 """
 
-number:
+number {
       either 'one' or 'two' or 'three' or one of '369'
+}
 
-char:
+char {
       one of '!.'
+}
 
-match:
+match {
       either number or char      
+}
 
-match
+target:
+      match
 ```
-
-#### Task 13: Match various date formats and capture year
-``` py
-
-""" 
-    MATCH: 04/06/25    CAPTURE: 25
-    MATCH: 18/12/05    CAPTURE: 05           
-    MATCH: 25/05/1998  CAPTURE: 1998     
-    SKIP:  99/99/9999
-"""
-
-month:
-      either '0' or '1'
-      digit between 0 and 2
-
-day:
-      digit between 0 and 3
-      digit
-
-year:
-      short_format:
-          digit repeat 2 times
-      long_format:    
-          digit repeat 4 times
-
-      either short_format or long_format
-
-date:
-      day
-      '/'
-      month
-      '/'
-      group year
-
-date
 ```
 
 ## Structure

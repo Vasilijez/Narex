@@ -1,14 +1,220 @@
 
 Anchor:
     clauses+=Clause 
-    result=[Clause] // Maybe safe-scoping? Yeah it is important especially later on, I can do it easily by intercepting objects, smth like that I had it in the example related to the state machine.
+    optional=Optional
+    target=Target // Maybe safe-scoping? Yeah it is important especially later on, I can do it easily by intercepting objects, smth like that I had it in the example related to the state machine.
 ;
 
 Clause:
-    name=ID ':' 
+    name=ValidName '{' 
         clauses*=Clause 
-        rules+=Rule[eolterm]
+        inlineRules+=InlineRule['\n']
+    '}'
+;
+
+InlineRule:
+    rules+=Rule
 ;
 
 Rule:
+    maybe?=Maybe 
+    type=RuleType
+    (repeat=Repeat)?
+;
+
+RuleType:
+    OneOf           | 
+    Domain          |
+    Either          |
+    Starts          |
+    Ends            |
+    Lookaround      |
+    Group           |
+    Backreference   |
+    STRING          |       
+    ClauseReference
+;
+
+Maybe:
+    'maybe'
+;
+
+Keyword:
+    'target' | 'tests' | 'flavor' | 'flags'
+;
+
+ValidName:
+    !Keyword ID
+;
+
+ValidReference:
+    ID !':'
+;
+
+ClauseReference:
+    value=[Clause:ValidReference]
+;
+
+Group:
+    uncaptured?=Uncaptured 'group' (name=ID 'of')? rule=Rule
+;
+
+Uncaptured:
+    'uncaptured'
+;
+
+Backreference:
+    'backreference' group=[Group]
+;
+
+OneOf:
+    'one' 'of' STRING
+;
+
+Either:
+    'either' alternatives=Rule ('or' alternatives=Rule)+
+;
+
+Starts:
+    'starts'
+;
+
+Ends:
+    'ends'
+;
+
+Lookaround:
+    Lookbehind | Lookahead
+;
+
+Lookbehind:
+    negative?=Negative 'lookbehind' rule=Rule
+;
+
+Lookahead:
+    negative?=Negative 'lookahead' rule=Rule
+;
+
+Negative:
+    'negative'
+;
+
+//////////////////// Domain ////////////////////
+
+Domain:
+    (not=Not)?
+    type=DomainType
+    (between=Between)?
+;
+
+DomainType:
+    BoundedDomain | SimpleDomain
+;
+
+BoundedDomain:
+    Digit | SmallLetter | BigLetter
+;
+
+SimpleDomain:
+    (Space | Whitespace | Alphanumeric | Anything | Letter) !Between
+;
+
+Not:
+    'not'
+;
+
+Digit:
+    'digit'
+;
+
+Space:
+    'space'
+;
+
+Whitespace:
+    'whitespace'
+;
+
+Alphanumeric:
+    'alphanumeric'
+;
+
+Anything:
+    'anything'
+;
+
+Letter:
+    'letter'
+;
+
+SmallLetter:
+    'small_letter'
+;
+
+BigLetter:
+    'big_letter'
+;
+
+Between:
+    'between' start=EdgeValue 'and' end=EdgeValue
+;
+
+EdgeValue:
+    /[a-zA-Z0-9]/
+;
+
+// Repeat rule only checks if it has a subject.
+// Simple rules (e.g. digit) don't need parentheses, complex ones do.
+Repeat:
+    'repeat' times=Times more?=OrMore 'times'
+;
+
+Times:
+    '0' | '1' | INT
+;
+
+OrMore:
+    'or' 'more'
+;
+Optional:
+    ((tests=Tests)? (flavor=Flavor)? (flags=Flags)?)#
+;
+
+Tests:
+    'tests:' 
+        sample+=STRING[',']
+;
+
+Flavor:
+    'flavor:'
+        'python'
+;
+
+Flags:
+   'flags:' values += FlagValue[',']
+;
+
+FlagValue:
+    GlobalMatch | Multiline | CaseInsensitive | SingleLine  
+;
+
+GlobalMatch:
+    'global' 'match'
+;
+
+Multiline:
+    'multiline'
+;
+
+CaseInsensitive:
+    'case' 'insensitive'
+;
+
+SingleLine:
+    'single' 'line'
+;
+
+Target:
+    'target:' 
+        clause=[Clause]
 ;
