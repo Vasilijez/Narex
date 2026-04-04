@@ -3,11 +3,12 @@ from narex.generators.python import generate
 
 def test_group_rules_recognition():
     m = """
-        c1:        
+        c1 {    
             group 'x'
             group g1 of 'y'
             uncaptured group 'y'
             uncaptured group g2 of 'y'
+        }
 
         target:
             c1
@@ -19,12 +20,13 @@ def test_group_rules_recognition():
 
 def test_lookaround_nested_form():
     m = """
-        c:
+        c {
             starts
             maybe one of 'something2' group 'x'
             lookbehind 'x' uncaptured group 'y' lookahead 'y'
             ends
-            
+        }
+ 
         target:
             c
     """
@@ -35,11 +37,12 @@ def test_lookaround_nested_form():
 
 def test_lookaround_group_name():
     m = """
-        c:
+        c {
             starts
             maybe one of 'something2' group g1 of 'x'
             group g2 of letter
-            
+        }
+
         target:
             c
     """

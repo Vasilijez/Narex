@@ -6,9 +6,10 @@ Anchor:
 ;
 
 Clause:
-    name=ValidName ':' 
+    name=ValidName '{' 
         clauses*=Clause 
         inlineRules+=InlineRule['\n']
+    '}'
 ;
 
 InlineRule:

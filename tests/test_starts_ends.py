@@ -3,8 +3,9 @@ from narex.generators.python import generate
 
 def test_starts():
     m = """
-        c:
+        c {
             starts maybe one of 'something2' maybe letter  maybe one of 'something3'
+        }
         
         target:
             c
@@ -16,11 +17,12 @@ def test_starts():
 
 def test_ends():
     m = """
-        c:
+        c {
             starts
             maybe one of 'something2' maybe letter  maybe one of 'something3' 
             ends
-
+        }
+        
         target:
             c
     """

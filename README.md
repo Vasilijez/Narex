@@ -39,40 +39,46 @@ A user can also test regular expression by using `tests:`, define desired flags 
     SKIP:  062/123/4567
 """
 
-carrier:
+carrier {
       digit repeat 2 times
+}
 
-state:
+state {
       '+'
       digit between 1 to 9
       digit repeat 2 to 3 times
       carrier
+}
 
-no_state:
+no_state {
       '0'
       carrier
+}
 
-local: 
+local {
       digit repeat 3 times
       maybe '-'
       digit repeat 4 times
+}
 
-separator:
+separator {
       maybe either '/' or '-' or whitespace 
+}
 
-phone_number:
+phone_number {
       starts
       either state or no_state
       maybe separator
       local
       ends
+}
 
 flags:
-      "global match"
-      "multiline"
+      global match,
+      multiline
 
 flavor:
-      "python"
+      python
 
 tests:
       "+381 62 123 4567"
@@ -91,36 +97,43 @@ target:
     SKIP:  No files found
 """
 
-_whitespaces: 
+_whitespaces {
     whitespace repeat 1 or more times
+}
 
-number_one:
+number_one {
     '1'
     _whitespaces   
+}
 
-condition:
+condition {
     (lookahead) number_one
+}
 
-other_numbers:
+other_numbers {
     digit between 2 and 9
     digit repeat 1 or more times
     _whitespaces
+}
 
-file_found:
+file_found {
     number_one
     'file'
     _whitespaces
     'found?'
+}
 
-files_found:  
+files_found {  
     other_numbers
     'files'
     _whitespaces
     'found?'
+}
 
-match:
+match {
     starts
     if condition then file_found else files_found 
+}
 
 target:
       match
@@ -140,19 +153,23 @@ target:
 # is not.  It requires the same value matched 
 # within the group to be repeated.
 
-head:
+head {
       group g1 of digit repeat 1 or more times
+}
 
-tail:
+tail {
       backreference g1
+}
   
-body:
+body {
       letter repeat 1 or more times
+}
 
-match:
+match {
       head 
       body
       tail
+}
 
 target:
       match
@@ -168,26 +185,31 @@ target:
     SKIP:  user!user@gmailcom.
 """
 
-user:
-      base_case:
+user {
+      base_case {
           letter repeat 1 or more times
+      }
 
       base_case 
       maybe '.' base_case repeat 1 or more times
+}
 
-domain:
+domain {
       letter repeat 1 or more times
+}
       
-tld:
+tld {
       '.' 
       letter repeat 1 or more times
+}
 
-email: 
+email { 
       user
       '@'
       domain
       '.'
       tld
+}
 
 target:
       email
@@ -208,24 +230,31 @@ target:
     MATCH: 95
 """ 
 
-variable:
+variable {
       lookahead x²
+}
 
-coefficient:
+coefficient {
       digit repeat 1 or more times 
+}
 
-monomial:
+monomial {
       coefficient 
       variable
+}
 
 flags:
-      "global match"
-      "multiline"
+      global match,
+      multiline
 
-flavor:
-      "python"
+tests:
+      "x³ + x² + x + 2",
+      "x³ + x² + x + 1"
 
-target:
+flavor: 
+      python
+
+target: 
       monomial
 ```
 
@@ -239,28 +268,35 @@ target:
     SKIP:  99/99/9999
 """
 
-month:
+month {
       either '0' or '1'
       digit between 0 and 2
+}
 
-day:
+day {
       digit between 0 and 3
       digit
+}
 
-year:
-      short_format:
+year {
+      short_format {
           digit repeat 2 times
-      long_format:    
+      }
+
+      long_format {  
           digit repeat 4 times
+      }
 
       either short_format or long_format
+}
 
-date:
+date {
       day
       '/'
       month
       '/'
       group year
+}
 
 target:
       date
@@ -280,23 +316,26 @@ target:
     MATCH: 8
 """ 
 
-minus_sign:
+minus_sign {
       negative lookbehind '-' 
+}
 
-number:
+number {
       digit repeat 1 or more times
+}
 
-positive_number:
+positive_number {
       boundary 
       minus_sign
       number
+}
       
 flags:
-      "global match"
-      "multiline"
+      global match,
+      multiline
 
 flavor:
-      "python"
+      python
 
 target:
       positive_number
@@ -310,12 +349,14 @@ target:
     SKIP:  0 
 """
 
-non_zero_digit:
+non_zero_digit {
       digit between 1 to 9 
+}
 
-number:
+number {
       non_zero_digit repeat 1 or more times
       digit repeat 0 or more times
+}
 
 target:
       number
@@ -330,19 +371,22 @@ target:
     SKIP:  random_name.gif
 """
 
-version:
+version {
       digit repeat 0 or more times     
+}
 
-format:
+format {
       either 'png' or 'pdf' or 'jpeg'
+}
   
-file:
+file {
       boundary
       'fajl_v' 
       version
       '.'
       format
       boundary
+}
 
 target:
       file
@@ -358,16 +402,19 @@ target:
     SKIP:  $.23
 """
 
-whole_value:
+whole_value {
       digit between 1 to 9 repeat 0 or more times
+}
 
-decimal_value:
+decimal_value {
       '.' digit repeat 0 or more times
+}
 
-price:
+price {
       '$'
       whole_value 
       maybe decimal_value
+}
 
 target:
       price
@@ -383,18 +430,22 @@ target:
     SKIP:  123#@$
 """
 
-condition:
+condition {
       lookbehind 'enabled'
+}
 
-read_number:
+read_number {
       digit repeat 1 or more times
+}
   
-read_message:
+read_message {
       letter repeat 1 or more times
+}
 
-match:
+match {
       if condition then read_number else read_message
       ends 
+}
 
 target:
       match
@@ -414,14 +465,17 @@ target:
     SKIP:  ^
 """
 
-number:
+number {
       either 'one' or 'two' or 'three' or one of '369'
+}
 
-char:
+char {
       one of '!.'
+}
 
-match:
+match {
       either number or char      
+}
 
 target:
       match

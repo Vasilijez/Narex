@@ -3,14 +3,16 @@ from narex.generators.python import generate
 
 def test_inline_rule():
     m = """
-        clause1:
+        clause1 {
             one of 'something' letter
             maybe one of 'something2' maybe letter  maybe one of 'something3'
+        }
 
-        clause2:
+        clause2 {
             one of 'yey' letter
             one of 'wewe' maybe letter  maybe one of 'popopo'
-        
+        }
+
         target:
             clause2
     """

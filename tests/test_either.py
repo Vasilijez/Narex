@@ -3,8 +3,9 @@ from narex.generators.python import generate
 
 def test_either():
     m = """
-        clause1:
+        clause1 {
             one of 'something' either letter or letter or one of 'something2' letter
+        }
 
         target:
             clause1

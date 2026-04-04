@@ -3,14 +3,19 @@ from narex.generators.python import generate
 
 def test_backreference():
     m = """
-        c1:
+        c1 {
             group g1 of digit repeat 1 or more times
             'test'
-        c2:
+        }
+
+        c2 {
             backreference g1
-        c: 
+        }
+
+        c { 
             c1
             c2
+        }
 
         target:
             c
