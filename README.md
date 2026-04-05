@@ -480,7 +480,6 @@ match {
 target:
       match
 ```
-```
 
 ## Structure
 ```
@@ -518,8 +517,31 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 4. Run the project:
+
+i. You can optionally validate the model before running:
+``` sh
+narex validate --path=<path>
+```
+ii. You can just run (includes validation):
+``` sh
+narex run --path=<path>
+```
+__Caveat:__ 
+- If you omit the `--path` flag, then the default model is loaded from `examples` folder.
+- The path flag supports both absolute and relative paths. For instance:
+``` sh
+--path=C:\Users\...\model.tx
+--path=./model.tx
+```
+5. Run help:
+
+i. Using narex command:
 ``` sh
 narex
+```
+ii. Using help flag:
+``` sh
+narex --help
 ```
 
 ### VSCode extension
