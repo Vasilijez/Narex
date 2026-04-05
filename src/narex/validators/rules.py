@@ -6,3 +6,6 @@ def validate_literal(v):
         if v.value == "example":
             return
     raise TextXSemanticError
+
+def validate(m):
+    ...

@@ -11,4 +11,4 @@ dependencies = [
 ]
 
 [project.scripts]
-narex = "narex.cli.main:run"
+narex = "narex.cli.main:cli"

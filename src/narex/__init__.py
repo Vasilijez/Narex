@@ -1,5 +1,5 @@
 from textx import metamodel_from_file     
-from os.path import dirname, join
+from os.path import dirname, join, abspath, pardir, isabs
 
 def get_metamodel(debug=False):
 
@@ -8,3 +8,23 @@ def get_metamodel(debug=False):
     mm = metamodel_from_file(grammar_path, auto_init_attributes=False, debug=debug)
 
     return mm
+
+def get_path(path='', debug=False):
+    """
+        An absolute path is favored over relative path.
+    """
+    this_folder = dirname(__file__)
+
+
+    if not path:
+        this_folder = dirname(__file__)
+        grammar_path = abspath(join(this_folder, pardir, pardir, 'examples', 'input.nx'))
+    elif isabs(path):
+        grammar_path = path
+    else:
+        grammar_path = abspath(path)
+       
+    if debug:
+        print(f"Normalized path is {grammar_path}")
+    
+    return grammar_path
