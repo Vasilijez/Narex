@@ -2,7 +2,7 @@ import click
 from click import group
 from narex import get_metamodel, get_path
 from narex.generators.python import generate
-from narex.validators.rules import validate
+from narex.validators.rules import validate, validate_class_reference
 
 @click.group()
 def cli():
@@ -10,32 +10,33 @@ def cli():
 
 def load_model(path):
     mm = get_metamodel()
+    mm.register_model_processor(validate_class_reference)
     p = get_path(path, True)
     m = mm.model_from_file(p)
     return mm, m
 
 @click.command()
 @click.option('--path', default='', help='Enter path to model file')
-def run(path):
+def run_command(path):
     try:
         mm, m = load_model(path)
         result = generate(m)
         print(f"Result {result}")
     except Exception as e:
-        print(f"An error occured while validating the model {e}")
+        print(f"An error occured while validating the model: \n{e}")
 
 @click.command()
 @click.option('--path', default='', help='Enter path to model file')
-def validate(path):
+def validate_command(path):
     try:
         _, m = load_model(path)
-        # validate(m)
+        validate(m)
     except Exception as e:
-        print(f"An error occured while validating the model {e}")
+        print(f"An error occured while validating the model: \n{e}")
 
 
-cli.add_command(validate)
-cli.add_command(run)
+cli.add_command(validate_command)
+cli.add_command(run_command)
 
 if __name__ == '__main__':
     cli()
