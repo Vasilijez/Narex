@@ -8,7 +8,7 @@ Anchor:
 Clause:
     name=ValidName '{' 
         clauses*=Clause 
-        inlineRules+=InlineRule['\n']
+        inline_rules+=InlineRule['\n']
     '}'
 ;
 
