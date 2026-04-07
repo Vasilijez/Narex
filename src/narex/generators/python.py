@@ -6,6 +6,22 @@
 
 regex = ''
 clauses = {}
+def interpret_rule(r) -> str:
+    global regex
+
+    # if debug == True:
+    #     print(f"r.type.__class__.__name__ {r.type.__class__.__name__}")
+        
+    match r.type.__class__.__name__:
+        case 'OneOf':
+            regex += interpret_one_of(r.type)
+        case 'Domain':
+            regex += intepret_domain(r.type)
+
+    # `Maybe` rule should  be  processed  at the end
+    # as it will encompass whole regular expression.
+    # if r.maybe:
+
 def interpret_clause(c) -> str:
     if c.clauses:
         for clause in c.clauses:
