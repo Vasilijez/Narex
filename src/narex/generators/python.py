@@ -6,8 +6,50 @@
 
 regex = ''
 clauses = {}
+
+class Not:
+    @staticmethod
+    def start():
+        return "[^"
+
+    @staticmethod
+    def end():
+        return "]"
+
+class Digit:
+    @staticmethod
+    def without_between():
+        return "\d"
+
+    @staticmethod
+    def with_between(start, end):
+        return f"[{start}-{end}]"
+
 def interpret_one_of(o) -> str:
     return f"[{o.set}]"
+
+def intepret_domain(d) -> str:
+    global regex
+
+    # if (debug):
+    #     print(f"d.negation {d.negation}")
+
+    if d.negation is not None:
+        regex = Not.start() + regex
+    
+    match d.type:
+        case 'digit':
+            if d.between is None:
+                regex = regex + Digit.without_between()
+            else:               
+                regex = regex + Digit.with_between(
+                        d.between.start, 
+                        d.between.end
+                    )
+    
+    print(f"domain {regex}")
+            
+
 def interpret_rule(r) -> str:
     global regex
 
