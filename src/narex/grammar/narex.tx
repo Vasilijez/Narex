@@ -102,7 +102,7 @@ Negative:
 //////////////////// Domain ////////////////////
 
 Domain:
-    (not=Not)?
+    (negation=Not)?
     type=DomainType
     (between=Between)?
 ;
