@@ -68,7 +68,7 @@ Backreference:
 ;
 
 OneOf:
-    'one' 'of' STRING
+    'one' 'of' set=STRING
 ;
 
 Either:

@@ -6,6 +6,8 @@
 
 regex = ''
 clauses = {}
+def interpret_one_of(o) -> str:
+    return f"[{o.set}]"
 def interpret_rule(r) -> str:
     global regex
 
