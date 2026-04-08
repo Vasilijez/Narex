@@ -1,7 +1,7 @@
 import click
 from click import group
 from narex import get_metamodel, get_path
-from narex.generators.python import generate
+from narex.generators.python import PythonEngine
 from narex.validators.rules import validate_class_reference, validate_domain
 
 @click.group()
@@ -25,7 +25,8 @@ def load_model(path):
 def run_command(path):
     try:
         mm, m = load_model(path)
-        result = generate(m)
+        e = PythonEngine()
+        result = e.generate(m)
         print(f"Result {result}")
     except Exception as e:
         print(f"An error occured while validating the model: \n{e}")
