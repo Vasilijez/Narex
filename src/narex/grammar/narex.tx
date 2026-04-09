@@ -163,19 +163,18 @@ EdgeValue:
     /[a-zA-Z0-9]/
 ;
 
+//////////////////// Repeat /////////////////////
+
 // Repeat rule only checks if it has a subject.
 // Simple rules (e.g. digit) don't need parentheses, complex ones do.
 Repeat:
-    'repeat' times=Times more?=OrMore 'times'
+    'repeat' start=INT (end=End)? 'times'
 ;
 
-Times:
-    '0' | '1' | INT
+End:
+    'or' 'more' | 'to' end=INT
 ;
 
-OrMore:
-    'or' 'more'
-;
 Optional:
     ((tests=Tests)? (flavor=Flavor)? (flags=Flags)?)#
 ;
