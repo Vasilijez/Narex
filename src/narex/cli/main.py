@@ -2,7 +2,7 @@ import click
 from click import group
 from narex import get_metamodel, get_path
 from narex.generators.python import PythonEngine
-from narex.validators.rules import validate_class_reference, validate_domain
+from narex.validators.rules import validate_class_reference, validate_domain, validate_repeat
 
 @click.group()
 def cli():
@@ -13,7 +13,8 @@ def load_model(path):
     mm = get_metamodel()
     mm.register_model_processor(validate_class_reference)
     mm.register_obj_processors({
-        'Domain': validate_domain
+        'Domain': validate_domain,
+        'Repeat': validate_repeat
     })
     p = get_path(path, False)
     m = mm.model_from_file(p)

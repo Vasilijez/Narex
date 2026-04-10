@@ -172,7 +172,7 @@ Repeat:
 ;
 
 End:
-    'or' 'more' | 'to' end=INT
+    'or' 'more' | 'to' value=INT
 ;
 
 Optional:
