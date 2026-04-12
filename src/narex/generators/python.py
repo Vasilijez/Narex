@@ -72,7 +72,7 @@ class PythonEngine:
 
     def intepret_domain(self, d) -> str:
 
-        if d.negation is not None:
+        if d.negation:
             self.regex = self.Not.start() + self.regex
         
         if d.type in bounded_domain:
@@ -104,7 +104,8 @@ class PythonEngine:
                 self.intepret_domain(r.type)
 
         #2 Repeat
-        self.regex = self.intepret_repeat(r)
+        if r.repeat:
+            self.regex += self.interpret_repeat(r.repeat)
 
         #3 `Maybe` rule should  be  processed  at the end
         # as it will encompass whole regular expression.
