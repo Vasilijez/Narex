@@ -80,17 +80,17 @@ class PythonEngine:
         elif d.type in simple_domain:
             self.regex += self.SimpleDomain.intepret(d)
         
-    def intepret_repeat(self, r) -> str:
+    def interpret_repeat(self, r) -> str:
         # The case where  we have only  `n times`  expression.
         if r.end is None:
-            return "{" + r.start + "}"                   
+            return "{" + f"{r.start}" + "}"                   
 
         # The case where we  have `n1 to n2 times` expression.
         if r.end.type.__class__.__name__:
-            return "{" + r.start + "," + r.end.value + "}"
+            return "{" + f"{r.start}" + "," + f"{r.end.value}" + "}"
 
         # The case where we have `n or more times` expression.
-        return "{" + r.start + ",}"
+        return "{" + f"{r.start}" + ",}"
 
     def interpret_rule(self, r) -> str:
 
