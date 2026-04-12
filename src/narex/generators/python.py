@@ -78,7 +78,7 @@ class PythonEngine:
     def interpret_one_of(self, o) -> str:
         return f"[{o.set}]"
 
-    def intepret_domain(self, d) -> str:
+    def interpret_domain(self, d) -> str:
 
         if d.negation:
             self.regex = self.Not.start() + self.regex
@@ -111,7 +111,7 @@ class PythonEngine:
             case 'OneOf':
                 self.regex = self.regex + self.interpret_one_of(r.type)
             case 'Domain':
-                self.intepret_domain(r.type)
+                self.interpret_domain(r.type)
 
         #2 Repeat
         if r.repeat:
