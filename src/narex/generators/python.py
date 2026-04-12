@@ -125,6 +125,9 @@ class PythonEngine:
         
         self.regex += PythonEngine.Either.end()
 
+    def interpret_starts(self, r) -> str:
+        return "^"
+    
     def interpret_rule(self, r) -> str:
 
         # if debug == True:
@@ -139,6 +142,10 @@ class PythonEngine:
                 self.interpret_domain(r.type)
             case 'Either':
                 self.interpret_either(r.type)
+            
+        match r.type:
+            case 'starts':
+                self.regex += self.interpret_starts(r.type)
 
         #2 Repeat
         if r.repeat:
