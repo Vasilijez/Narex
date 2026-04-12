@@ -128,6 +128,9 @@ class PythonEngine:
     def interpret_starts(self, r) -> str:
         return "^"
     
+    def interpret_ends(self, r) -> str:
+        return "$"
+    
     def interpret_rule(self, r) -> str:
 
         # if debug == True:
@@ -146,6 +149,9 @@ class PythonEngine:
         match r.type:
             case 'starts':
                 self.regex += self.interpret_starts(r.type)
+            case 'ends':
+                self.regex += self.interpret_ends(r.type)
+            
 
         #2 Repeat
         if r.repeat:
