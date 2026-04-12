@@ -91,93 +91,99 @@ class PythonEngine:
     def interpret_one_of(self, o) -> str:
         return f"[{o.set}]"
 
-    def interpret_domain(self, d) -> str:
+    def interpret_domain(self, regex, domain) -> str:
+        if domain.negation:
+            regex = self.Not.start() + regex
+        
+        if domain.type in bounded_domain:
+            regex += self.BoundedDomain.intepret(domain)
+        elif domain.type in simple_domain:
+            regex += self.SimpleDomain.intepret(domain)
+        
+        return regex
 
-        if d.negation:
-            self.regex = self.Not.start() + self.regex
-        
-        if d.type in bounded_domain:
-            self.regex += self.BoundedDomain.intepret(d)
-        elif d.type in simple_domain:
-            self.regex += self.SimpleDomain.intepret(d)
-        
-    def interpret_repeat(self, r) -> str:
+    def interpret_repeat(self, repeat) -> str:
         # The case where  we have only  `n times`  expression.
-        if r.end is None:
-            return "{" + f"{r.start}" + "}"                   
+        if repeat.end is None:
+            return "{" + f"{repeat.start}" + "}"                   
 
         # The case where we  have `n1 to n2 times` expression.
-        if r.end.type.__class__.__name__:
-            return "{" + f"{r.start}" + "," + f"{r.end.value}" + "}"
+        if repeat.end.type.__class__.__name__:
+            return "{" + f"{repeat.start}" + "," + f"{repeat.end.value}" + "}"
 
         # The case where we have `n or more times` expression.
-        return "{" + f"{r.start}" + ",}"
+        return "{" + f"{repeat.start}" + ",}"
 
-    def interpret_either(self, r) -> str:
-        self.regex += PythonEngine.Either.start()
+    def interpret_either(self, regex, either) -> str:
+        regex += PythonEngine.Either.start()
 
-        for a in r.alternatives:
-            self.interpret_rule(a)
-            self.regex += PythonEngine.Either.separator()
+        for a in either.alternatives:
+            self.interpret_rule(regex, a)
+            regex += PythonEngine.Either.separator()
 
         # Trim the extra separator (`|`) character.
-        self.regex = self.regex[:-1]
+        regex = regex[:-1]
         
-        self.regex += PythonEngine.Either.end()
+        regex += PythonEngine.Either.end()
 
-    def interpret_starts(self, r) -> str:
+    def interpret_starts(self) -> str:
         return "^"
     
-    def interpret_ends(self, r) -> str:
+    def interpret_ends(self) -> str:
         return "$"
     
-    def interpret_rule(self, r) -> str:
+    def interpret_rule(self, regex, rule) -> str:
 
         # if debug == True:
         #     print(f"r.type.__class__.__name__ {r.type.__class__.__name__}")
-        if r.maybe:
-            self.regex += PythonEngine.Maybe.start()
+        if rule.maybe:
+            regex += PythonEngine.Maybe.start()
 
-        match r.type.__class__.__name__:
+        match rule.type.__class__.__name__:
             case 'OneOf':
-                self.regex = self.regex + self.interpret_one_of(r.type)
+                regex += self.interpret_one_of(rule.type)
             case 'Domain':
-                self.interpret_domain(r.type)
+                regex = self.interpret_domain(regex, rule.type)
             case 'Either':
-                self.interpret_either(r.type)
-            
-        match r.type:
+                regex = self.interpret_either(regex, rule.type)
+
+        match rule.type:
             case 'starts':
-                self.regex += self.interpret_starts(r.type)
+                regex += self.interpret_starts()
             case 'ends':
-                self.regex += self.interpret_ends(r.type)
+                regex += self.interpret_ends()
             
+        if rule.repeat:
+            regex += self.interpret_repeat(rule.repeat)
 
-        #2 Repeat
-        if r.repeat:
-            self.regex += self.interpret_repeat(r.repeat)
-
-        #3 `Maybe` rule should  be  processed  at the end
+        # `Maybe` rule should  be  processed  at the end
         # as it will encompass whole regular expression.
-        if r.maybe:
-            self.regex += PythonEngine.Maybe.end()
+        if rule.maybe:
+            regex += PythonEngine.Maybe.end()
 
-    def interpret_clause(self, c) -> str:
-        if c.clauses:
-            for clause in c.clauses:
-                self.clauses[clause.name] = self.interpret_clause(c)
+        return regex
 
-        for inline_rule in c.inline_rules:
+    def interpret_clause(self, clause) -> str:
+        regex = ""
+
+        if clause.clauses:
+            for clause in clause.clauses:
+                self.clauses[clause.name] = self.interpret_clause(clause)
+
+        for inline_rule in clause.inline_rules:
             # We can have more than one rule in one `InlineRule`.
             for rule in inline_rule.rules:
-                self.interpret_rule(rule)
+                regex = self.interpret_rule(regex, rule)
+
+        return regex
 
     def generate(self, model) -> str:
-
         for clause in model.clauses:
-            self.interpret_clause(clause)
+            regex = self.interpret_clause(clause)
+            if clause.name == model.target.clause.name:
+                break
 
-        return f"Python regex is \n{self.regex}"
+        return f"Python regex is: \n{regex}"
 
 
 if __name__ == '__main__':
