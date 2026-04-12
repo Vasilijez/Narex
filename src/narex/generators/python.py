@@ -65,7 +65,15 @@ class PythonEngine:
             if d.between is None:
                 return PythonEngine.BoundedDomain.without_between(d)
             return PythonEngine.BoundedDomain.with_between(d)
+    
+    class Maybe:
+        @staticmethod
+        def start():
+            return "("
 
+        @staticmethod
+        def end():
+            return ")?"
 
     def interpret_one_of(self, o) -> str:
         return f"[{o.set}]"
@@ -96,7 +104,9 @@ class PythonEngine:
 
         # if debug == True:
         #     print(f"r.type.__class__.__name__ {r.type.__class__.__name__}")
-            
+        if r.maybe:
+            self.regex += PythonEngine.Maybe.start()
+
         match r.type.__class__.__name__:
             case 'OneOf':
                 self.regex = self.regex + self.interpret_one_of(r.type)
@@ -109,8 +119,8 @@ class PythonEngine:
 
         #3 `Maybe` rule should  be  processed  at the end
         # as it will encompass whole regular expression.
-        # if r.maybe:
-        
+        if r.maybe:
+            self.regex += PythonEngine.Maybe.end()
 
     def interpret_clause(self, c) -> str:
         if c.clauses:
