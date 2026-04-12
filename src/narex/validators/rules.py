@@ -42,20 +42,6 @@ def validate_domain(domain):
                 raise TextXSemanticError("You can't use a non-big-letter value for `start` or `end` in `between`, if rule is `big_letter`!")
 
 def validate_repeat(repeat):
-    # TODO: Write tests for validations
-    # 0 times               illegal
-    # 5 to 1 times          illegal
-    # -1 to -1 times        illegal
-    # 0 to 0 times          illegal
-    # -1 to 0 times         illegal
-    # 1 to 2 times          {1,2}
-    # 1 or more times       {1,}
-    # 0 or more times       *
-    # 1 or more times       +
-    # 1 times               {1}
-    # 2 times               {2}
-    # 2 or more times       {2,}
-    
     start = repeat.start
     end = None if repeat.end is None else repeat.end.value
 
@@ -73,6 +59,9 @@ def validate_repeat(repeat):
         if start > end:
             raise TextXSemanticError("You can't use higher start value than end value in `repeat` rule!") 
 
-        if start == 0 and end == 0:
-            raise TextXSemanticError("You can't use both start and end zero values in `repeat` rule!") 
+        if start == end:
+            raise TextXSemanticError("You can't use the same start and end value in `repeat` rule!") 
+
+
+
 
