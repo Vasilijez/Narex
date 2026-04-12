@@ -75,6 +75,19 @@ class PythonEngine:
         def end():
             return ")?"
 
+    class Either:
+        @staticmethod
+        def start():
+            return "("
+        
+        @staticmethod
+        def separator():
+            return "|"
+
+        @staticmethod
+        def end():
+            return ")"
+        
     def interpret_one_of(self, o) -> str:
         return f"[{o.set}]"
 
@@ -100,6 +113,18 @@ class PythonEngine:
         # The case where we have `n or more times` expression.
         return "{" + f"{r.start}" + ",}"
 
+    def interpret_either(self, r) -> str:
+        self.regex += PythonEngine.Either.start()
+
+        for a in r.alternatives:
+            self.interpret_rule(a)
+            self.regex += PythonEngine.Either.separator()
+
+        # Trim the extra separator (`|`) character.
+        self.regex = self.regex[:-1]
+        
+        self.regex += PythonEngine.Either.end()
+
     def interpret_rule(self, r) -> str:
 
         # if debug == True:
@@ -112,6 +137,8 @@ class PythonEngine:
                 self.regex = self.regex + self.interpret_one_of(r.type)
             case 'Domain':
                 self.interpret_domain(r.type)
+            case 'Either':
+                self.interpret_either(r.type)
 
         #2 Repeat
         if r.repeat:
