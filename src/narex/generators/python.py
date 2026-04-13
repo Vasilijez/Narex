@@ -18,7 +18,13 @@ class PythonEngine:
     def __init__(self):
         self.regex = ''
         self.clauses = {}
-        self.groups = {}
+        self.groups = []
+
+    class GroupReference:
+        def __init__(self, name: str, uncaptured: bool, rule_exp: str = ""):
+            self.name = name
+            self.uncaptured = uncaptured
+            self.rule_exp = rule_exp
 
     class Not:
         @staticmethod
@@ -154,14 +160,14 @@ class PythonEngine:
         # 3. group 'x'                   // produced unused ref
         # 4. group g1 of 'y'             // used produced ref
 
-        rule_exp = f"{self.interpret_rule(regex, group.rule)}"
+        rule_exp = f"{self.interpret_rule("", group.rule)}"
 
         if group.uncaptured:
 
             # 1.
             if group.name:
-                self.groups[group.name] = rule_exp
-                return regex + "(?:" + self.groups[group.name] + ")"
+                self.groups.append(self.GroupReference(group.name, True, rule_exp))
+                return regex + "(?:" + rule_exp + ")"
 
             # 2.
             else:
@@ -175,8 +181,16 @@ class PythonEngine:
             
             # 4.
             else:
-                self.groups[group.name] = rule_exp
-                return regex + "(" + self.groups[group.name] + ")"
+                self.groups.append(self.GroupReference(group.name, False))
+                return regex + "(" + rule_exp + ")"
+
+    def interpret_backreference(self, backreference) -> str:
+        for i, g in enumerate(self.groups):
+            if g.name == backreference.group.name:
+                if g.uncaptured:
+                    return f"{g.rule_exp}"
+                else:
+                    return f"\{i+1}"
 
     def interpret_rule(self, regex, rule) -> str:
 
@@ -198,6 +212,8 @@ class PythonEngine:
                 regex = self.interpret_look_behind(regex, rule.type)
             case 'Group':
                 regex = self.interpret_group(regex, rule.type)
+            case 'Backreference':
+                regex += self.interpret_backreference(rule.type)
 
         match rule.type:
             case 'starts':
