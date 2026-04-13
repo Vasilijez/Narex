@@ -132,6 +132,20 @@ class PythonEngine:
     def interpret_ends(self) -> str:
         return "$"
     
+    def interpret_look_ahead(self, regex, lookahead) -> str:
+        sign = "!" if lookahead.negative else "="
+        regex += "(?" + sign
+        regex = self.interpret_rule(regex, lookahead.rule)
+        regex += ")"
+        return regex
+
+    def interpret_look_behind(self, regex, lookbehind) -> str:
+        sign = "!" if lookbehind.negative else "="
+        regex += "(?<" + sign
+        regex = self.interpret_rule(regex, lookbehind.rule)
+        regex += ")"
+        return regex
+    
     def interpret_rule(self, regex, rule) -> str:
 
         # if debug == True:
@@ -146,6 +160,10 @@ class PythonEngine:
                 regex = self.interpret_domain(regex, rule.type)
             case 'Either':
                 regex = self.interpret_either(regex, rule.type)
+            case 'Lookahead':
+                regex = self.interpret_look_ahead(regex, rule.type)
+            case 'Lookbehind':
+                regex = self.interpret_look_behind(regex, rule.type)
 
         match rule.type:
             case 'starts':
