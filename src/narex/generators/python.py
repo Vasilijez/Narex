@@ -18,6 +18,7 @@ class PythonEngine:
     def __init__(self):
         self.regex = ''
         self.clauses = {}
+        self.groups = {}
 
     class Not:
         @staticmethod
@@ -146,6 +147,37 @@ class PythonEngine:
         regex += ")"
         return regex
     
+    def interpret_group(self, regex, group) -> str:
+        # Cases:
+        # 1. uncaptured group g2 of 'y'  // produced regex alias
+        # 2. uncaptured group 'y'        // unproduced ref
+        # 3. group 'x'                   // produced unused ref
+        # 4. group g1 of 'y'             // used produced ref
+
+        rule_exp = f"{self.interpret_rule(regex, group.rule)}"
+
+        if group.uncaptured:
+
+            # 1.
+            if group.name:
+                self.groups[group.name] = rule_exp
+                return regex + "(?:" + self.groups[group.name] + ")"
+
+            # 2.
+            else:
+                return regex + "(?:" + rule_exp + ")"
+            
+        else:
+
+            # 3.
+            if group.name is None:
+                return regex + "(" + rule_exp + ")"
+            
+            # 4.
+            else:
+                self.groups[group.name] = rule_exp
+                return regex + "(" + self.groups[group.name] + ")"
+
     def interpret_rule(self, regex, rule) -> str:
 
         # if debug == True:
@@ -164,6 +196,8 @@ class PythonEngine:
                 regex = self.interpret_look_ahead(regex, rule.type)
             case 'Lookbehind':
                 regex = self.interpret_look_behind(regex, rule.type)
+            case 'Group':
+                regex = self.interpret_group(regex, rule.type)
 
         match rule.type:
             case 'starts':

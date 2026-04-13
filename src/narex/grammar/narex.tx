@@ -55,6 +55,7 @@ ClauseReference:
     value=[Clause:ValidReference]
 ;
 
+// `uncaptured group of some_rule` is effectively alias.
 Group:
     uncaptured?=Uncaptured 'group' (name=ID 'of')? rule=Rule
 ;
