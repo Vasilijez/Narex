@@ -159,6 +159,7 @@ class PythonEngine:
         # 2. uncaptured group 'y'        // unproduced ref
         # 3. group 'x'                   // produced unused ref
         # 4. group g1 of 'y'             // used produced ref
+        # TODO: Regex validations.
 
         rule_exp = f"{self.interpret_rule("", group.rule)}"
 

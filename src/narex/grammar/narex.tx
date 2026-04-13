@@ -23,7 +23,7 @@ Rule:
 ;
 
 RuleType:
-    OneOf           | 
+    OneOf           |
     Domain          |
     Either          |
     Starts          |
@@ -31,7 +31,7 @@ RuleType:
     Lookaround      |
     Group           |
     Backreference   |
-    STRING          |       
+    Literal         |
     ClauseReference
 ;
 
@@ -53,6 +53,10 @@ ValidReference:
 
 ClauseReference:
     value=[Clause:ValidReference]
+;
+
+Literal:
+    value=STRING
 ;
 
 // `uncaptured group of some_rule` is effectively alias.
