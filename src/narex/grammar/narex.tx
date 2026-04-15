@@ -55,10 +55,6 @@ ClauseReference:
     value=[Clause:ValidReference]
 ;
 
-Literal:
-    value=STRING
-;
-
 // `uncaptured group of some_rule` is effectively alias.
 Group:
     uncaptured?=Uncaptured 'group' (name=ID 'of')? rule=Rule
@@ -221,4 +217,14 @@ SingleLine:
 Target:
     'target:' 
         clause=[Clause]
+;
+
+//////////////////// Literal /////////////////////
+
+Literal:
+    value=UnescapedString
+;
+
+UnescapedString:
+    /("(?:[^"])*"|'(?:[^'])*')/
 ;

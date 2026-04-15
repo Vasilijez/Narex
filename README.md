@@ -27,6 +27,12 @@ Some of the advanced supported concepts include:
 
 A user can also test regular expression by using `tests:`, define desired flags with `flags:`, and specify the desired flavor using `flavor:`.
 
+### Note
+#### Literal escaping
+The user shouldn't perform any escaping of literals, as this could produce an inaccurate regex. Each literal enclosed in `''` will be escaped individually (e.g. `'!@'`). If the user provides two consecutive literal rules (e.g. `'@'` and `'.com'`), they will not be merged and escaped together.
+#### Literal quotes
+The user shouldn't use double quotes `"` more than twice when defining a literal value (e.g. wrong `""@"`, correct `"@"`). Similarly, the user shouldn't use single quotes `'` more than twice when defining a literal value (e.g. wrong `''@'`, correct `'@'`).
+
 ## Examples
 #### Task 1: Match phone number 
 ``` py

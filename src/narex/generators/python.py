@@ -13,6 +13,10 @@ bounded_domain = {
     'digit', 'small_letter', 'big_letter'
 }
 
+special_chars = {
+    '\\', '.', ',', '#', '^', '$', '*', '+', '?', '(', ')', '[', ']', '{', '}', '|'
+}
+
 class PythonEngine:
     
     def __init__(self):
@@ -194,9 +198,16 @@ class PythonEngine:
                     return f"\{i+1}"
                 
     def interpret_literal(self, literal) -> str:
-        # TODO: Plenty validations for special chars.
+        # The user is expected not to escape non-literal values.
         
-        return literal
+        escaped_regex = literal.value
+
+        for i, char in enumerate(literal.value):
+            if char in special_chars:
+                # Insert backslash before a special char.
+                escaped_regex = literal.value[:i] + f"\{char}" + literal.value[i:]
+
+        return escaped_regex
 
     def interpret_rule(self, regex, rule) -> str:
 
