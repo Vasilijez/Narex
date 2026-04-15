@@ -192,6 +192,11 @@ class PythonEngine:
                     return f"{g.rule_exp}"
                 else:
                     return f"\{i+1}"
+                
+    def interpret_literal(self, literal) -> str:
+        # TODO: Plenty validations for special chars.
+        
+        return literal
 
     def interpret_rule(self, regex, rule) -> str:
 
@@ -215,6 +220,8 @@ class PythonEngine:
                 regex = self.interpret_group(regex, rule.type)
             case 'Backreference':
                 regex += self.interpret_backreference(rule.type)
+            case 'Literal':
+                regex += self.interpret_literal(rule.type)
 
         match rule.type:
             case 'starts':
