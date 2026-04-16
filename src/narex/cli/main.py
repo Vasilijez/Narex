@@ -31,7 +31,7 @@ def run_command(path):
         result = e.generate(m)
         print(f"Result {result}")
     except Exception as e:
-        print(f"An error occured while validating the model: \n{e}")
+        print(f"An error occured while running the model: \n{e}")
 
 
 @click.command()
