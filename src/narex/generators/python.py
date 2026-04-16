@@ -199,7 +199,6 @@ class PythonEngine:
                 
     def interpret_literal(self, literal) -> str:
         # The user is expected not to escape non-literal values.
-        
         escaped_regex = literal.value
 
         for i, char in enumerate(literal.value):
@@ -208,6 +207,9 @@ class PythonEngine:
                 escaped_regex = literal.value[:i] + rf"\{char}" + literal.value[i:]
 
         return escaped_regex
+
+    def interpret_clause_reference(self, reference) -> str:
+        return self.clauses[reference.value.name]
 
     def interpret_rule(self, regex, rule) -> str:
 
@@ -233,6 +235,8 @@ class PythonEngine:
                 regex += self.interpret_backreference(rule.type)
             case 'Literal':
                 regex += self.interpret_literal(rule.type)
+            case 'ClauseReference':
+                regex += self.interpret_clause_reference(rule.type)
 
         match rule.type:
             case 'starts':
