@@ -46,9 +46,9 @@ class PythonEngine:
                 case 'space':
                     return " "
                 case 'whitespace':
-                    return "\s"
+                    return r"\s"
                 case 'alphanumeric':
-                    return "\w"
+                    return r"\w"
                 case 'anything':
                     return "."
                 case 'letter':
@@ -59,7 +59,7 @@ class PythonEngine:
         def without_between(d):
             match d.type:
                 case 'digit':
-                    return "\d"
+                    return r"\d"
                 
                 case 'small_letter':
                     return "[a-z]"
@@ -193,9 +193,9 @@ class PythonEngine:
         for i, g in enumerate(self.groups):
             if g.name == backreference.group.name:
                 if g.uncaptured:
-                    return f"{g.rule_exp}"
+                    return rf"{g.rule_exp}"
                 else:
-                    return f"\{i+1}"
+                    return rf"\{i+1}"
                 
     def interpret_literal(self, literal) -> str:
         # The user is expected not to escape non-literal values.
@@ -205,7 +205,7 @@ class PythonEngine:
         for i, char in enumerate(literal.value):
             if char in special_chars:
                 # Insert backslash before a special char.
-                escaped_regex = literal.value[:i] + f"\{char}" + literal.value[i:]
+                escaped_regex = literal.value[:i] + rf"\{char}" + literal.value[i:]
 
         return escaped_regex
 
