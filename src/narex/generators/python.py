@@ -199,14 +199,17 @@ class PythonEngine:
                 
     def interpret_literal(self, literal) -> str:
         # The user is expected not to escape non-literal values.
-        escaped_regex = literal.value
+        escaped_regex = []
 
         for i, char in enumerate(literal.value):
             if char in special_chars:
                 # Insert backslash before a special char.
-                escaped_regex = literal.value[:i] + rf"\{char}" + literal.value[i:]
+                char = rf"\{char}"
+            escaped_regex.append(char)
 
-        return escaped_regex
+        merge = ''.join(escaped_regex)
+
+        return merge
 
     def interpret_clause_reference(self, reference) -> str:
         return self.clauses[reference.value.name]
