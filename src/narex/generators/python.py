@@ -267,10 +267,11 @@ class PythonEngine:
     def generate(self, model) -> str:
         for clause in model.clauses:
             regex = self.interpret_clause(clause)
-            if clause.name == model.target.clause.name:
-                break
+            self.clauses[clause.name] = regex
 
-        return f"Python regex is: \n{regex}"
+        result = self.clauses[model.target.clause.name]
+        print(f"self.clauses at the end {self.clauses}")
+        return f"Python regex is: \n{result}"
 
 
 if __name__ == '__main__':
