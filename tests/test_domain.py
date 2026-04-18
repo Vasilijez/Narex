@@ -1,5 +1,5 @@
 from narex import get_metamodel
-from narex.generators.python import generate
+from narex.generators.python import PythonEngine
 from textx import TextXSyntaxError, TextXSemanticError
 
 def test_domain_domain_types():
@@ -21,7 +21,8 @@ def test_domain_domain_types():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 
 def test_domain_with_not():
     m = """
@@ -39,7 +40,8 @@ def test_domain_with_not():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 
 def test_domain_with_between():
     m = """
@@ -61,7 +63,8 @@ def test_domain_with_between():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 
 def test_domain_forbidden_rules_before_between():
     mm = get_metamodel()
@@ -140,7 +143,8 @@ def test_domain_complex():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 
 
 def test_domain_letter_doesnt_have_between():
@@ -159,6 +163,5 @@ def test_domain_letter_doesnt_have_between():
     except Exception as e:
         assert isinstance(e, TextXSemanticError)
 
-    r = generate(m)
 
         

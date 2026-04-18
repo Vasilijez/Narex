@@ -1,5 +1,5 @@
 from narex import get_metamodel
-from narex.generators.python import generate
+from narex.generators.python import PythonEngine
 from textx import TextXSemanticError
 
 def test_clause_references_simple():
@@ -21,7 +21,8 @@ def test_clause_references_simple():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 
 def test_clause_references_nested():
     m = """
@@ -54,7 +55,8 @@ def test_clause_references_nested():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 
 
 def test_clause_references_illegal_keywords():

@@ -1,5 +1,5 @@
 from narex import get_metamodel
-from narex.generators.python import generate
+from narex.generators.python import PythonEngine
 from textx import TextXSemanticError
 
 def test_backreference_correct_group_name():
@@ -24,7 +24,8 @@ def test_backreference_correct_group_name():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 
 
 # test_backreference(): bad case when the group doesn't exist

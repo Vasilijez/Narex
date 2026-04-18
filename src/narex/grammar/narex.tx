@@ -8,7 +8,7 @@ Anchor:
 Clause:
     name=ValidName '{' 
         clauses*=Clause 
-        inlineRules+=InlineRule['\n']
+        inline_rules+=InlineRule['\n']
     '}'
 ;
 
@@ -23,7 +23,7 @@ Rule:
 ;
 
 RuleType:
-    OneOf           | 
+    OneOf           |
     Domain          |
     Either          |
     Starts          |
@@ -31,7 +31,7 @@ RuleType:
     Lookaround      |
     Group           |
     Backreference   |
-    STRING          |       
+    Literal         |
     ClauseReference
 ;
 
@@ -55,6 +55,7 @@ ClauseReference:
     value=[Clause:ValidReference]
 ;
 
+// `uncaptured group of some_rule` is effectively alias.
 Group:
     uncaptured?=Uncaptured 'group' (name=ID 'of')? rule=Rule
 ;
@@ -68,7 +69,7 @@ Backreference:
 ;
 
 OneOf:
-    'one' 'of' STRING
+    'one' 'of' set=STRING
 ;
 
 Either:
@@ -102,7 +103,7 @@ Negative:
 //////////////////// Domain ////////////////////
 
 Domain:
-    (not=Not)?
+    (negation=Not)?
     type=DomainType
     (between=Between)?
 ;
@@ -163,19 +164,18 @@ EdgeValue:
     /[a-zA-Z0-9]/
 ;
 
+//////////////////// Repeat /////////////////////
+
 // Repeat rule only checks if it has a subject.
 // Simple rules (e.g. digit) don't need parentheses, complex ones do.
 Repeat:
-    'repeat' times=Times more?=OrMore 'times'
+    'repeat' start=INT (end=End)? 'times'
 ;
 
-Times:
-    '0' | '1' | INT
+End:
+    'or' 'more' | 'to' value=INT
 ;
 
-OrMore:
-    'or' 'more'
-;
 Optional:
     ((tests=Tests)? (flavor=Flavor)? (flags=Flags)?)#
 ;
@@ -217,4 +217,14 @@ SingleLine:
 Target:
     'target:' 
         clause=[Clause]
+;
+
+//////////////////// Literal /////////////////////
+
+Literal:
+    value=UnescapedString
+;
+
+UnescapedString:
+    /("(?:[^"])*"|'(?:[^'])*')/
 ;

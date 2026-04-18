@@ -1,5 +1,5 @@
 from narex import get_metamodel
-from narex.generators.python import generate
+from narex.generators.python import PythonEngine
 
 
 def test_optional_flavor_first():
@@ -20,7 +20,8 @@ def test_optional_flavor_first():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 
 
 def test_optional_tests_first():
@@ -41,7 +42,8 @@ def test_optional_tests_first():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 
 
 def test_optional_flags():
@@ -62,4 +64,5 @@ def test_optional_flags():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
