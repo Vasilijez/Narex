@@ -1,5 +1,5 @@
 from narex import get_metamodel
-from narex.generators.python import generate
+from narex.generators.python import PythonEngine
 
 def test_lookaround_rules_recognition():
     m = """
@@ -26,7 +26,9 @@ def test_lookaround_rules_recognition():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
+
 
 def test_lookaround_nested_form():
     m = """
@@ -43,5 +45,6 @@ def test_lookaround_nested_form():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 

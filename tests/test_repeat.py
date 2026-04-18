@@ -1,5 +1,5 @@
 from narex import get_metamodel
-from narex.generators.python import generate
+from narex.generators.python import PythonEngine
 from textx import TextXSyntaxError    
 
 def test_repeat_something_or_more():
@@ -14,7 +14,8 @@ def test_repeat_something_or_more():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 
 # error
 # maybe...one of and then repeat?!
@@ -34,7 +35,8 @@ def test_repeat_something_times():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)
 
 def test_repeat_invalid_missing_subject_rule():
     m = """

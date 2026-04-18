@@ -1,5 +1,5 @@
 from narex import get_metamodel
-from narex.generators.python import generate
+from narex.generators.python import PythonEngine
 
 def test_literal_many_values_combined():
     m = """
@@ -16,4 +16,5 @@ def test_literal_many_values_combined():
 
     mm = get_metamodel()
     m = mm.model_from_str(m)
-    r = generate(m)
+    e = PythonEngine()
+    r = e.generate(m)

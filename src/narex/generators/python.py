@@ -119,7 +119,7 @@ class PythonEngine:
             return "{" + f"{repeat.start}" + "}"                   
 
         # The case where we  have `n1 to n2 times` expression.
-        if repeat.end.type.__class__.__name__:
+        if repeat.end.value:
             return "{" + f"{repeat.start}" + "," + f"{repeat.end.value}" + "}"
 
         # The case where we have `n or more times` expression.
@@ -129,13 +129,15 @@ class PythonEngine:
         regex += PythonEngine.Either.start()
 
         for a in either.alternatives:
-            self.interpret_rule(regex, a)
+            regex = self.interpret_rule(regex, a)
             regex += PythonEngine.Either.separator()
 
         # Trim the extra separator (`|`) character.
         regex = regex[:-1]
         
         regex += PythonEngine.Either.end()
+
+        return regex
 
     def interpret_starts(self) -> str:
         return "^"
@@ -277,7 +279,6 @@ class PythonEngine:
             self.clauses[clause.name] = regex
 
         result = self.clauses[model.target.clause.name]
-        print(f"self.clauses at the end {self.clauses}")
         return f"Python regex is: \n{result}"
 
 
