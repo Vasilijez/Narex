@@ -41,7 +41,7 @@ class PythonEngine:
 
     class SimpleDomain:
         @staticmethod
-        def intepret(d):
+        def interpret(d):
             match d.type:
                 case 'space':
                     return " "
@@ -72,7 +72,7 @@ class PythonEngine:
             return f"[{d.between.start}-{d.between.end}]"
         
         @staticmethod
-        def intepret(d):
+        def interpret(d):
             if d.between is None:
                 return PythonEngine.BoundedDomain.without_between(d)
             return PythonEngine.BoundedDomain.with_between(d)
@@ -107,9 +107,9 @@ class PythonEngine:
             regex = self.Not.start() + regex
         
         if domain.type in bounded_domain:
-            regex += self.BoundedDomain.intepret(domain)
+            regex += self.BoundedDomain.interpret(domain)
         elif domain.type in simple_domain:
-            regex += self.SimpleDomain.intepret(domain)
+            regex += self.SimpleDomain.interpret(domain)
         
         return regex
 
