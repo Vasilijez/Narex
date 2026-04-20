@@ -1,2 +1,18 @@
-- My username is {{username}}
-- I am male? {{is_male}}
+// Raw regex is:
+//  {{regex}}
+
+// Selected engine is:
+//  Python
+
+// Code generation proposal:
+import re
+
+text = ""   # empty
+regex = r'{{regex}}'
+
+{% if "globalmatch" in model.optional.flags %}
+matches = re.findall(regex, text)
+match_objects = re.finditer(regex, text)
+{% else %}
+matches = re.search(regex, text)
+{% endif %}

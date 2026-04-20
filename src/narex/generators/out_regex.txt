@@ -1,2 +1,14 @@
-- My username is Vasilijez
-- I am male? True
+// Raw regex is:
+//  [a-z]
+
+// Selected engine is:
+//  Python
+
+// Code generation proposal:
+import re
+
+text = ""   # empty
+regex = r'[a-z]'
+
+
+matches = re.search(regex, text)

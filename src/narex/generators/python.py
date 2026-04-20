@@ -1,5 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 from narex import get_path
+import re
 
 #######################
 #### Python flavor ####
@@ -274,12 +275,28 @@ class PythonEngine:
 
         return regex
 
-    def create_file(self):
+    def interpret_flags(self, model):
+        # input = ['multiline', 'ignorecase']
+        flags = set()
+        for flag in model.optional.flags:
+            match flag:
+                case 'multiline':
+                    flags.add(re.MULTILINE)
+                case 'ignorecase':
+                    flags.add(re.IGNORECASE)
+
+        combined_flags = 0
+        for f in flags:
+            combined_flags |= f
+
+        model.optional.flags = combined_flags
+
+    def create_file(self, regex = "", model=None):
         environment = Environment(loader=FileSystemLoader(get_path("./")))
         template = environment.get_template("python_template.txt")
         template.stream({
-            "username": "Vasilijez",
-            "is_male": "True"
+            "regex": regex,
+            "model": model
         }).dump("out_regex.txt")
 
     def generate(self, model) -> str:
@@ -288,7 +305,10 @@ class PythonEngine:
             self.clauses[clause.name] = regex
 
         result = self.clauses[model.target.clause.name]
-        self.create_file()
+        self.create_file(
+            regex=regex,
+            model=model
+        )
 
         return f"Python regex is: \n{result}"
 
