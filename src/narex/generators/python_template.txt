@@ -1,0 +1,2 @@
+- My username is {{username}}
+- I am male? {{is_male}}

@@ -1,4 +1,5 @@
-import string
+from jinja2 import Environment, FileSystemLoader
+from narex import get_path
 
 #######################
 #### Python flavor ####
@@ -273,12 +274,22 @@ class PythonEngine:
 
         return regex
 
+    def create_file(self):
+        environment = Environment(loader=FileSystemLoader(get_path("./")))
+        template = environment.get_template("python_template.txt")
+        template.stream({
+            "username": "Vasilijez",
+            "is_male": "True"
+        }).dump("out_regex.txt")
+
     def generate(self, model) -> str:
         for clause in model.clauses:
             regex = self.interpret_clause(clause)
             self.clauses[clause.name] = regex
 
         result = self.clauses[model.target.clause.name]
+        self.create_file()
+
         return f"Python regex is: \n{result}"
 
 

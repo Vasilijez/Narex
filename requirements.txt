@@ -5,4 +5,4 @@ mypy
 pygls
 textmate-grammar-python
 -e .
-pytest
+jinja2
