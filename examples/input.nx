@@ -2,5 +2,11 @@ c {
     small_letter between a and z
 }
 
+flags:
+    global match,
+    multiline,
+    case insensitive,
+    single line
+
 target:
     c

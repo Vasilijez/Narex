@@ -275,28 +275,27 @@ class PythonEngine:
 
         return regex
 
-    def interpret_flags(self, model):
-        # input = ['multiline', 'ignorecase']
-        flags = set()
-        for flag in model.optional.flags:
+    def interpret_flags(self, model) -> str:
+        flags = []
+
+        for flag in model.optional.flags.values:
             match flag:
                 case 'multiline':
-                    flags.add(re.MULTILINE)
-                case 'ignorecase':
-                    flags.add(re.IGNORECASE)
+                    flags.append("re.MULTILINE")
+                case 'caseinsensitive':
+                    flags.append("re.IGNORECASE")
+                case 'singleline':
+                    flags.append("re.DOTALL")
 
-        combined_flags = 0
-        for f in flags:
-            combined_flags |= f
-
-        model.optional.flags = combined_flags
+        return " | ".join(flags)
 
     def create_file(self, regex = "", model=None):
         environment = Environment(loader=FileSystemLoader(get_path("./src/narex/generators")))
         template = environment.get_template("python_template.jinja")
         template.stream({
             "regex": regex,
-            "model": model
+            "model": model,
+            "flags": self.interpret_flags(model)
         }).dump("./src/narex/generators/out_regex.py")
 
     def generate(self, model) -> str:

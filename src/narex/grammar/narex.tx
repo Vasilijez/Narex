@@ -198,10 +198,12 @@ FlagValue:
     GlobalMatch | Multiline | CaseInsensitive | SingleLine  
 ;
 
+// Don't return after first match.
 GlobalMatch:
     'global' 'match'
 ;
 
+// Don't focus on only one line (even after `\n`).
 Multiline:
     'multiline'
 ;
@@ -210,6 +212,7 @@ CaseInsensitive:
     'case' 'insensitive'
 ;
 
+// Dot all.
 SingleLine:
     'single' 'line'
 ;

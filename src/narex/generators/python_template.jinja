@@ -10,17 +10,11 @@ import re
 text = ""   # empty
 regex = r'{{regex}}'
 
-
-# prepare flags
-#if re.multiline:
-#    flags.append
-
-
-{% if "globalmatch" in model.optional.flags %}
-match_strings = re.findall(regex, text)
-match_objects = re.finditer(regex, text)
+{% if "globalmatch" in model.optional.flags.values %}
+match_strings = re.findall(regex, text, flags={{flags}})
+match_objects = re.finditer(regex, text, flags={{flags}})
 {% else %}
-match_object = re.search(regex, text)
+match_object = re.search(regex, text, flags={{flags}})
 {% endif %}
 
 

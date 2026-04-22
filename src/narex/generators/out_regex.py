@@ -11,12 +11,7 @@ text = ""   # empty
 regex = r'[a-z]'
 
 
-# prepare flags
-#if re.multiline:
-#    flags.append
-
-
-
-match_object = re.search(regex, text)
+match_strings = re.findall(regex, text, flags=re.MULTILINE | re.IGNORECASE | re.DOTALL)
+match_objects = re.finditer(regex, text, flags=re.MULTILINE | re.IGNORECASE | re.DOTALL)
 
 
