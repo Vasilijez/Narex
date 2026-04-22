@@ -1,0 +1,26 @@
+# Raw regex is:
+#  {{regex}}
+
+# Selected engine is:
+#  Python
+
+# Code generation proposal:
+import re
+
+text = ""   # empty
+regex = r'{{regex}}'
+
+
+# prepare flags
+#if re.multiline:
+#    flags.append
+
+
+{% if "globalmatch" in model.optional.flags %}
+match_strings = re.findall(regex, text)
+match_objects = re.finditer(regex, text)
+{% else %}
+match_object = re.search(regex, text)
+{% endif %}
+
+

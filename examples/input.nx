@@ -1,13 +1,6 @@
-c1 {
-    digit
-    space
-    whitespace
-    alphanumeric
-    anything
-    letter
-    small_letter
-    big_letter
+c {
+    small_letter between a and z
 }
 
 target:
-    c1
+    c

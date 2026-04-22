@@ -292,12 +292,12 @@ class PythonEngine:
         model.optional.flags = combined_flags
 
     def create_file(self, regex = "", model=None):
-        environment = Environment(loader=FileSystemLoader(get_path("./")))
-        template = environment.get_template("python_template.txt")
+        environment = Environment(loader=FileSystemLoader(get_path("./src/narex/generators")))
+        template = environment.get_template("python_template.jinja")
         template.stream({
             "regex": regex,
             "model": model
-        }).dump("out_regex.txt")
+        }).dump("./src/narex/generators/out_regex.py")
 
     def generate(self, model) -> str:
         for clause in model.clauses:
