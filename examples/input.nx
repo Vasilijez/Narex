@@ -8,5 +8,10 @@ flags:
     case insensitive,
     single line
 
+tests:
+    'a',
+    'b',
+    '1'
+
 target:
     c
