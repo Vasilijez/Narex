@@ -1,17 +1,47 @@
-# Raw regex is:
+##############################################################
+######################### Raw regex ########################## 
+##############################################################
+#
 #  [a-z]
-
-# Selected engine is:
+#
+##############################################################
+########################### Engine ########################### 
+##############################################################
+#
 #  Python
-
-# Code generation proposal:
+#
+##############################################################
+########################### Tests ############################ 
+##############################################################
+#
+#    test 1:
+#      pattern: a
+#      match 1: a
+#
+#    test 2:
+#      pattern: b
+#      match 1: b
+#
+#    test 3:
+#      pattern: 1
+#        No matches.
+#
+##############################################################
+####################### Generated code ####################### 
+##############################################################
 import re
 
 text = ""   # empty
 regex = r'[a-z]'
 
 
-match_strings = re.findall(regex, text, flags=re.MULTILINE | re.IGNORECASE | re.DOTALL)
-match_objects = re.finditer(regex, text, flags=re.MULTILINE | re.IGNORECASE | re.DOTALL)
-
-
+match_strings = re.findall(
+    regex, 
+    text, 
+    flags=re.MULTILINE | re.IGNORECASE | re.DOTALL
+)
+match_objects = re.finditer(
+    regex, 
+    text, 
+    flags=re.MULTILINE | re.IGNORECASE | re.DOTALL
+)

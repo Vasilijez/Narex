@@ -13,21 +13,21 @@
 ##############################################################
 ########################### Tests ############################ 
 ##############################################################
-{% for test in tests %}
+{%- for test in tests %}
 #
 #    test {{ loop.index0+1 }}:
 #      pattern: {{test.pattern}}
-{% if test.matches %}
-{% for match in test.matches %}
+{% if test.matches -%}
+{%- for match in test.matches -%}
 #      match {{ loop.index0+1 }}: {{match.group()}}
-{% for group in match.groups() %}
+{%- for group in match.groups() -%}
 #       group {{loop.index0}}: {{group}}
-{% endfor %}
-{% endfor %}
-{% else %}
+{%- endfor %}
+{%- endfor %}
+{%- else -%}
 #        No matches.
-{% endif %}
-{% endfor %}
+{%- endif %}
+{%- endfor %}
 #
 ##############################################################
 ####################### Generated code ####################### 
