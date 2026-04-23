@@ -289,14 +289,42 @@ class PythonEngine:
 
         return " | ".join(flags)
 
-    def create_file(self, regex = "", model=None):
+    def create_file(self, regex = "", model=None, flags=None, tests=None):
         environment = Environment(loader=FileSystemLoader(get_path("./src/narex/generators")))
         template = environment.get_template("python_template.jinja")
         template.stream({
             "regex": regex,
             "model": model,
-            "flags": self.interpret_flags(model)
+            "flags": flags,
+            "tests": tests
         }).dump("./src/narex/generators/out_regex.py")
+
+    class TestMatches:
+        def __init__(self, pattern, matches):
+            self.pattern = pattern 
+            self.matches = matches
+
+    def interpret_test(self, test, regex, flags, is_global) -> list:
+        if is_global:
+            # Already iterable.
+            result = re.finditer(regex, test, flags=flags)
+            size = len(result)
+            if size == 0:
+                return None
+            return result
+        else:
+            # Make iterable.
+            result = re.search(regex, test, flags) 
+            if result is None:
+                return None
+            return [result]
+
+    def interpret_tests(self, tests, regex, flags, is_global) -> list:
+        test_matches = []
+        for pattern in tests:
+            matches = self.interpret_test(pattern, regex, flags, is_global)
+            test_matches.append(self.TestMatches(pattern, matches))
+        return test_matches
 
     def generate(self, model) -> str:
         for clause in model.clauses:
@@ -304,9 +332,19 @@ class PythonEngine:
             self.clauses[clause.name] = regex
 
         result = self.clauses[model.target.clause.name]
+
+        tests = self.interpret_tests(
+            model.optional.tests.values,
+            regex,
+            self.interpret_flags(model),
+            "globalmatch" in model.optional.flags.values
+        )
+
         self.create_file(
             regex=regex,
-            model=model
+            model=model,
+            flags=self.interpret_flags(model),
+            tests=tests
         )
 
         return f"Python regex is: \n{result}"
