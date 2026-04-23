@@ -319,7 +319,7 @@ class PythonEngine:
     def interpret_test(self, test, regex, flags, is_global) -> list:
         if is_global:
             # Already iterable.
-            result = re.finditer(regex, test, flags=flags)
+            result = list(re.finditer(regex, test, flags=flags))
             size = len(result)
             if size == 0:
                 return None
