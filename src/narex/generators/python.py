@@ -275,19 +275,31 @@ class PythonEngine:
 
         return regex
 
-    def interpret_flags(self, model) -> str:
+    def interpret_flags(self, generate_str=True, model=None) -> int | str:
         flags = []
+        flags_int = set()
 
         for flag in model.optional.flags.values:
             match flag:
                 case 'multiline':
                     flags.append("re.MULTILINE")
+                    flags_int.add(re.MULTILINE)
                 case 'caseinsensitive':
                     flags.append("re.IGNORECASE")
+                    flags_int.add(re.IGNORECASE)
                 case 'singleline':
                     flags.append("re.DOTALL")
+                    flags_int.add(re.DOTALL)
 
-        return " | ".join(flags)
+        flags = " | ".join(flags) 
+        combined_flags = 0
+        for f in flags_int:
+            combined_flags |= f
+
+        if generate_str:
+            return flags
+        else:
+            return combined_flags
 
     def create_file(self, regex = "", model=None, flags=None, tests=None):
         environment = Environment(loader=FileSystemLoader(get_path("./src/narex/generators")))
@@ -336,14 +348,14 @@ class PythonEngine:
         tests = self.interpret_tests(
             model.optional.tests.values,
             regex,
-            self.interpret_flags(model),
+            self.interpret_flags(False, model),
             "globalmatch" in model.optional.flags.values
         )
 
         self.create_file(
             regex=regex,
             model=model,
-            flags=self.interpret_flags(model),
+            flags=self.interpret_flags(True, model),
             tests=tests
         )
 
@@ -352,3 +364,4 @@ class PythonEngine:
 
 if __name__ == '__main__':
     ...
+		
