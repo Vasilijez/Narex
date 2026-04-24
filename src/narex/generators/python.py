@@ -269,8 +269,8 @@ class PythonEngine:
         regex = ""
 
         if clause.clauses:
-            for clause in clause.clauses:
-                self.clauses[clause.name] = self.interpret_clause(clause)
+            for c in clause.clauses:
+                self.clauses[c.name] = self.interpret_clause(c)
 
         for inline_rule in clause.inline_rules:
             # We can have more than one rule in one `InlineRule`.

@@ -1,12 +1,10 @@
-c {
-    small_letter between a and z
+c1 {
+    c2 {
+        '!'
+    } 
+
+    'vasa'
 }
 
-flags:
-    global match,
-    multiline,
-    case insensitive,
-    single line
-
 target:
-    c
+    c1
