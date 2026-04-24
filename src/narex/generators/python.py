@@ -114,6 +114,9 @@ class PythonEngine:
         elif domain.type in simple_domain:
             regex += self.SimpleDomain.interpret(domain)
         
+        if domain.negation:
+            regex = regex + self.Not.end()
+
         return regex
 
     def interpret_repeat(self, repeat) -> str:
