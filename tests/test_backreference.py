@@ -25,8 +25,8 @@ def test_backreference_correct_group_name():
     mm = get_metamodel()
     m = mm.model_from_str(m)
     e = PythonEngine()
-    r = e.generate(m)
-
+    regex = e.generate(m, only_regex=True)
+    assert regex == "(\\d{1,})test\\1"
 
 # test_backreference(): bad case when the group doesn't exist
 

@@ -344,33 +344,34 @@ class PythonEngine:
 
         return test_matches
 
-    def generate(self, model) -> str:
+    def generate(self, model, only_regex=True) -> str:
         for clause in model.clauses:
             regex = self.interpret_clause(clause)
             self.clauses[clause.name] = regex
 
         result = self.clauses[model.target.clause.name]
 
-        flags = tests = []
-        if model.optional:
-            flags = model.optional.flags
-            tests = model.optional.tests
+        if only_regex is False:
+            flags = tests = []
+            if model.optional:
+                flags = model.optional.flags
+                tests = model.optional.tests
 
-        tests = self.interpret_tests(
-            tests,
-            regex,
-            self.interpret_flags(False, flags),
-            "globalmatch" in flags
-        )
+            tests = self.interpret_tests(
+                tests,
+                regex,
+                self.interpret_flags(False, flags),
+                "globalmatch" in flags
+            )
 
-        self.create_file(
-            regex=regex,
-            model=model,
-            flags=self.interpret_flags(True, flags),
-            tests=tests
-        )
+            self.create_file(
+                regex=regex,
+                model=model,
+                flags=self.interpret_flags(True, flags),
+                tests=tests
+            )
 
-        return f"Python regex is: \n{result}"
+        return result
 
 
 if __name__ == '__main__':
