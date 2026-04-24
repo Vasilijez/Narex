@@ -1,4 +1,5 @@
 from narex import get_metamodel
+from narex.cli.main import load_metamodel_and_model_str
 from narex.generators.python import PythonEngine
 from textx import TextXSemanticError
 
@@ -22,11 +23,10 @@ def test_backreference_correct_group_name():
             c
     """
 
-    mm = get_metamodel()
-    m = mm.model_from_str(m)
+    mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     regex = e.generate(m, only_regex=True)
-    assert regex == "(\\d{1,})test\\1"
+    assert regex == r"(\d{1,})test\1"
 
 # test_backreference(): bad case when the group doesn't exist
 
