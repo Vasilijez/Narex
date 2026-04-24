@@ -14,17 +14,7 @@
 ########################### Tests ############################ 
 ##############################################################
 #
-#    test 1:
-#      pattern: a
-#      match 1: a
-#
-#    test 2:
-#      pattern: b
-#      match 1: b
-#
-#    test 3:
-#      pattern: 1
-#        No matches.
+# None test has been defined.
 #
 ##############################################################
 ####################### Generated code ####################### 
@@ -33,7 +23,6 @@ import re
 
 text = ""   # empty
 regex = r'[a-z]'
-
 
 match_strings = re.findall(
     regex, 

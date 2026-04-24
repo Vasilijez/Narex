@@ -13,6 +13,7 @@
 ##############################################################
 ########################### Tests ############################ 
 ##############################################################
+{%- if tests %}
 {%- for test in tests %}
 #
 #    test {{ loop.index0+1 }}:
@@ -28,6 +29,10 @@
 #        No matches.
 {%- endif %}
 {%- endfor %}
+{%- else %}
+#
+# None test has been defined.
+{%- endif %}
 #
 ##############################################################
 ####################### Generated code ####################### 
@@ -37,7 +42,7 @@ import re
 text = ""   # empty
 regex = r'{{regex}}'
 
-{% if "globalmatch" in model.optional.flags.values %}
+{% if "globalmatch" in model.optional.flags.values -%}
 match_strings = re.findall(
     regex, 
     text, 

@@ -345,12 +345,15 @@ class PythonEngine:
 
         result = self.clauses[model.target.clause.name]
 
-        tests = self.interpret_tests(
-            model.optional.tests.values,
-            regex,
-            self.interpret_flags(False, model),
-            "globalmatch" in model.optional.flags.values
-        )
+        if model.optional.tests:
+            tests = self.interpret_tests(
+                model.optional.tests.values,
+                regex,
+                self.interpret_flags(False, model),
+                "globalmatch" in model.optional.flags.values
+            )
+        else:
+            tests = None
 
         self.create_file(
             regex=regex,
