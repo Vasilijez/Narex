@@ -306,12 +306,15 @@ class PythonEngine:
         engine_file_dir = os.path.dirname(os.path.abspath(__file__))
         environment = Environment(loader=FileSystemLoader(engine_file_dir))
         template = environment.get_template("python_template.jinja")
+        output_file_name = "out_regex.py"
+        output_file_path = os.path.join(engine_file_dir, output_file_name)
+
         template.stream({
             "regex": regex,
             "model": model,
             "flags": flags,
             "tests": tests
-        }).dump("./src/narex/generators/out_regex.py")
+        }).dump(output_file_path)
 
     class TestMatches:
         def __init__(self, pattern, matches):
