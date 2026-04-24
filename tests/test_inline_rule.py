@@ -1,4 +1,5 @@
 from narex import get_metamodel
+from narex.cli.main import load_metamodel_and_model_str
 from narex.generators.python import PythonEngine
 
 def test_inline_rule():
@@ -17,7 +18,7 @@ def test_inline_rule():
             clause2
     """
 
-    mm = get_metamodel()
-    m = mm.model_from_str(m)
+    mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     r = e.generate(m)
+    assert r == r"[yey][A-Za-z][wewe]([A-Za-z])?([popopo])?"

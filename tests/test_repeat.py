@@ -1,4 +1,5 @@
 from narex import get_metamodel
+from narex.cli.main import load_metamodel_and_model_str
 from narex.generators.python import PythonEngine
 from textx import TextXSyntaxError    
 
@@ -12,10 +13,10 @@ def test_repeat_something_or_more():
         c1
     """
 
-    mm = get_metamodel()
-    m = mm.model_from_str(m)
+    mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     r = e.generate(m)
+    assert r == r"[A-Za-z]{1,}"
 
 # error
 # maybe...one of and then repeat?!
@@ -26,17 +27,17 @@ def test_repeat_something_times():
     }
 
     c2 {
-        maybe one of 'something2' repeat 0 or more times maybe letter  maybe one of 'something3'
+        maybe one of 'something2' repeat 1 or more times maybe letter  maybe one of 'something3'
     }
 
     target:
         c1
     """
 
-    mm = get_metamodel()
-    m = mm.model_from_str(m)
+    mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     r = e.generate(m)
+    assert r == r"[A-Za-z]{7}"
 
 def test_repeat_invalid_missing_subject_rule():
     m = """

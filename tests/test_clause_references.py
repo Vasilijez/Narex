@@ -1,4 +1,5 @@
 from narex import get_metamodel
+from narex.cli.main import load_metamodel_and_model_str
 from narex.generators.python import PythonEngine
 from textx import TextXSemanticError
 
@@ -19,10 +20,10 @@ def test_clause_references_simple():
             c2
     """
 
-    mm = get_metamodel()
-    m = mm.model_from_str(m)
+    mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     r = e.generate(m)
+    assert r == r"[A-Za-z]\d^(\d)?"
 
 def test_clause_references_nested():
     m = """
@@ -53,10 +54,10 @@ def test_clause_references_nested():
             c4
     """
 
-    mm = get_metamodel()
-    m = mm.model_from_str(m)
+    mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     r = e.generate(m)
+    assert r == r"^\d[A-Za-z][A-Za-z]"
 
 
 def test_clause_references_illegal_keywords():
