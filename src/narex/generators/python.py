@@ -275,29 +275,29 @@ class PythonEngine:
 
         return regex
 
-    def interpret_flags(self, generate_str=True, model=None) -> int | str:
-        flags = []
+    def interpret_flags(self, generate_str=True, flags=[]) -> int | str:
+        flags_str = []
         flags_int = set()
 
-        for flag in model.optional.flags.values:
+        for flag in flags:
             match flag:
                 case 'multiline':
-                    flags.append("re.MULTILINE")
+                    flags_str.append("re.MULTILINE")
                     flags_int.add(re.MULTILINE)
                 case 'caseinsensitive':
-                    flags.append("re.IGNORECASE")
+                    flags_str.append("re.IGNORECASE")
                     flags_int.add(re.IGNORECASE)
                 case 'singleline':
-                    flags.append("re.DOTALL")
+                    flags_str.append("re.DOTALL")
                     flags_int.add(re.DOTALL)
 
-        flags = " | ".join(flags) 
+        flags_str = " | ".join(flags_str) 
         combined_flags = 0
         for f in flags_int:
             combined_flags |= f
 
         if generate_str:
-            return flags
+            return flags_str
         else:
             return combined_flags
 
@@ -336,6 +336,7 @@ class PythonEngine:
         for pattern in tests:
             matches = self.interpret_test(pattern, regex, flags, is_global)
             test_matches.append(self.TestMatches(pattern, matches))
+
         return test_matches
 
     def generate(self, model) -> str:
@@ -345,20 +346,22 @@ class PythonEngine:
 
         result = self.clauses[model.target.clause.name]
 
-        if model.optional.tests:
-            tests = self.interpret_tests(
-                model.optional.tests.values,
-                regex,
-                self.interpret_flags(False, model),
-                "globalmatch" in model.optional.flags.values
-            )
-        else:
-            tests = None
+        flags = tests = []
+        if model.optional:
+            flags = model.optional.flags
+            tests = model.optional.tests
+
+        tests = self.interpret_tests(
+            tests,
+            regex,
+            self.interpret_flags(False, flags),
+            "globalmatch" in flags
+        )
 
         self.create_file(
             regex=regex,
             model=model,
-            flags=self.interpret_flags(True, model),
+            flags=self.interpret_flags(True, flags),
             tests=tests
         )
 
