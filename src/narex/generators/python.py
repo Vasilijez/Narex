@@ -1,6 +1,7 @@
 from jinja2 import Environment, FileSystemLoader
 from narex import get_path
 import re
+import os
 
 #######################
 #### Python flavor ####
@@ -302,7 +303,8 @@ class PythonEngine:
             return combined_flags
 
     def create_file(self, regex = "", model=None, flags=None, tests=None):
-        environment = Environment(loader=FileSystemLoader(get_path("./src/narex/generators")))
+        engine_file_dir = os.path.dirname(os.path.abspath(__file__))
+        environment = Environment(loader=FileSystemLoader(engine_file_dir))
         template = environment.get_template("python_template.jinja")
         template.stream({
             "regex": regex,
