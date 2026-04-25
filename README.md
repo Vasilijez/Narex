@@ -409,7 +409,7 @@ target:
 """
 
 whole_value {
-      digit between 1 to 9 repeat 0 or more times
+      digit between 1 and 9 repeat 0 or more times
 }
 
 decimal_value {
