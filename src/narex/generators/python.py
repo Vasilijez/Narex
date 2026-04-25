@@ -1,5 +1,4 @@
 from jinja2 import Environment, FileSystemLoader
-from narex import get_path
 import re
 import os
 

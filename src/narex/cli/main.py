@@ -1,22 +1,11 @@
 import click
-from click import group
-from narex import get_metamodel, get_path
+from narex import load_metamodel_and_model_path
 from narex.generators.python import PythonEngine
 
 @click.group()
 def cli():
     pass
 
-def load_metamodel_and_model_path(path):
-    mm = get_metamodel()
-    p = get_path(path, False)
-    m = mm.model_from_file(p)
-    return mm, m
-
-def load_metamodel_and_model_str(str):
-    mm = get_metamodel()
-    m = mm.model_from_str(str)
-    return mm, m
 
 @click.command()
 @click.option('--path', default='', help='Enter path to model file')
