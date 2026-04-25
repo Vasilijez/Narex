@@ -1,5 +1,4 @@
-from narex import get_metamodel
-from narex.cli.main import load_metamodel_and_model_str
+from narex import load_metamodel_and_model_str
 from narex.generators.python import PythonEngine
 from textx import TextXSemanticError
 
@@ -50,6 +49,6 @@ def test_backreference_missing_group_name():
             c
     """
     try:
-        mm = get_metamodel()
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSemanticError)

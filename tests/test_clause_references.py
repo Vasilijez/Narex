@@ -1,5 +1,4 @@
-from narex import get_metamodel
-from narex.cli.main import load_metamodel_and_model_str
+from narex import load_metamodel_and_model_str
 from narex.generators.python import PythonEngine
 from textx import TextXSemanticError
 
@@ -61,8 +60,6 @@ def test_clause_references_nested():
 
 
 def test_clause_references_illegal_keywords():
-    mm = get_metamodel()
-
     m = """
         c {
             digit
@@ -73,7 +70,7 @@ def test_clause_references_illegal_keywords():
             c
     """
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSemanticError)
 
@@ -87,7 +84,7 @@ def test_clause_references_illegal_keywords():
             c
     """
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSemanticError)
 
@@ -101,7 +98,7 @@ def test_clause_references_illegal_keywords():
             c
     """
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSemanticError)
 
@@ -115,6 +112,6 @@ def test_clause_references_illegal_keywords():
             c
     """
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSemanticError)

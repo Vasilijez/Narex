@@ -1,6 +1,5 @@
-from narex import get_metamodel
-from narex.cli.main import load_metamodel_and_model_str
-from narex.generators.python import PythonEngine
+from narex import load_metamodel_and_model_str
+from narex import PythonEngine
 
 def test_either():
     m = """
