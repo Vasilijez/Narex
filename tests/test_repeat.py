@@ -55,22 +55,22 @@ def test_repeat_invalid_missing_subject_rule():
 def test_repeat_start_and_end_valid_cases():
     m = """
     c {
-        repeat 1 times
-        repeat 2 times
-        repeat 1 to 2 times
-        repeat 1 to 15 times
-        repeat 0 or more times
-        repeat 1 or more times
-        repeat 2 or more times
+        digit repeat 1 times
+        digit repeat 2 times
+        digit repeat 1 to 2 times
+        digit repeat 1 to 15 times
+        digit repeat 0 or more times
+        digit repeat 1 or more times
+        digit repeat 2 or more times
     }
     
     target:
         c
     """
-    try:
-        mm, m = load_metamodel_and_model_str(m)
-    except Exception as e:
-        assert isinstance(e, TextXSyntaxError)
+    mm, m = load_metamodel_and_model_str(m)
+    e = PythonEngine()
+    r = e.generate(m, only_regex=True)
+    assert r == r"\d{1}\d{2}\d{1,2}\d{1,15}\d{0,}\d{1,}\d{2,}"
 
 def test_repeat_invalid_0_times():
     m = """
@@ -155,4 +155,3 @@ def test_repeat_invalid_2_to_2_times():
         mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSyntaxError)
-

@@ -36,12 +36,22 @@ def validate_domain(domain):
 
 def validate_repeat(repeat):
     start = repeat.start
-    end = None if repeat.end is None else repeat.end.value
+    end = None
+    
+    if repeat.end:
+        if repeat.end.value:
+            end = repeat.end.value
+        else:
+            end = 'or more'
 
     if end is None:
         if start == 0:
             raise TextXSemanticError("You can't `repeat` zero times!") 
         
+        if start < 0:
+            raise TextXSemanticError("You can't use a negative number in `repeat` rule!") 
+
+    elif end == 'or more':
         if start < 0:
             raise TextXSemanticError("You can't use a negative number in `repeat` rule!") 
 
