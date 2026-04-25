@@ -561,7 +561,9 @@ Prerequsities:
 npm install
 ```
 NOTE: Don't forget to activate the root project `.venv` from the subproject directory. If something goes wrong use `CTRL` + `SHIFT` + `P` -> `Select intepreter: ...` and select `python.exe` from the `.venv/Scripts` directory (_very importantly_).
+
 2. Click on the `F5` key in Windows to start extension debugging.
+
 3. Packaging is possible by running the following:
 ``` sh
 vsce package
