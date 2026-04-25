@@ -492,9 +492,10 @@ target:
 Narex/
 |
 ├── src/narex/
-|         ├── grammar/
 |         ├── validators/
 |         ├── generators/
+|         ├── grammar/
+|         ├── utils/
 |         ├── cli/
 |
 ├── extension/
