@@ -531,7 +531,7 @@ narex validate --path=<path>
 ```
 ii. You can just run (includes validation):
 ``` sh
-narex run --path=<path>
+narex run --path=<path> --full
 ```
 __Caveat:__ 
 - If you omit the `--path` flag, then the default model is loaded from `examples` folder.
@@ -540,6 +540,7 @@ __Caveat:__
 --path=C:\Users\...\model.tx
 --path=./model.tx
 ```
+- If you omit the `--full` flag, the CLI outputs only the raw regex by default. In contrast, when the flag is used, the full output is generated in a standalone file.
 5. Run help:
 
 i. Using narex command:

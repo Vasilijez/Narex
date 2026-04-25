@@ -9,7 +9,7 @@ def cli():
 
 @click.command()
 @click.option('--path', default='', help='Enter path to model file')
-@click.option('--full', is_flag=True, help='Generate full code to an output file')
+@click.option('--full', is_flag=False, help='Generate full code to an output file')
 def run_command(path, full):
     try:
         mm, m = load_metamodel_and_model_path(path)
