@@ -208,7 +208,7 @@ class PythonEngine:
         # The user is expected not to escape non-literal values.
         escaped_regex = []
 
-        for i, char in enumerate(literal.value):
+        for char in literal.value:
             if char in special_chars:
                 # Insert backslash before a special char.
                 char = rf"\{char}"
