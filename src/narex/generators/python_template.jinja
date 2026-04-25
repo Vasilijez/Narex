@@ -42,7 +42,7 @@ import re
 text = ""   # empty
 regex = r'{{regex}}'
 
-{% if model.optional and model.optional.flags and "globalmatch" in model.optional.flags.values -%}
+{% if model.optional and model.optional.flags and model.optional.flags.values and "globalmatch" in model.optional.flags.values -%}
 match_strings = re.findall(
     regex, 
     text{% if flags != '' %}, 
