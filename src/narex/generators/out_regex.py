@@ -2,7 +2,7 @@
 ######################### Raw regex ########################## 
 ##############################################################
 #
-#  [a-z]
+#  vasa"'
 #
 ##############################################################
 ########################### Engine ########################### 
@@ -14,7 +14,7 @@
 ########################### Tests ############################ 
 ##############################################################
 #
-# None test has been defined.
+# No tests defined.
 #
 ##############################################################
 ####################### Generated code ####################### 
@@ -22,15 +22,10 @@
 import re
 
 text = ""   # empty
-regex = r'[a-z]'
+regex = 'vasa"\''
 
-match_strings = re.findall(
+
+match_object = re.search(
     regex, 
-    text, 
-    flags=re.MULTILINE | re.IGNORECASE | re.DOTALL
-)
-match_objects = re.finditer(
-    regex, 
-    text, 
-    flags=re.MULTILINE | re.IGNORECASE | re.DOTALL
+    text
 )

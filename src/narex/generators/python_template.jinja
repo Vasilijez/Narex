@@ -2,7 +2,7 @@
 ######################### Raw regex ########################## 
 ##############################################################
 #
-#  {{regex}}
+#  {{raw_regex}}
 #
 ##############################################################
 ########################### Engine ########################### 
@@ -40,7 +40,7 @@
 import re
 
 text = ""   # empty
-regex = r'{{regex}}'
+regex = {{repr_regex}}
 
 {% if model.optional and model.optional.flags and model.optional.flags.values and "globalmatch" in model.optional.flags.values -%}
 match_strings = re.findall(

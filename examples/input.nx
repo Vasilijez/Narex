@@ -1,10 +1,6 @@
-c1 {
-    c2 {
-        '!'
-    } 
-
-    'vasa'
+head {
+      "vasa" '"' "'" 
 }
 
 target:
-    c1
+      head
