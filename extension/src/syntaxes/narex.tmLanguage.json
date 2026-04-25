@@ -2,8 +2,78 @@
     "scopeName": "source.narex",
     "patterns": [
         {
-            "name": "keyword.control.narex",
-            "match": "\\bbegin\\b"
+            "include": "#keywords"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#parenthesis"
+        },
+        {
+            "include": "#identifiers"
+        },
+        {
+            "include": "#comments"
         }
-    ]
+    ],
+    "repository": {
+        "keywords": 
+        {
+            "patterns":
+             [{
+                "name": "keyword.control.narex",
+                "match": "either|one\\s*of|backreference|uncaptured|starts|ends|lookbehind|lookahead|negative|not|digit|space|whitespace|alphanumeric|anything|between|and|repeat|times|or\\s*more|to|tests|flavor|flags|global\\s*match|multiline|case\\s*insensitive|single\\s*line|target|group|of|digit|letter|small_letter|big_letter"
+            }]
+        },
+        "strings": 
+        {
+            "patterns": 
+            [
+                {
+                    "name": "string.quoted.double.narex",
+                    "begin": "\"",
+                    "end": "\"",
+                    "patterns": [
+                        {
+                            "name": "constant.character.escape.narex",
+                            "match": "\\\\."
+                        }
+                    ]
+                },
+                {
+                    "name": "string.quoted.single.narex",
+                    "begin": "'",
+                    "end": "'",
+                    "patterns": [
+                        {
+                            "name": "constant.character.escape.narex",
+                            "match": "\\\\."
+                        }
+                    ]
+                }
+            ]        
+        },
+        "numbers": {
+			"name": "constant.numeric.narex",
+			"match": "\\b\\d+\\b"
+		},
+        "parenthesis": {
+            "name": "punctuation.section.block.narex",
+            "match": "({|})"
+        },
+        "identifiers": {
+            "name": "entity.name.type.narex", 
+            "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b|(\\w+\\s*{)"
+        },
+        "comments": {
+            "name": "comment.line.double-slash.narex",
+            "begin": "//",
+            "end": "$"
+        }
+    }
+
 }
