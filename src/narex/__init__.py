@@ -1,30 +1,4 @@
-from textx import metamodel_from_file     
-from os.path import dirname, join, abspath, pardir, isabs
-
-def get_metamodel(debug=False):
-
-    this_folder = dirname(__file__)
-    grammar_path = join(this_folder, 'grammar', 'narex.tx')
-    mm = metamodel_from_file(grammar_path, auto_init_attributes=False, debug=debug)
-
-    return mm
-
-def get_path(path='', debug=False):
-    """
-        An absolute path is favored over relative path.
-    """
-    this_folder = dirname(__file__)
-
-
-    if not path:
-        this_folder = dirname(__file__)
-        grammar_path = abspath(join(this_folder, pardir, pardir, 'examples', 'input.nx'))
-    elif isabs(path):
-        grammar_path = path
-    else:
-        grammar_path = abspath(path)
-       
-    if debug:
-        print(f"Normalized path is {grammar_path}")
-    
-    return grammar_path
+# Useful for cleaner importing
+from narex.utils.loader import load_metamodel_and_model_path
+from narex.utils.loader import load_metamodel_and_model_str
+from narex.generators.python import PythonEngine

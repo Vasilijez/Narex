@@ -1,4 +1,6 @@
-import string
+from jinja2 import Environment, FileSystemLoader
+import re
+import os
 
 #######################
 #### Python flavor ####
@@ -111,6 +113,9 @@ class PythonEngine:
         elif domain.type in simple_domain:
             regex += self.SimpleDomain.interpret(domain)
         
+        if domain.negation:
+            regex = regex + self.Not.end()
+
         return regex
 
     def interpret_repeat(self, repeat) -> str:
@@ -263,8 +268,8 @@ class PythonEngine:
         regex = ""
 
         if clause.clauses:
-            for clause in clause.clauses:
-                self.clauses[clause.name] = self.interpret_clause(clause)
+            for c in clause.clauses:
+                self.clauses[c.name] = self.interpret_clause(c)
 
         for inline_rule in clause.inline_rules:
             # We can have more than one rule in one `InlineRule`.
@@ -273,14 +278,104 @@ class PythonEngine:
 
         return regex
 
-    def generate(self, model) -> str:
+    def interpret_flags(self, generate_str=True, flags=[]) -> int | str:
+        flags_str = []
+        flags_int = set()
+
+        for flag in flags:
+            match flag:
+                case 'multiline':
+                    flags_str.append("re.MULTILINE")
+                    flags_int.add(re.MULTILINE)
+                case 'caseinsensitive':
+                    flags_str.append("re.IGNORECASE")
+                    flags_int.add(re.IGNORECASE)
+                case 'singleline':
+                    flags_str.append("re.DOTALL")
+                    flags_int.add(re.DOTALL)
+
+        flags_str = " | ".join(flags_str) 
+        combined_flags = 0
+        for f in flags_int:
+            combined_flags |= f
+
+        if generate_str:
+            return flags_str
+        else:
+            return combined_flags
+
+    def create_file(self, regex = "", model=None, flags=None, tests=None):
+        engine_file_dir = os.path.dirname(os.path.abspath(__file__))
+        environment = Environment(loader=FileSystemLoader(engine_file_dir))
+        template = environment.get_template("python_template.jinja")
+        output_file_name = "out_regex.py"
+        output_file_path = os.path.join(engine_file_dir, output_file_name)
+
+        template.stream({
+            "regex": regex,
+            "model": model,
+            "flags": flags,
+            "tests": tests
+        }).dump(output_file_path)
+
+    class TestMatches:
+        def __init__(self, pattern, matches):
+            self.pattern = pattern 
+            self.matches = matches
+
+    def interpret_test(self, test, regex, flags, is_global) -> list:
+        if is_global:
+            # Already iterable.
+            result = list(re.finditer(regex, test, flags=flags))
+            size = len(result)
+            if size == 0:
+                return None
+            return result
+        else:
+            # Make iterable.
+            result = re.search(regex, test, flags) 
+            if result is None:
+                return None
+            return [result]
+
+    def interpret_tests(self, tests, regex, flags, is_global) -> list:
+        test_matches = []
+        for pattern in tests:
+            matches = self.interpret_test(pattern, regex, flags, is_global)
+            test_matches.append(self.TestMatches(pattern, matches))
+
+        return test_matches
+
+    def generate(self, model, only_regex=True) -> str:
         for clause in model.clauses:
             regex = self.interpret_clause(clause)
             self.clauses[clause.name] = regex
 
         result = self.clauses[model.target.clause.name]
-        return f"Python regex is: \n{result}"
+
+        if only_regex is False:
+            flags = tests = []
+            if model.optional:
+                flags = model.optional.flags
+                tests = model.optional.tests
+
+            tests = self.interpret_tests(
+                tests,
+                regex,
+                self.interpret_flags(False, flags),
+                "globalmatch" in flags
+            )
+
+            self.create_file(
+                regex=regex,
+                model=model,
+                flags=self.interpret_flags(True, flags),
+                tests=tests
+            )
+
+        return result
 
 
 if __name__ == '__main__':
     ...
+		

@@ -1,5 +1,5 @@
-from narex import get_metamodel
-from narex.generators.python import PythonEngine
+from narex import load_metamodel_and_model_str
+from narex import PythonEngine
 
 def test_group_rules_recognition():
     m = """
@@ -14,10 +14,10 @@ def test_group_rules_recognition():
             c1
     """
 
-    mm = get_metamodel()
-    m = mm.model_from_str(m)
+    mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     r = e.generate(m)
+    assert r == r"(x)(y)(?:y)(?:y)"
 
 def test_lookaround_nested_form():
     m = """
@@ -32,10 +32,10 @@ def test_lookaround_nested_form():
             c
     """
 
-    mm = get_metamodel()
-    m = mm.model_from_str(m)
+    mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     r = e.generate(m)
+    assert r == r"^([something2])?(x)(?<=x)(?:y)(?=y)$"
 
 def test_lookaround_group_name():
     m = """
@@ -49,8 +49,8 @@ def test_lookaround_group_name():
             c
     """
 
-    mm = get_metamodel()
-    m = mm.model_from_str(m)
+    mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     r = e.generate(m)
+    assert r == r"^([something2])?(x)([A-Za-z])"
 

@@ -1,5 +1,5 @@
-from narex import get_metamodel
-from narex.generators.python import PythonEngine
+from narex import load_metamodel_and_model_str
+from narex import PythonEngine
 from textx import TextXSyntaxError    
 
 def test_repeat_something_or_more():
@@ -12,10 +12,10 @@ def test_repeat_something_or_more():
         c1
     """
 
-    mm = get_metamodel()
-    m = mm.model_from_str(m)
+    mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     r = e.generate(m)
+    assert r == r"[A-Za-z]{1,}"
 
 # error
 # maybe...one of and then repeat?!
@@ -26,17 +26,17 @@ def test_repeat_something_times():
     }
 
     c2 {
-        maybe one of 'something2' repeat 0 or more times maybe letter  maybe one of 'something3'
+        maybe one of 'something2' repeat 1 or more times maybe letter  maybe one of 'something3'
     }
 
     target:
         c1
     """
 
-    mm = get_metamodel()
-    m = mm.model_from_str(m)
+    mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     r = e.generate(m)
+    assert r == r"[A-Za-z]{7}"
 
 def test_repeat_invalid_missing_subject_rule():
     m = """
@@ -47,9 +47,8 @@ def test_repeat_invalid_missing_subject_rule():
     target:
         c1
     """
-    mm = get_metamodel()
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSyntaxError)
 
@@ -68,9 +67,8 @@ def test_repeat_start_and_end_valid_cases():
     target:
         c
     """
-    mm = get_metamodel()
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSyntaxError)
 
@@ -83,9 +81,8 @@ def test_repeat_invalid_0_times():
     target:
         c
     """
-    mm = get_metamodel()
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSyntaxError)
 
@@ -98,9 +95,8 @@ def test_repeat_invalid_0_to_0_times():
     target:
         c
     """
-    mm = get_metamodel()
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSyntaxError)
 
@@ -113,9 +109,8 @@ def test_repeat_invalid_start_bigger_than_end():
     target:
         c
     """
-    mm = get_metamodel()
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSyntaxError)
 
@@ -128,9 +123,8 @@ def test_repeat_invalid_negative_start():
     target:
         c
     """
-    mm = get_metamodel()
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSyntaxError)
 
@@ -143,9 +137,8 @@ def test_repeat_invalid_both_negative():
     target:
         c
     """
-    mm = get_metamodel()
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSyntaxError)
 
@@ -158,9 +151,8 @@ def test_repeat_invalid_2_to_2_times():
     target:
         c
     """
-    mm = get_metamodel()
     try:
-        m = mm.model_from_str(m)
+        mm, m = load_metamodel_and_model_str(m)
     except Exception as e:
         assert isinstance(e, TextXSyntaxError)
 

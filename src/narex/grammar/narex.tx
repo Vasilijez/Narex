@@ -182,7 +182,7 @@ Optional:
 
 Tests:
     'tests:' 
-        sample+=STRING[',']
+        values+=STRING[',']
 ;
 
 Flavor:
@@ -191,17 +191,19 @@ Flavor:
 ;
 
 Flags:
-   'flags:' values += FlagValue[',']
+   'flags:' values+=FlagValue[',']
 ;
 
 FlagValue:
     GlobalMatch | Multiline | CaseInsensitive | SingleLine  
 ;
 
+// Don't return after first match.
 GlobalMatch:
     'global' 'match'
 ;
 
+// Don't focus on only one line (even after `\n`).
 Multiline:
     'multiline'
 ;
@@ -210,6 +212,7 @@ CaseInsensitive:
     'case' 'insensitive'
 ;
 
+// Dot all.
 SingleLine:
     'single' 'line'
 ;
