@@ -346,7 +346,7 @@ class PythonEngine:
 
         return test_matches
 
-    def generate(self, model, only_regex=True) -> str:
+    def generate(self, model, only_regex=False) -> str:
         for clause in model.clauses:
             regex = self.interpret_clause(clause)
             self.clauses[clause.name] = regex

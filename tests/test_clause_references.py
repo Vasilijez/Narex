@@ -21,7 +21,7 @@ def test_clause_references_simple():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m)
+    r = e.generate(m, only_regex=True)
     assert r == r"[A-Za-z]\d^(\d)?"
 
 def test_clause_references_nested():
@@ -55,7 +55,7 @@ def test_clause_references_nested():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m)
+    r = e.generate(m, only_regex=True)
     assert r == r"^\d[A-Za-z][A-Za-z]"
 
 

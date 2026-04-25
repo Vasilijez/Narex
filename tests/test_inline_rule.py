@@ -19,5 +19,5 @@ def test_inline_rule():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m)
+    r = e.generate(m, only_regex=True)
     assert r == r"[yey][A-Za-z][wewe]([A-Za-z])?([popopo])?"

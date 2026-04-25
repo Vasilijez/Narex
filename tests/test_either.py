@@ -13,5 +13,5 @@ def test_either():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m)
+    r = e.generate(m, only_regex=True)
     assert r == r"[something]([A-Za-z]|[A-Za-z]|[something2])[A-Za-z]"

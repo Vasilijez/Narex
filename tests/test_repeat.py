@@ -14,7 +14,7 @@ def test_repeat_something_or_more():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m)
+    r = e.generate(m, only_regex=True)
     assert r == r"[A-Za-z]{1,}"
 
 # error
@@ -35,7 +35,7 @@ def test_repeat_something_times():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m)
+    r = e.generate(m, only_regex=True)
     assert r == r"[A-Za-z]{7}"
 
 def test_repeat_invalid_missing_subject_rule():
