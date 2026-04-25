@@ -13,8 +13,7 @@ DATE_FORMATS = [
     "%Y-%m-%dT%H:%M:%S",
 ]
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-grammar_path = os.path.join(current_dir, 'grammar.tx')
+from narex import GRAMMAR_PATH
 
 class NarexLanguageServer(LanguageServer):
     def __init__(self, name, version, text_document_sync_kind = types.TextDocumentSyncKind.Incremental, notebook_document_sync = None, *args, **kwargs):
