@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 from lsprotocol import types
 from pygls.lsp.server import LanguageServer
-from textx import metamodel_from_file, TextXSyntaxError
+from textx import metamodel_from_file, TextXSyntaxError, TextXSemanticError
 from narex import GRAMMAR_PATH
 
 DATE_FORMATS = [
@@ -33,7 +33,7 @@ def grammar_check(ls: NarexLanguageServer, params):
 
     try:
         ls.mm.model_from_str(content)
-    except TextXSyntaxError as e:
+    except (TextXSyntaxError, TextXSemanticError) as e:
         d = types.Diagnostic(
             range=types.Range(
                 start=types.Position(line=e.line-1, character=e.col-1),
