@@ -16,7 +16,7 @@ bounded_domain = {
 }
 
 special_chars = {
-    '\\', '.', ',', '#', '^', '$', '*', '+', '?', '(', ')', '[', ']', '{', '}', '|'
+    '\\', '.', ',', '#', '^', '$', '*', '+', '?', '(', ')', '[', ']', '{', '}', '|', '/'
 }
 
 class PythonEngine:
@@ -357,8 +357,10 @@ class PythonEngine:
         if only_regex is False:
             flags = tests = []
             if model.optional:
-                flags = model.optional.flags
-                tests = model.optional.tests
+                if model.optional.flags:
+                    flags = model.optional.flags.values
+                if model.optional.tests:
+                    tests = model.optional.tests.values
 
             tests = self.interpret_tests(
                 tests,
