@@ -118,7 +118,9 @@ def code_completion(ls: NarexLanguageServer, params):
  
     document_uri = params.text_document.uri
     document = ls.workspace.get_text_document(document_uri)
-    items = []
+
+    # In order to avoid duplicates
+    items = {}
 
     # Cut off document content after cursor
     document = slice_document_after_cursor(document, params)
@@ -146,16 +148,17 @@ def code_completion(ls: NarexLanguageServer, params):
                 
                 # Put one of the top priorty elements at the first position
                 # Do that as preparation for preselect
-                if item.sort_text.startswith("0"):
-                    items.insert(0, item)
+                # if item.sort_text.startswith("0"):
+                #     items.insert(0, item)
                 
-                items.append(item)
+                items[label] = item
+        
 
     except (TextXSemanticError, Exception) as e:
         print_msg(ls, str(e))
         pass
 
-    return types.CompletionList(is_incomplete=False, items=items) # maybe True
+    return types.CompletionList(is_incomplete=False, items=items.values()) # maybe True
 
 
 @server.feature(types.TEXT_DOCUMENT_HOVER)
