@@ -181,17 +181,17 @@ Optional:
 ;
 
 Tests:
-    'tests:' 
+    'tests' ':'  
         values+=STRING[',']
 ;
 
 Flavor:
-    'flavor:'
+    'flavor' ':' 
         'python'
 ;
 
 Flags:
-   'flags:' values+=FlagValue[',']
+   'flags' ':' values+=FlagValue[',']
 ;
 
 FlagValue:
@@ -218,7 +218,7 @@ SingleLine:
 ;
 
 Target:
-    'target:' 
+    'target' ':' 
         clause=[Clause]
 ;
 
