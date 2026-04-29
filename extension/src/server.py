@@ -1,9 +1,9 @@
-import re
+import regex
 import logging
 from datetime import datetime
 from lsprotocol import types
 from pygls.lsp.server import LanguageServer
-from textx import metamodel_from_file, TextXSyntaxError, TextXSemanticError
+from textx import metamodel_from_file, TextXSyntaxError, TextXSemanticError, get_children_of_type
 from narex import GRAMMAR_PATH
 
 DATE_FORMATS = [
@@ -19,7 +19,6 @@ class NarexLanguageServer(LanguageServer):
         self.mm = metamodel_from_file(GRAMMAR_PATH)
 
 server = NarexLanguageServer("narex-server", "v1")
-
 
 @server.feature(types.TEXT_DOCUMENT_DID_OPEN)
 @server.feature(types.TEXT_DOCUMENT_DID_CHANGE)
@@ -52,17 +51,18 @@ def grammar_check(ls: NarexLanguageServer, params):
         )
     )
     
-
 def print_msg(ls: NarexLanguageServer, message):
+    # Useful utility function.
     msg = ls.window_log_message(types.ShowMessageParams(
                 message=message,
                 type=types.MessageType.Info,
             ))
     return msg
 
-def catch_current_word(content: str) -> str:
-    match = re.search(r'(\w+)$', content)
+def catch_current_word(ls, content: str) -> str:
+    match = regex.search(r'(\w+)$', content)
     word = match.group(1).lower() if match else ""
+    print_msg(ls, f"current_word {word}")
     return word
 
 def slice_document_after_cursor(document, params) -> str:
@@ -75,28 +75,57 @@ def is_eligble_keyword(label, eligble_keywords):
         return True
     return False
 
+def extract_ref_names(refs):
+    names = []
+    for r in refs:
+        names.append(r.name)
+    
 def get_label(ls, rule, eligble_keywords) -> str | None:
 
+    #
+    #  rule                to_match                   rule_name                   name
+    #
+    #  \n                     \n                         sep                   StrMatch(\n)
+    #  }                       }                       missing                 StrMatch(})
+    #  ID                  [^\d\W]\w*\b                  ID                 ID=RegExMatch([^\d\W]\w*\b)
+    #  UnescapedString  ("(?:[^"])*"|'(?:[^'])*')    UnescapedString  UnescapedString=RegExMatch(("(?:[^"])*"|'(?:[^'])*'))
+    #  backreference       backreference                missing           StrMatch(backreference)
+    #  Uncaptured          uncaptured                  Uncaptured          Uncaptured=StrMatch(uncaptured)
+    #  lookahead           lookahead                    missing              StrMatch(lookahead)       
+    #    
+    #  either is like lookahead
+    #  lookbehind is like lookahead
+    #
+    #  ends is like Uncaptured
+    #  starts is like Uncaptured
+    #  letter is like Uncaptured
+    #  Negative is like Uncaptured
+    #
+    #  ...
+    #
+
+    r = rule
     if hasattr(rule, 'to_match'):
-        if is_eligble_keyword(rule.to_match, eligble_keywords):
+        # small_letter -> smallletter (rule in eligble_keywords)
+        label = rule.to_match.replace("_", "")
+        if is_eligble_keyword(label, eligble_keywords):
             return rule.to_match
     
-    elif hasattr(rule, 'rule_name'):
-        # TODO: Which case???
-        label = rule.rule_name.lower() if type(rule.rule_name) == "str" else rule.rule_name
-        if is_eligble_keyword(label, eligble_keywords):
-            return label
+    # if hasattr(rule, 'rule_name'):
+    #     label = rule.rule_name.lower() if type(rule.rule_name) == "str" else rule.rule_name
+    #     if is_eligble_keyword(label, eligble_keywords):
+    #         return label
     
-    elif hasattr(rule, 'name'):
+    if hasattr(rule, 'name'):
         label = rule.name
         if is_eligble_keyword(label, eligble_keywords):
             return label
 
     return None
 
-def sort_by_starts_with(params, current_word, label) -> types.CompletionItem:
+def create_and_sort_by_starts_with(params, current_word, label) -> types.CompletionItem:
     sort_priority = "0" if label.startswith(current_word) else "1"
-    current_pos = params.position
+
     item = types.CompletionItem(
         label=label,
         kind=types.CompletionItemKind.Keyword,
@@ -106,15 +135,60 @@ def sort_by_starts_with(params, current_word, label) -> types.CompletionItem:
 
     return item 
 
-def preselect_first_item(items: list[types.CompletionItem]):
-    if len(items) >= 1:
-        first_item = items[0]
-        first_item.preselect = True
+def is_id_rule(rule) -> bool:
+    return hasattr(rule, 'rule_name') and rule.rule_name == 'ID'
+
+def get_offset_from_line_col(text, line, col):
+    lines = text.splitlines(keepends=True)
+    offset = sum(len(l) for l in lines[:line - 1]) + (col - 1)
+    return offset
+
+def get_ref_names(partial_model) -> list[str]:
+    clause_refs = r'[^\d\W]\w*\b(?=\s*{)'
+    clause_refs = regex.findall(pattern=clause_refs, string=partial_model)
+
+    group_refs = r'group\s*\K[^\d\W]\w*\b(?=\s*of)'
+    group_refs = regex.findall(pattern=group_refs, string=partial_model)
+
+    return clause_refs + group_refs
+
+def get_eligble_keywords(ls) -> list[str]:
+    illegal_rules = {
+        'UnescapedString', 
+        'EdgeValue', 
+        'OneOf'     # Used eventually
+        'ID',       # Used eventually
+        'GlobalMatch',
+        'CaseInsensitive',
+        'SingleLine',
+    }
+
+    # Keywords of narex rules
+    eligble_keywords = {k.lower() for k in ls.mm.namespaces['narex'].keys() if k.lower() not in illegal_rules}
+    # Keywords defined within the rules
+    # eligble_keywords.add('{')
+    # eligble_keywords.add('}')
+    # eligble_keywords.add(':')
+    eligble_keywords.add('one')
+    eligble_keywords.add('of')
+    eligble_keywords.add('or')
+    eligble_keywords.add('to')
+    eligble_keywords.add('and')
+    eligble_keywords.add('more')
+    eligble_keywords.add('times')
+    eligble_keywords.add('case')
+    eligble_keywords.add('sensitive')
+    eligble_keywords.add('global')
+    eligble_keywords.add('match')
+    eligble_keywords.add('single')
+    eligble_keywords.add('line')
+
+    return eligble_keywords
 
 @server.feature(types.TEXT_DOCUMENT_COMPLETION)
 def code_completion(ls: NarexLanguageServer, params):
 
-    ### Based on the textX parser prediction it offers the completion rules ###
+    ### Based on the textX parser predicted rules are offered ###
  
     document_uri = params.text_document.uri
     document = ls.workspace.get_text_document(document_uri)
@@ -126,39 +200,36 @@ def code_completion(ls: NarexLanguageServer, params):
     document = slice_document_after_cursor(document, params)
 
     # Catch current word
-    current_word = catch_current_word(document)
+    current_word = catch_current_word(ls, document)
 
-    illegal_rules = {
-        'UnescapedString', 'ID', 'EdgeValue'
-    }
-
-    eligble_keywords = {k.lower() for k in ls.mm.namespaces['narex'].keys() if k.lower() not in illegal_rules}
+    eligble_keywords = get_eligble_keywords(ls)
 
     try:
-        ls.mm.model_from_str(document)
-
+        m = ls.mm.model_from_str(document)
 
     except TextXSyntaxError as e:
 
+        partial_offset = get_offset_from_line_col(document, e.line, e.col)
+        partial_model = document[:partial_offset]
+        ids = get_ref_names(partial_model)
+
         for rule in e.expected_rules:
+
             label = get_label(ls, rule, eligble_keywords)
 
             if label:
-                item = sort_by_starts_with(params, current_word, label)
-                
-                # Put one of the top priorty elements at the first position
-                # Do that as preparation for preselect
-                # if item.sort_text.startswith("0"):
-                #     items.insert(0, item)
-                
+                item = create_and_sort_by_starts_with(params, current_word, label)
                 items[label] = item
-        
 
+            elif is_id_rule(rule):
+                for label in ids:
+                    item = create_and_sort_by_starts_with(params, current_word, label)
+                    items[label] = item
+        
     except (TextXSemanticError, Exception) as e:
-        print_msg(ls, str(e))
         pass
 
-    return types.CompletionList(is_incomplete=False, items=items.values()) # maybe True
+    return types.CompletionList(is_incomplete=False, items=items.values()) 
 
 
 @server.feature(types.TEXT_DOCUMENT_HOVER)

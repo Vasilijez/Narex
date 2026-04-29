@@ -7,3 +7,4 @@ textmate-grammar-python
 -e .
 pytest
 jinja2
+regex
