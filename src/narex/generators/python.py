@@ -166,10 +166,10 @@ class PythonEngine:
     
     def interpret_group(self, regex, group) -> str:
         # Cases:
-        # 1. uncaptured group g2 of 'y'  // produced regex alias
-        # 2. uncaptured group 'y'        // unproduced ref
-        # 3. group 'x'                   // produced unused ref
-        # 4. group g1 of 'y'             // used produced ref
+        # 1. uncaptured group g2 of 'y'  // produced regex alias (as it can't be referenced by `\1`, but it can by `g2`)
+        # 2. uncaptured group 'y'        // unproduced ref (none narex ref, however it consumes input and is contained in the match)
+        # 3. group 'x'                   // produced unused ref (it can be referenced by `\1`, but it won't, only narex refs are used)
+        # 4. group g1 of 'y'             // used produced ref (narex ref)
         # TODO: Regex validations.
 
         rule_exp = f"{self.interpret_rule('', group.rule)}"
