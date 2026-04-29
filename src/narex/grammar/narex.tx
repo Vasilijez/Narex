@@ -2,7 +2,7 @@
 Anchor:
     clauses+=Clause 
     optional=Optional
-    target=Target // Maybe safe-scoping? Yeah it is important especially later on, I can do it easily by intercepting objects, smth like that I had it in the example related to the state machine.
+    target=Target
 ;
 
 Clause:
@@ -55,7 +55,6 @@ ClauseReference:
     value=[Clause:ValidReference]
 ;
 
-// `uncaptured group of some_rule` is effectively alias.
 Group:
     uncaptured?=Uncaptured 'group' (name=ID 'of')? rule=Rule
 ;
