@@ -3,8 +3,8 @@ import logging
 from datetime import datetime
 from lsprotocol import types
 from pygls.lsp.server import LanguageServer
-from textx import metamodel_from_file, TextXSyntaxError, TextXSemanticError, get_children_of_type
-from narex import GRAMMAR_PATH
+from textx import TextXSyntaxError, TextXSemanticError
+from narex import get_metamodel
 
 DATE_FORMATS = [
     "%H:%M:%S",
@@ -16,7 +16,7 @@ DATE_FORMATS = [
 class NarexLanguageServer(LanguageServer):
     def __init__(self, name, version, text_document_sync_kind = types.TextDocumentSyncKind.Incremental, notebook_document_sync = None, *args, **kwargs):
         super().__init__(name, version, text_document_sync_kind, notebook_document_sync, *args, **kwargs)
-        self.mm = metamodel_from_file(GRAMMAR_PATH)
+        self.mm = get_metamodel()
 
 server = NarexLanguageServer("narex-server", "v1")
 
