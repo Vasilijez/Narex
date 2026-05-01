@@ -8,3 +8,4 @@ textmate-grammar-python
 pytest
 jinja2
 regex
+flit

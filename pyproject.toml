@@ -1,6 +1,6 @@
-[tool.mypy]
-strict = true
-ignore_missing_imports = true
+[build-system]
+requires = ["flit_core >=3.11,<4"]
+build-backend = "flit_core.buildapi"
 
 [project]
 name = "narex"
