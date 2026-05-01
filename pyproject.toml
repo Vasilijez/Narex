@@ -52,3 +52,5 @@ ignore_missing_imports = true
 
 [project.scripts]
 narex = "narex.cli.main:cli"
+[tool.flit.sdist]
+exclude = ["**/.*"]
