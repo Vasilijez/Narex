@@ -6,3 +6,5 @@ venv.bak/
 
 *.egg-info
 __pycache__
+
+dist/
