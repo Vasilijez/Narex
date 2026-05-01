@@ -45,12 +45,15 @@ cli = [
     "textmate-grammar-python",
 ]
 
-
 [tool.mypy]
 strict = true
 ignore_missing_imports = true
 
 [project.scripts]
 narex = "narex.cli.main:cli"
+
+[tool.flit.module]
+name = "narex"
+
 [tool.flit.sdist]
 exclude = ["**/.*"]
