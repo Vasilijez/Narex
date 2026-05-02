@@ -315,7 +315,7 @@ class PythonEngine:
         ):
         engine_file_dir = os.path.dirname(os.path.abspath(__file__))
         environment = Environment(loader=FileSystemLoader(engine_file_dir))
-        template = environment.get_template("python_template.jinja")
+        template = environment.get_template("templates/python_template.jinja")
 
         if output_file_path == "":
             output_file_path = os.path.join(engine_file_dir, "out_regex.py")
@@ -356,14 +356,14 @@ class PythonEngine:
 
         return test_matches
 
-    def generate(self, model, full=False, output_file_path="") -> str:
+    def generate(self, model, cli_only=False, output_file_path="") -> str:
         for clause in model.clauses:
             regex = self.interpret_clause(clause)
             self.clauses[clause.name] = regex
 
         result = self.clauses[model.target.clause.name]
 
-        if full == True:
+        if cli_only == False:
             flags = tests = []
             if model.optional:
                 if model.optional.flags:

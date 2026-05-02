@@ -49,7 +49,7 @@ strict = true
 ignore_missing_imports = true
 
 [project.scripts]
-narex = "narex.cli.main:cli"
+narex = "narex.cli.narex:cli"
 
 [tool.flit.module]
 name = "narex"
@@ -58,7 +58,7 @@ name = "narex"
 exclude = ["**/.*"]
 
 [project.entry-points.textx_languages]
-narex = "narex.cli.main:textx_language"
+narex = "narex.cli.textx:textx_language"
 
 [project.entry-points.textx_generators]
-narex_python = "narex.cli.main:textx_python_generator"
+narex_python = "narex.cli.textx:textx_python_generator"
