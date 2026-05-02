@@ -304,12 +304,21 @@ class PythonEngine:
         else:
             return combined_flags
 
-    def create_file(self, raw_regex = "", repr_regex = "", model=None, flags=None, tests=None):
+    def create_file(
+            self, 
+            output_file_path, 
+            raw_regex = "", 
+            repr_regex = "", 
+            model=None, 
+            flags=None, 
+            tests=None
+        ):
         engine_file_dir = os.path.dirname(os.path.abspath(__file__))
         environment = Environment(loader=FileSystemLoader(engine_file_dir))
         template = environment.get_template("python_template.jinja")
-        output_file_name = "out_regex.py"
-        output_file_path = os.path.join(engine_file_dir, output_file_name)
+
+        if output_file_path == "":
+            output_file_path = os.path.join(engine_file_dir, "out_regex.py")
 
         template.stream({
             "raw_regex": raw_regex,
@@ -347,7 +356,7 @@ class PythonEngine:
 
         return test_matches
 
-    def generate(self, model, full=False) -> str:
+    def generate(self, model, full=False, output_file_path="") -> str:
         for clause in model.clauses:
             regex = self.interpret_clause(clause)
             self.clauses[clause.name] = regex
@@ -370,6 +379,7 @@ class PythonEngine:
             )
 
             self.create_file(
+                output_file_path=output_file_path,
                 raw_regex=regex,
                 repr_regex=repr(regex),  # This escaping is specific only for Python. It is about choosing the best python parethesis combo based upon the regex string.
                 model=model,

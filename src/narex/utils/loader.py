@@ -1,4 +1,4 @@
-from textx import metamodel_from_file     
+from textx import metamodel_from_file, language
 from os.path import dirname, join, abspath, pardir, isabs
 from narex.validators.rules import validate_class_reference, validate_domain, validate_repeat, validate_literal
 
