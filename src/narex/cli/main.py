@@ -9,12 +9,12 @@ def cli():
 
 @click.command()
 @click.option('--path', default='', help='Enter path to model file')
-@click.option('--full', is_flag=False, help='Generate full code to an output file')
+@click.option('--full', is_flag=True, help='Generate full code to an output file')
 def run_command(path, full):
     try:
         mm, m = load_metamodel_and_model_path(path)
         e = PythonEngine()
-        result = e.generate(m, False) if full else e.generate(m)
+        result = e.generate(model=m, full=full)
         click.secho(click.style(f"Raw regex output: {result}", fg='green'))
         if full:
             click.secho(click.style(f"Full code generated and saved to: /src/narex/generators/out_regex.py", fg='blue'))

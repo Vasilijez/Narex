@@ -347,14 +347,14 @@ class PythonEngine:
 
         return test_matches
 
-    def generate(self, model, only_regex=False) -> str:
+    def generate(self, model, full=False) -> str:
         for clause in model.clauses:
             regex = self.interpret_clause(clause)
             self.clauses[clause.name] = regex
 
         result = self.clauses[model.target.clause.name]
 
-        if only_regex is False:
+        if full == True:
             flags = tests = []
             if model.optional:
                 if model.optional.flags:
