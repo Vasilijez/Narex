@@ -20,7 +20,7 @@ def test_optional_flavor_first():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"[A-Za-z]"
 
 def test_optional_tests_first():
@@ -41,7 +41,7 @@ def test_optional_tests_first():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"[A-Za-z]"
 
 
@@ -63,5 +63,5 @@ def test_optional_flags():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"[A-Za-z]"

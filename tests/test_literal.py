@@ -16,7 +16,7 @@ def test_literal_many_values_combined():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"@\.com\d\/\.\d\.[A-Za-z]"
 
 def test_literal_strange_parenthesis():
@@ -31,5 +31,5 @@ def test_literal_strange_parenthesis():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == "vasa\"'"

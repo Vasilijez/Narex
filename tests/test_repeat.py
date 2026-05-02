@@ -14,7 +14,7 @@ def test_repeat_something_or_more():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"[A-Za-z]{1,}"
 
 # error
@@ -35,7 +35,7 @@ def test_repeat_something_times():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"[A-Za-z]{7}"
 
 def test_repeat_invalid_missing_subject_rule():
@@ -69,7 +69,7 @@ def test_repeat_start_and_end_valid_cases():
     """
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"\d{1}\d{2}\d{1,2}\d{1,15}\d{0,}\d{1,}\d{2,}"
 
 def test_repeat_invalid_0_times():

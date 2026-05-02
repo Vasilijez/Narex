@@ -27,7 +27,7 @@ def test_task_9():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"(\d{1,})[A-Za-z]{1,}\1"
 
 def test_task_10():
@@ -52,7 +52,7 @@ def test_task_10():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"\$[1-9]{0,}(\.\d{0,})?"
 
 def test_task_12():
@@ -75,7 +75,7 @@ def test_task_12():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"((one|two|three|[369])|[!.])"
 
 

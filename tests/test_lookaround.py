@@ -26,7 +26,7 @@ def test_lookaround_rules_recognition():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"(?<=x)[a-z](?=x)(?<!x)[a-z](?!x)"
 
 def test_lookaround_nested_form():
@@ -44,6 +44,6 @@ def test_lookaround_nested_form():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m, only_regex=True)
+    r = e.generate(m, cli_only=True)
     assert r == r"^([something2])?(?=x)(?<=x)[A-C](?![A-Za-z])$"
 
