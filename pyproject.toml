@@ -4,8 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "narex"
-dynamic = ["version"]
-description = "Use natural language to generate regular expressions."
+dynamic = ["version", "description"]
 authors = [
     {name = "Vasilije Zeković", email = "none@none.com"}
 ]
@@ -57,3 +56,5 @@ name = "narex"
 
 [tool.flit.sdist]
 exclude = ["**/.*"]
+
+

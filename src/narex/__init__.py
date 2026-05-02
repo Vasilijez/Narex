@@ -1,3 +1,7 @@
+"""
+    Use natural language to generate regular expressions.
+"""
+
 
 __version__ = "0.1.0"
 
