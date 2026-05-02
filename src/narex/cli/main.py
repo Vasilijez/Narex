@@ -46,9 +46,10 @@ def generate_python(metamodel, model, output_path, overwrite, debug, full):
 @generator(
     'narex', 
     'python', 
-    [GeneratorParam("full", "Generate full code to an output file")]
+    [GeneratorParam("full", "Generate full code to an output file", mandatory=False)]
 )
-def textx_python_generator(metamodel, model, output_path, overwrite, debug, full=False):
+def textx_python_generator(metamodel, model, output_path, overwrite, debug, **kwargs):
+    full = kwargs.get('full', False)
     generate_python(metamodel, model, output_path, overwrite, debug, full)
 
 @language('narex', '*.nx')
