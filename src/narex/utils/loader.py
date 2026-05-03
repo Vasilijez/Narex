@@ -65,7 +65,7 @@ def resolve_output_path(model, output_path=None, gen_extension='py'):
     output_dir = abspath(output_path if output_path else dirname(input_file))
 
     if not path_exists(output_dir):
-        raise Exception("Input file path is not valid!")
+        raise Exception("Output file path is not valid!")
 
     output_file_name = create_default_output_path(input_file, gen_extension)
     output_file_path = join(output_dir, output_file_name)
