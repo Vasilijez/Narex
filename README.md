@@ -850,7 +850,11 @@ Narex/
 ```
 ## Getting started:
 Prerequsities:
-- Python.
+- Python 3
+
+_Check `project.toml` for more info._
+
+#### Regular user workflow
 
 1. Create a virtual environment:
 ``` sh
@@ -862,9 +866,36 @@ python -m venv .venv
 ```
 3. Install dependencies:
 ``` sh
-pip install -r requirements.txt
+pip install git+https://github.com/Vasilijez/Narex.git
 ```
-4. Run the project:
+_Pulling of the source code is optional._
+
+#### Developer workflow
+1. Clone the project:
+``` sh
+git clone https://github.com/Vasilijez/Narex.git
+```
+2. Locate in the project:
+``` sh
+cd Narex
+```
+3. Create and activate the virtual environment (Windows): 
+``` sh
+python -m venv .venv
+.\.venv\Scripts\activate
+```
+5. Install mandatory dependencies:
+``` sh
+pip install -e .
+```
+6. Optionally, if developer needs all dependencies (e.g. tests):
+``` sh
+pip install -e ".[dev]"
+```
+
+
+### Using
+Run the project:
 
 i. You can optionally validate the model before running:
 ``` sh
