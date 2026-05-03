@@ -895,34 +895,22 @@ pip install -e ".[dev]"
 
 
 ### Using
+You can use either of the two CLIs, Narex or textX.
+This is possible as Narex belongs to the textX ecosystem. They share logic, although the commands are slightly different.
+
 Run the project:
 
 i. You can optionally validate the model before running:
 ``` sh
-narex validate --path=<path>
+narex validate --path=<path>  # i.  Narex
+textx check <path>            # ii. textX
 ```
 ii. You can just run (includes validation):
 ``` sh
-narex run --path=<path> --full
+narex run --path=<path> --full            # i.  Narex    
+textx generate <path> --target <engine>   # ii. textX
 ```
-__Caveat:__ 
-- If you omit the `--path` flag, then the default model is loaded from `examples` folder.
-- The path flag supports both absolute and relative paths. For instance:
-``` sh
---path=C:\Users\...\model.tx
---path=./model.tx
-```
-- If you omit the `--full` flag, the CLI outputs only the raw regex by default. In contrast, when the flag is used, the full output is generated in a standalone file.
-5. Run help:
-
-i. Using narex command:
-``` sh
-narex
-```
-ii. Using help flag:
-``` sh
-narex --help
-```
+#### TODO: Add flags
 
 ### VSCode extension
 Prerequsities:
