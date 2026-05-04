@@ -186,7 +186,11 @@ Tests:
 
 Engine:
     'engine' ':' 
-        'python'
+        value=EngineValue
+;
+
+EngineValue:
+    'python'
 ;
 
 Flags:
