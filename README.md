@@ -910,7 +910,24 @@ ii. You can just run (includes validation):
 narex run --path=<path> --full            # i.  Narex    
 textx generate <path> --target <engine>   # ii. textX
 ```
-#### TODO: Add flags
+
+__Flags__ 
+1. Please use `--help` flag at the beginning to understand all possible flags for certain command within concrete CLI.
+2. `--path` and `--output-path` flags support both absolute and relative paths. For instance:
+``` sh
+--path=C:\Users\...\model.tx
+--path=./model.tx
+```
+3. `--cli-only` flag provides only the raw regex within CLI. In contrast, when the flag is omitted, the full code is generated in a standalone file.
+4. `--overwrite` flag provides overwriting the file if already exists.
+5. `--output-path` flag is used for specifing the output directory path of the generated file.
+6. `--engine` (Narex) or `--target` (textX) flag provides an engine selection. Engine can be defined within model clause `engine:` as well. Engine defined by using parameter has higher priority than the engine defined by using the model.
+
+One example with as many flags as possible:
+``` sh
+narex run --path=input.nx --output-path=./dir --engine=python --overwrite     # i.  Narex
+text generate <path> target python --output-path=./dir --overwrite            # ii. textX
+```
 
 ### VSCode extension
 Prerequsities:
