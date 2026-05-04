@@ -1,7 +1,7 @@
 import click
 from narex.generators.manager import GenStatus, generate
 
-def generate_with_print(metamodel, model, output_path, overwrite, debug, cli_only, engine, cli):
+def generate_with_print(metamodel, model, output_path, overwrite, debug, cli_only, engine):
     try:
         status, output_file_path, result = generate(metamodel, model, output_path, overwrite, debug, cli_only, engine)
 

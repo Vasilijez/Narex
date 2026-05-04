@@ -17,5 +17,5 @@ def textx_language():
     [GeneratorParam("cli-only", "Generate raw regex output to CLI only.", mandatory=False)]
 )
 def textx_python_generator(metamodel, model, output_path, overwrite, debug, **kwargs):
-    full = kwargs.get('cli-only', False)
-    generate_with_print(metamodel, model, output_path, overwrite, debug, full, 'python', 'textx')
+    cli_only = kwargs.get('cli-only', False)
+    generate_with_print(metamodel, model, output_path, overwrite, debug, cli_only, 'python')
