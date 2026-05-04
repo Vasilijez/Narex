@@ -14,8 +14,8 @@ def textx_language():
 @generator(
     'narex', 
     'python', 
-    [GeneratorParam("cli_only", "Generate raw regex output to CLI only", mandatory=False)]
+    [GeneratorParam("cli-only", "Generate raw regex output to CLI only.", mandatory=False)]
 )
 def textx_python_generator(metamodel, model, output_path, overwrite, debug, **kwargs):
-    full = kwargs.get('cli_only', False)
+    full = kwargs.get('cli-only', False)
     generate_with_print(metamodel, model, output_path, overwrite, debug, full, 'python', 'textx')

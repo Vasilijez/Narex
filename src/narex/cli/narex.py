@@ -7,12 +7,12 @@ def cli():
     pass
 
 @click.command()
-@click.option('--path', default='', help='Enter path of model file')
-@click.option('--cli_only', is_flag=True, help='Generate raw regex output to CLI only')
-@click.option('--output_path', is_flag=False, help='Enter path to output directory')
-@click.option('--engine', default='python', help='Enter a regex engine')
-@click.option('--overwrite', is_flag=True, help='Overwrite an existing output file')
-@click.option('--debug', default='python', help='Debug command executing')
+@click.option('--path', default='', help='Enter path of model file.')
+@click.option('--cli-only', is_flag=True, help='Generate raw regex output to CLI only.')
+@click.option('--output-path', is_flag=False, help='Enter path to output directory.')
+@click.option('--engine', default='python', help='Enter a regex engine.')
+@click.option('--overwrite', is_flag=True, help='Overwrite an existing output file.')
+@click.option('--debug', default='python', help='Debug command executing.')
 def run_command(path, cli_only, output_path, engine, overwrite, debug):
     try:
         mm, m = load_metamodel_and_model_path(file_path=path)
