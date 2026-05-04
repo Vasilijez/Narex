@@ -875,7 +875,7 @@ _Pulling of the source code is optional._
 ``` sh
 git clone https://github.com/Vasilijez/Narex.git
 ```
-2. Locate in the project:
+2. Change directory to Narex:
 ``` sh
 cd Narex
 ```
