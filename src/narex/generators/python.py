@@ -3,7 +3,7 @@ import re
 import os
 
 #######################
-#### Python flavor ####
+#### Python engine ####
 #######################
 
 simple_domain = {

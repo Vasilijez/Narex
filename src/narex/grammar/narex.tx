@@ -40,7 +40,7 @@ Maybe:
 ;
 
 Keyword:
-    'target' | 'tests' | 'flavor' | 'flags'
+    'target' | 'tests' | 'engine' | 'flags'
 ;
 
 ValidName:
@@ -176,7 +176,7 @@ End:
 ;
 
 Optional:
-    ((tests=Tests)? (flavor=Flavor)? (flags=Flags)?)#
+    ((tests=Tests)? (engine=Engine)? (flags=Flags)?)#
 ;
 
 Tests:
@@ -184,8 +184,8 @@ Tests:
         values+=STRING[',']
 ;
 
-Flavor:
-    'flavor' ':' 
+Engine:
+    'engine' ':' 
         'python'
 ;
 

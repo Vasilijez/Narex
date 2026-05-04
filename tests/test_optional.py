@@ -2,13 +2,13 @@ from narex import load_metamodel_and_model_str
 from narex import PythonEngine
 
 
-def test_optional_flavor_first():
+def test_optional_engine_first():
     m = """
         clause1 {
             letter
         }
         
-        flavor:
+        engine:
             python
             
         tests:
@@ -32,7 +32,7 @@ def test_optional_tests_first():
         tests:
             'test1', 'test2'
 
-        flavor:
+        engine:
             python
 
         target:

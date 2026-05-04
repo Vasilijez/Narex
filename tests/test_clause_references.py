@@ -91,7 +91,7 @@ def test_clause_references_illegal_keywords():
     m = """
         c {
             digit
-            flavor
+            engine
         }
 
         target:

@@ -6,26 +6,26 @@ If you have ever used regular expressions, then you know how difficult they can 
 
 Challenges of using regular expressions:
 - Expressions easily become unreadable, as they are extremely dense.
-- No standardization or cross-flavor compatibility. Depending on the flavor, it can vary significantly. Supported features and syntax often differ.
+- No standardization or cross-engine compatibility. Depending on the engine, it can vary significantly. Supported features and syntax often differ.
 - Unnatural pattern memorization. Humans quickly forget the syntax, as it is not intuitive.
 - The learning curve is steep, especially for non-tech users. Even though many non-tech users need data processing, regular expressions remain out of reach for them.
 
-The ultimate goal is to produce a DSL that uses natural language and enables cross-flavor compatibility.
+The ultimate goal is to produce a DSL that uses natural language and enables cross-engine compatibility.
 
-The main use case is for the user to define the desired flavor (Perl, Python, etc.) and write a regular expression using natural language. The output will be raw regular expression, which can be directly used within the specified flavor.
+The main use case is for the user to define the desired engine (Perl, Python, etc.) and write a regular expression using natural language. The output will be raw regular expression, which can be directly used within the specified engine.
 
-This DSL can be widely used by people from different backgrounds, as it uses natural language. Tricky regular expressions are abstracted, and a universal tool for cross-flavor support is provided. Learning this DSL frees you from ever having to remember regular expression syntax again.
+This DSL can be widely used by people from different backgrounds, as it uses natural language. Tricky regular expressions are abstracted, and a universal tool for cross-engine support is provided. Learning this DSL frees you from ever having to remember regular expression syntax again.
 
-The biggest issues are the vast number of flavors, subtle differences, and partially supported advanced features. Due to the complexity of implementing a DSL that handles advanced features and multiple engine flavors, support will be added gradually.
+The biggest issues are the vast number of engines, subtle differences, and partially supported advanced features. Due to the complexity of implementing a DSL that handles advanced features and multiple engine engines, support will be added gradually.
 
-In the beginning, only the Python flavor will be supported, covering its concepts.
+In the beginning, only the Python engine will be supported, covering its concepts.
 Some of the advanced supported concepts include:
 - `[uncaptured] group [<name> of]`
 - `backreference <group_name>`
 - `[negative] lookahead | lookbehind`
 - `if then [else]`
 
-A user can also test regular expression by using `tests:`, define desired flags with `flags:`, and specify the desired flavor using `flavor:`.
+A user can also test regular expression by using `tests:`, define desired flags with `flags:`, and specify the desired engine using `engine:`.
 
 ### Note
 #### Literal escaping
@@ -83,7 +83,7 @@ flags:
       global match,
       multiline
 
-flavor:
+engine:
       python
 
 tests:
@@ -321,7 +321,7 @@ tests:
       "x³ + 2x² + x + 2",
       "x³ + 3x² + x + 1"
 
-flavor: 
+engine: 
       python
 
 target: 
@@ -820,7 +820,7 @@ flags:
       global match,
       multiline
 
-flavor:
+engine:
       python
 
 target:
