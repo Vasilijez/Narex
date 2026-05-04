@@ -930,7 +930,7 @@ text generate <path> target python --output-path=./dir --overwrite            # 
 ```
 
 ### VSCode extension
-Prerequsities:
+Prerequisites:
 - Python VSCode extension (don't care now, it will be prompted if missing).
 
 1. If you want to play with the extension, open the `extension` subproject in VSCode and run the following command:
