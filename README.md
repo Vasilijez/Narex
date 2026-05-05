@@ -852,7 +852,9 @@ Narex/
 Prerequsities:
 - Python 3
 
-_Check `project.toml` for more info._
+_Check `pyproject.toml` for more info._
+
+Before activating the extension, be sure to follow the `Regular user workflow` or `Developer workflow`, as the extension requires dependencies to be installed. If something goes wrong, repeat the steps and restart the Visual Studio Code.
 
 #### Regular user workflow
 
@@ -867,6 +869,10 @@ python -m venv .venv
 3. Install dependencies:
 ``` sh
 pip install git+https://github.com/Vasilijez/Narex.git
+```
+4. Run VSCode from activated terminal:
+``` sh
+code .
 ```
 _Pulling of the source code is optional._
 
@@ -892,7 +898,10 @@ pip install -e .
 ``` sh
 pip install -e ".[dev]"
 ```
-
+7. Run VSCode from activated terminal:
+``` sh
+code .
+```
 
 ### Using
 You can use either of the two CLIs, Narex or textX.

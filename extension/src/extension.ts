@@ -1,6 +1,7 @@
-import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
+import { CloseAction, ErrorAction, LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as fs from 'fs';
 
 export async function activate(context: vscode.ExtensionContext) {
 	
@@ -8,18 +9,27 @@ export async function activate(context: vscode.ExtensionContext) {
 	// leveraging Python VSCode extension context awareness.
 	const pythonExt = vscode.extensions.getExtension('ms-python.python');
     if (!pythonExt) {
-        vscode.window.showErrorMessage("Please install the Python extension.");
+        const msg = "Please install the Python extension.";
+        suggestSolution(msg);
         return;
     }
     await pythonExt.activate();
     const api: any = pythonExt.exports;
-
     const pythonPath = api.settings.getExecutionDetails().execCommand[0];
+
+    if (!pythonPath || !fs.existsSync(pythonPath)) {
+        const msg = "No Python interpreter selected. Please select a valid environment.";
+        suggestSolution(msg);
+        return;
+    }
 
     const serverPath = context.asAbsolutePath(path.join('src', 'server.py'));
 
-	console.log("python path is ", pythonPath);
-	console.log("server path is ", serverPath);
+    if (!fs.existsSync(serverPath)) {
+        const msg = "LSP script (server.py) is missing from the extension folder.";
+        suggestSolution(msg);
+        return;
+    }
 
     const serverOptions: ServerOptions = {
         command: pythonPath,
@@ -30,9 +40,38 @@ export async function activate(context: vscode.ExtensionContext) {
 		documentSelector: [{
 			scheme: 'file',
 			language: 'narex_dsl'
-		}]
+		}],
+        errorHandler: {
+            error: () => ({ action: ErrorAction.Shutdown }),
+            closed: () => ({ action: CloseAction.DoNotRestart })
+        }
 	};
 	
     const client = new LanguageClient('myLsp', 'Narex LSP', serverOptions, clientOptions);
-    await client.start();
+    try {
+        await client.start();
+    } catch (error) {
+        suggestSolution(error);
+    }
+}
+
+export async function suggestSolution(error: unknown) {
+    let detail: string;
+
+    if (typeof error === 'string') {
+        detail = error;
+    } else if (error instanceof Error) {
+        detail = error.message;
+    } else {
+        detail = "An unexpected error occurred";
+    }
+
+    const message = `Narex Extension Error: ${detail}`;
+    const action = "View Setup Instructions";
+
+    vscode.window.showErrorMessage(message, action).then(selection => {
+        if (selection === action) {
+            vscode.env.openExternal(vscode.Uri.parse('https://github.com/Vasilijez/Narex#getting-started'));
+        }
+    });
 }
