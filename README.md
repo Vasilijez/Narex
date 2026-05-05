@@ -854,7 +854,7 @@ Prerequsities:
 
 _Check `pyproject.toml` for more info._
 
-Before activating the extension, be sure to follow the `Regular user workflow` or `Developer workflow`, as the extension requires dependencies to be installed. If something goes wrong, repeat the steps and restart the Visual Studio Code.
+Before [activating the extension](#vscode-extension), be sure to follow the `Regular user workflow` or `Developer workflow`, as the extension requires dependencies to be installed. If something goes wrong, repeat the steps and restart the Visual Studio Code.
 
 #### Regular user workflow
 
@@ -935,18 +935,24 @@ __Flags__
 One example with as many flags as possible:
 ``` sh
 narex run --path=input.nx --output-path=./dir --engine=python --overwrite     # i.  Narex
-text generate <path> target python --output-path=./dir --overwrite            # ii. textX
+textx generate <path> target python --output-path=./dir --overwrite           # ii. textX
 ```
 
 ### VSCode extension
 Prerequisites:
 - Python VSCode extension (don't care now, it will be prompted if missing).
 
+#### Installation
+1. Navigate to the `extension` directory in order to find `narex-x.y.z.vsix` extension fille.
+2. Install the extension by following the step 4 from `Development`.
+
+#### Development
+
 1. If you want to play with the extension, open the `extension` subproject in VSCode and run the following command:
 ``` sh
 npm install
 ```
-NOTE: Don't forget to activate the root project `.venv` from the subproject directory. If something goes wrong use `CTRL` + `SHIFT` + `P` -> `Select intepreter: ...` and select `python.exe` from the `.venv/Scripts` directory (_very importantly_).
+NOTE: Don't forget to activate the root project `.venv` from the subproject directory. If something goes wrong use `CTRL` + `SHIFT` + `P` -> `Select interpreter: ...` and select `python.exe` from the `.venv/Scripts` directory (_very importantly_).
 
 2. Click on the `F5` key in Windows to start extension debugging.
 
