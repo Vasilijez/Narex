@@ -23,7 +23,6 @@ Some of the advanced supported concepts include:
 - `[uncaptured] group [<name> of]`
 - `backreference <group_name>`
 - `[negative] lookahead | lookbehind`
-- `if then [else]`
 
 A user can also test regular expression by using `tests:`, define desired flags with `flags:`, and specify the desired engine using `engine:`.
 
@@ -700,91 +699,6 @@ match_object = re.search(
 )
 ```
 
-
-
-#### Task 10: Based upon condition, match number or message
-``` py
-""" 
-    MATCH: enabled 06012345678
-    MATCH: disabled 06012345678 disturbing
-    MATCH: enabled 06012345678
-    MATCH: enabled 06012345678
-    SKIP:  123#@$
-"""
-
-condition {
-      lookbehind 'enabled'
-}
-
-read_number {
-      digit repeat 1 or more times
-}
-  
-read_message {
-      letter repeat 1 or more times
-}
-
-match {
-      if condition then read_number else read_message
-      ends 
-}
-
-target:
-      match
-```
-
-
-#### Task 11: Are files found?
-
-``` py
-"""  
-    MATCH: 1 file found?
-    MATCH: 2 files found? 
-    MATCH: 24 files found? 
-    SKIP:  No files found
-"""
-
-_whitespaces {
-    whitespace repeat 1 or more times
-}
-
-number_one {
-    '1'
-    _whitespaces   
-}
-
-condition {
-    (lookahead) number_one
-}
-
-other_numbers {
-    digit between 2 and 9
-    digit repeat 1 or more times
-    _whitespaces
-}
-
-file_found {
-    number_one
-    'file'
-    _whitespaces
-    'found?'
-}
-
-files_found {  
-    other_numbers
-    'files'
-    _whitespaces
-    'found?'
-}
-
-match {
-    starts
-    if condition then file_found else files_found 
-}
-
-target:
-      match
-```
 
 
 
