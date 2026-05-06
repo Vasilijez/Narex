@@ -1,0 +1,19 @@
+version {
+    digit repeat 0 or more times     
+}
+
+format {
+    either 'png' or 'pdf' or 'jpeg'
+}
+
+file {
+    boundary
+    'fajl_v' 
+    version
+    '.'
+    format
+    boundary
+}
+
+target:
+    file

@@ -1,0 +1,17 @@
+head {
+      group g1 of digit repeat 1 or more times
+}
+
+tail {
+      backreference g1
+}
+  
+body {
+      letter repeat 1 or more times
+}
+
+match {
+      head 
+      body
+      tail
+}

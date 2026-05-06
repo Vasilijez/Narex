@@ -1,6 +1,0 @@
-head {
-      "vasa" '"' "'" 
-}
-
-target:
-      head

@@ -1,0 +1,14 @@
+number {
+      either 'one' or 'two' or 'three' or one of '369'
+}
+
+char {
+      one of '!.'
+}
+
+match {
+      either number or char
+}
+
+target:
+      match
