@@ -1,13 +1,13 @@
 # Examples
 
-- [characters]() - Match exact characters.
-- [coefficients]() - Match all the coefficients of x².
-- [date]() - Match various date formats and capture the year.
-- [email]() - Match a valid email format.
-- [file]() - Match a file with the correct format.
-- [price]() - Match price formats.
-- [repeated_numbers]() - Match repeated numbers from the beginning and the end.
-- [simple_number]() - Match a simple number.
+- [characters](/examples/characters/) - Match exact characters.
+- [coefficients](/examples/coefficients/) - Match all the coefficients of x².
+- [date](/examples/date/) - Match various date formats and capture the year.
+- [email](/examples/email/) - Match a valid email format.
+- [file](/examples/file/) - Match a file with the correct format.
+- [price](/examples/price/) - Match price formats.
+- [repeated_numbers](/examples/repeated_numbers/) - Match repeated numbers from the beginning and the end.
+- [simple_number](/examples/simple_number/) - Match a simple number.
 
 Each example includes source code written in Narex, the generated code, and a brief analysis.
 
