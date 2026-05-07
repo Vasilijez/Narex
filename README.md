@@ -281,15 +281,19 @@ NOTE: Don't move the extension `.vsix` file out of the the extension directory b
 
 ### Automatic releasing
 You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
-1. Make sure to pull the changes before tagging:
+1. Navigate to the main branch:
+```
+git checkout main
+```
+2. Make sure to pull the changes before tagging:
 ``` sh 
 git pull
 ```
-2. Create a new tag:
+3. Create a new tag:
 ``` sh
 git tag <tag-name>
 ```
-3. Push the tag to the remote repository:
+4. Push the tag to the remote repository:
 ``` sh
 git push origin <tag-name>
 ```
