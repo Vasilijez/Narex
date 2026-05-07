@@ -12,17 +12,21 @@ on:
 jobs:
   run_mypy:
     runs-on: ubuntu-latest
-    name: Mypy
     steps:
       # To use this repository's private action,
       # you must check out the repository
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Run Mypy
-        uses: jashparekh/mypy-action@v2
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          path: '.'
-          mypy_version: '0.910'
-          mypy_flags: '--verbose'
-          mypy_config_file: 'pyproject.toml'
-          requirement_files: 'requirements.txt'
+          python-version: '3.12'
+
+      - name: Install Narex dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+        
+      - name: Run mypy
+        run: mypy . --config-file pyproject.toml --verbose
