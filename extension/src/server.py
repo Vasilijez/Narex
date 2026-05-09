@@ -102,6 +102,7 @@ def get_label(ls, rule, eligble_keywords) -> str | None:
     if hasattr(rule, 'to_match'):
         # small_letter -> smallletter (rule in eligble_keywords)
         label = rule.to_match.replace("_", "")
+        assert isinstance(rule.to_match, str)
         if is_eligble_keyword(label, eligble_keywords):
             return rule.to_match
     
@@ -112,6 +113,7 @@ def get_label(ls, rule, eligble_keywords) -> str | None:
     
     if hasattr(rule, 'name'):
         label = rule.name
+        assert isinstance(label, str)
         if is_eligble_keyword(label, eligble_keywords):
             return label
 
