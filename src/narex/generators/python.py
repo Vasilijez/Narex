@@ -332,20 +332,20 @@ class PythonEngine:
             self.pattern = pattern 
             self.matches = matches
 
-    def interpret_test(self, test, regex, flags, is_global) -> list:
+    def interpret_test(self, test: str, regex: str, flags: int, is_global: bool) -> List[Match[str]] | None:
         if is_global:
             # Already iterable.
-            result = list(re.finditer(regex, test, flags=flags))
-            size = len(result)
+            matches = list(re.finditer(regex, test, flags=flags))
+            size = len(matches)
             if size == 0:
                 return None
-            return result
+            return matches
         else:
             # Make iterable.
-            result = re.search(regex, test, flags) 
-            if result is None:
+            match = re.search(regex, test, flags) 
+            if match is None:
                 return None
-            return [result]
+            return [match]
 
     def interpret_tests(self, tests, regex, flags, is_global) -> list:
         test_matches = []
