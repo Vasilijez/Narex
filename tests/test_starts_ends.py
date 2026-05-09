@@ -1,7 +1,7 @@
 from narex import load_metamodel_and_model_str
 from narex import PythonEngine
 
-def test_starts():
+def test_starts() -> None:
     m = """
         c {
             starts maybe one of 'something2' maybe letter  maybe one of 'something3'
@@ -16,7 +16,7 @@ def test_starts():
     r = e.generate(m, cli_only=True)
     assert r == r"^([something2])?([A-Za-z])?([something3])?"
 
-def test_ends():
+def test_ends() -> None:
     m = """
         c {
             starts

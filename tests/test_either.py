@@ -1,7 +1,7 @@
 from narex import load_metamodel_and_model_str
 from narex import PythonEngine
 
-def test_either():
+def test_either() -> None:
     m = """
         clause1 {
             one of 'something' either letter or letter or one of 'something2' letter

@@ -1,7 +1,7 @@
 from narex import load_metamodel_and_model_str
 from narex import PythonEngine
 
-def test_task_9():
+def test_task_9() -> None:
     m = """
         head {
             group g1 of digit repeat 1 or more times
@@ -30,7 +30,7 @@ def test_task_9():
     r = e.generate(m, cli_only=True)
     assert r == r"(\d{1,})[A-Za-z]{1,}\1"
 
-def test_task_10():
+def test_task_10() -> None:
     m = """
         whole_value {
             digit between 1 and 9 repeat 0 or more times
@@ -55,7 +55,7 @@ def test_task_10():
     r = e.generate(m, cli_only=True)
     assert r == r"\$[1-9]{0,}(\.\d{0,})?"
 
-def test_task_12():
+def test_task_12() -> None:
     m = """
         number {
             either 'one' or 'two' or 'three' or one of '369'

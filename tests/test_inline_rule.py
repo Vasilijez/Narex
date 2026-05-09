@@ -1,7 +1,7 @@
 from narex import load_metamodel_and_model_str
 from narex import PythonEngine
 
-def test_inline_rule():
+def test_inline_rule() -> None:
     m = """
         clause1 {
             one of 'something' letter

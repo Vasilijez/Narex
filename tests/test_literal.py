@@ -1,7 +1,7 @@
 from narex import load_metamodel_and_model_str
 from narex import PythonEngine
 
-def test_literal_many_values_combined():
+def test_literal_many_values_combined() -> None:
     m = """
     c {
         '@' 
@@ -19,7 +19,7 @@ def test_literal_many_values_combined():
     r = e.generate(m, cli_only=True)
     assert r == r"@\.com\d\/\.\d\.[A-Za-z]"
 
-def test_literal_strange_parenthesis():
+def test_literal_strange_parenthesis() -> None:
     m = """
         head {
             "vasa" '"' "'" 

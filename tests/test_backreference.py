@@ -2,7 +2,7 @@ from narex import load_metamodel_and_model_str
 from narex.generators.python import PythonEngine
 from textx import TextXSemanticError
 
-def test_backreference_correct_group_name():
+def test_backreference_correct_group_name() -> None:
     m = """
         c1 {
             group g1 of digit repeat 1 or more times
@@ -27,9 +27,9 @@ def test_backreference_correct_group_name():
     regex = e.generate(m, cli_only=True)
     assert regex == r"(\d{1,})test\1"
 
-# test_backreference(): bad case when the group doesn't exist
+# test_backreference() -> None: bad case when the group doesn't exist
 
-def test_backreference_missing_group_name():
+def test_backreference_missing_group_name() -> None:
     m = """
         c1 {
             group g1 of digit repeat 1 or more times

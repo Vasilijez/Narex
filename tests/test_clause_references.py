@@ -2,7 +2,7 @@ from narex import load_metamodel_and_model_str
 from narex.generators.python import PythonEngine
 from textx import TextXSemanticError
 
-def test_clause_references_simple():
+def test_clause_references_simple() -> None:
     m = """
         c1 {
             starts
@@ -24,7 +24,7 @@ def test_clause_references_simple():
     r = e.generate(m, cli_only=True)
     assert r == r"[A-Za-z]\d^(\d)?"
 
-def test_clause_references_nested():
+def test_clause_references_nested() -> None:
     m = """
         c1 {
             starts
@@ -59,7 +59,7 @@ def test_clause_references_nested():
     assert r == r"^\d[A-Za-z][A-Za-z]"
 
 
-def test_clause_references_illegal_keywords():
+def test_clause_references_illegal_keywords() -> None:
     m = """
         c {
             digit
