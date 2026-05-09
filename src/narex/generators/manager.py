@@ -37,7 +37,7 @@ def generate(metamodel, model, output_path, overwrite, debug, cli_only, engine):
     else:
         return GenStatus.FULL, output_file_path, result
 
-def override_engine(parameter: str | None, model: object) -> str:
+def override_engine(parameter: str | None, model: Any) -> Any:
     """
         Engine defined within the parameter overrides the parameter defined within the model.
     """
@@ -55,6 +55,6 @@ def override_engine(parameter: str | None, model: object) -> str:
     raise Exception("Engine must be defined either within the model or within the `--engine` flag!")
 
 def is_engine_defined(model: object) -> bool:
-    if model.optional and model.optional.engine:
+    if hasattr(model, "optional") and hasattr(model.optional, "engine"):
         return True
     return False
