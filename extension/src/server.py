@@ -51,13 +51,12 @@ def grammar_check(ls: NarexLanguageServer, params):
         )
     )
     
-def print_msg(ls: NarexLanguageServer, message):
+def print_msg(ls: NarexLanguageServer, message: str) -> None:
     # Useful utility function.
-    msg = ls.window_log_message(types.ShowMessageParams(
-                message=message,
-                type=types.MessageType.Info,
-            ))
-    return msg
+    ls.window_log_message(types.LogMessageParams(
+        type=types.MessageType.Info,
+        message=message,
+    ))
 
 def catch_current_word(ls, content: str) -> str:
     match = regex.search(r'(\w+)$', content)
