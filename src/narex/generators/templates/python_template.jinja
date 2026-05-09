@@ -16,13 +16,16 @@
 {%- if tests %}
 {%- for test in tests %}
 #
-#    test {{ loop.index0+1 }}:
-#      pattern: {{test.pattern}}
-{% if test.matches -%}
-{%- for match in test.matches -%}
-#      match {{ loop.index0+1 }}: {{match.group()}}
+#  test {{ loop.index0+1 }}:
+#      pattern: 
+#          {{test.pattern | replace('\n', '\n#          ')}}
+{%- if test.matches -%}
+{%- for match in test.matches%}
+#      match {{ loop.index0+1 }}: 
+#          {{match.group() | replace('\n', '\n#          ')}}
 {%- for group in match.groups() -%}
-#       group {{loop.index0}}: {{group}}
+#       group {{loop.index0}}: 
+#          {{group | replace('\n', '\n#          ')}}
 {%- endfor %}
 {%- endfor %}
 {%- else -%}
@@ -47,19 +50,19 @@ match_strings = re.findall(
     regex, 
     text{% if flags != '' %}, 
     flags={{flags}}
-    {% endif %}
+    {%- endif %}
 )
 match_objects = re.finditer(
     regex, 
     text{% if flags != '' %}, 
     flags={{flags}}
-    {% endif %}
+    {%- endif %}
 )
 {% else %}
 match_object = re.search(
     regex, 
     text{% if flags != '' %}, 
     flags={{flags}}
-    {% endif %}
+    {%- endif %}
 )
 {% endif %}
