@@ -28,6 +28,7 @@ RuleType:
     Either          |
     Starts          |
     Ends            |
+    Boundary        |
     Lookaround      |
     Group           |
     Backreference   |
@@ -81,6 +82,10 @@ Starts:
 
 Ends:
     'ends'
+;
+
+Boundary:
+    'boundary'
 ;
 
 Lookaround:

@@ -167,6 +167,9 @@ class PythonEngine:
     def interpret_ends(self) -> str:
         return "$"
     
+    def interpret_boundary(self) -> str:
+        return r"\b"
+    
     def interpret_look_ahead(self, regex: str, lookahead: Any) -> str:
         sign = "!" if lookahead.negative else "="
         regex += "(?" + sign
@@ -271,6 +274,8 @@ class PythonEngine:
                 regex += self.interpret_starts()
             case 'ends':
                 regex += self.interpret_ends()
+            case 'boundary':
+                regex += self.interpret_boundary()
             
         if rule.repeat:
             regex += self.interpret_repeat(rule.repeat)
