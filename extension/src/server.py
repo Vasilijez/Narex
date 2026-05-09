@@ -73,11 +73,6 @@ def is_eligble_keyword(label, eligble_keywords):
     if label in eligble_keywords:
         return True
     return False
-
-def extract_ref_names(refs):
-    names = []
-    for r in refs:
-        names.append(r.name)
     
 def get_label(ls, rule, eligble_keywords) -> str | None:
 
