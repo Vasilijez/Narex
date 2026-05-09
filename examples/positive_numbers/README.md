@@ -1,0 +1,39 @@
+## Match all positive numbers only
+``` py
+"""
+    10 -25 -35 45
+    -150 25 -35 -147
+    8 -88 -888 -8888
+    -3 -33 -333 -333
+
+    MATCH: 10
+    MATCH: 45
+    MATCH: 25
+    MATCH: 8
+""" 
+
+minus_sign {
+      negative lookbehind '-' 
+}
+
+number {
+      digit repeat 1 or more times
+}
+
+positive_number {
+      boundary 
+      minus_sign
+      number
+}
+      
+flags:
+      global match,
+      multiline
+
+engine:
+      python
+
+target:
+      positive_number
+```
+

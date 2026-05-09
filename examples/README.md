@@ -5,6 +5,7 @@
 - [date](/examples/date/) - Match various date formats and capture the year.
 - [email](/examples/email/) - Match a valid email format.
 - [file](/examples/file/) - Match a file with the correct format.
+- [positive_numbers](/examples/positive_numbers/) - Match all positive numbers.
 - [price](/examples/price/) - Match price formats.
 - [repeated_numbers](/examples/repeated_numbers/) - Match repeated numbers from the beginning and the end.
 - [simple_number](/examples/simple_number/) - Match a simple number.
