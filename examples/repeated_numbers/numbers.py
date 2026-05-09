@@ -2,7 +2,7 @@
 ######################### Raw regex ########################## 
 ##############################################################
 #
-#  [a-z]
+#  (\d{1,})[A-Za-z]{1,}\1
 #
 ##############################################################
 ########################### Engine ########################### 
@@ -14,7 +14,7 @@
 ########################### Tests ############################ 
 ##############################################################
 #
-# None test has been defined.
+# No tests defined.
 #
 ##############################################################
 ####################### Generated code ####################### 
@@ -22,15 +22,10 @@
 import re
 
 text = ""   # empty
-regex = r'[a-z]'
+regex = '(\\d{1,})[A-Za-z]{1,}\\1'
 
-match_strings = re.findall(
+
+match_object = re.search(
     regex, 
-    text, 
-    flags=re.MULTILINE | re.IGNORECASE | re.DOTALL
-)
-match_objects = re.finditer(
-    regex, 
-    text, 
-    flags=re.MULTILINE | re.IGNORECASE | re.DOTALL
+    text
 )

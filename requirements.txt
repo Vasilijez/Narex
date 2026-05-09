@@ -1,9 +1,0 @@
-textx
-textx[cli]
-textx[dev]
-mypy
-pygls
-textmate-grammar-python
--e .
-pytest
-jinja2

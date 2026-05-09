@@ -1,14 +1,65 @@
-[tool.mypy]
-strict = true
-ignore_missing_imports = true
+[build-system]
+requires = ["flit_core >=3.11,<4"]
+build-backend = "flit_core.buildapi"
 
 [project]
 name = "narex"
-version = "0.1.0"
+dynamic = ["version", "description"]
+authors = [
+    {name = "Vasilije Zeković", email = "none@none.com"}
+]
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["DSL", "language", "parser", "narex", "regex"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Compilers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+]
+requires-python = ">=3.10"
 dependencies = [
-    "textX",
-    "click",
+    "textX[cli] >= 4.3.0",
+    "Arpeggio >= 2.0.0",
+    "click >= 8.3.1",
+    "jinja2 >= 3.1.6",
+    "regex >= 2026.4.4",
+    "pygls >= 2.0.1"
 ]
 
+[project.urls]
+Repository = "https://github.com/Vasilijez/Narex"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "mypy",
+    "flit",
+    "textmate-grammar-python",
+]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+disallow_untyped_decorators = false
+
 [project.scripts]
-narex = "narex.cli.main:cli"
+narex = "narex.cli.narex:cli"
+
+[tool.flit.module]
+name = "narex"
+
+[tool.flit.sdist]
+exclude = ["**/.*"]
+
+[project.entry-points.textx_languages]
+narex = "narex.cli.textx:textx_language"
+
+[project.entry-points.textx_generators]
+narex_python = "narex.cli.textx:textx_python_generator"

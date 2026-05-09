@@ -2,7 +2,7 @@
 Anchor:
     clauses+=Clause 
     optional=Optional
-    target=Target // Maybe safe-scoping? Yeah it is important especially later on, I can do it easily by intercepting objects, smth like that I had it in the example related to the state machine.
+    target=Target
 ;
 
 Clause:
@@ -40,7 +40,7 @@ Maybe:
 ;
 
 Keyword:
-    'target' | 'tests' | 'flavor' | 'flags'
+    'target' | 'tests' | 'engine' | 'flags'
 ;
 
 ValidName:
@@ -55,7 +55,6 @@ ClauseReference:
     value=[Clause:ValidReference]
 ;
 
-// `uncaptured group of some_rule` is effectively alias.
 Group:
     uncaptured?=Uncaptured 'group' (name=ID 'of')? rule=Rule
 ;
@@ -177,21 +176,25 @@ End:
 ;
 
 Optional:
-    ((tests=Tests)? (flavor=Flavor)? (flags=Flags)?)#
+    ((tests=Tests)? (engine=Engine)? (flags=Flags)?)#
 ;
 
 Tests:
-    'tests:' 
+    'tests' ':'  
         values+=STRING[',']
 ;
 
-Flavor:
-    'flavor:'
-        'python'
+Engine:
+    'engine' ':' 
+        value=EngineValue
+;
+
+EngineValue:
+    'python'
 ;
 
 Flags:
-   'flags:' values+=FlagValue[',']
+   'flags' ':' values+=FlagValue[',']
 ;
 
 FlagValue:
@@ -218,8 +221,14 @@ SingleLine:
 ;
 
 Target:
-    'target:' 
+    'target' ':' 
         clause=[Clause]
+;
+
+//////////////////// Comments ////////////////////
+
+Comment:
+  /\/\/.*$/
 ;
 
 //////////////////// Literal /////////////////////

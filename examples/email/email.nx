@@ -1,0 +1,28 @@
+user {
+      base_case {
+          letter repeat 1 or more times
+      }
+
+      base_case 
+      maybe '.' base_case repeat 1 or more times
+}
+
+domain {
+      letter repeat 1 or more times
+}
+      
+tld {
+      '.' 
+      letter repeat 1 or more times
+}
+
+email { 
+      user
+      '@'
+      domain
+      '.'
+      tld
+}
+
+target:
+      email

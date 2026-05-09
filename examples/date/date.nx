@@ -1,0 +1,32 @@
+month {
+      either '0' or '1'
+      digit between 0 and 2
+}
+
+day {
+      digit between 0 and 3
+      digit
+}
+
+year {
+      short_format {
+          digit repeat 2 times
+      }
+
+      long_format {  
+          digit repeat 4 times
+      }
+
+      either short_format or long_format
+}
+
+date {
+      day
+      '/'
+      month
+      '/'
+      group year
+}
+
+target:
+      date

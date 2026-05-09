@@ -1,0 +1,26 @@
+## Match price formats
+``` py
+""" 
+    MATCH: $3.45
+    MATCH: $23.32
+    MATCH: $400
+    SKIP:  €3.44
+    SKIP:  $.23
+"""
+
+whole_value {
+      digit between 1 and 9 repeat 0 or more times
+}
+
+decimal_value {
+      '.' digit repeat 0 or more times
+}
+
+price {
+      '$'
+      whole_value 
+      maybe decimal_value
+}
+
+target:
+      price

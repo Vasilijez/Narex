@@ -1,0 +1,26 @@
+variable {
+      lookahead 'x²'
+}
+
+coefficient {
+      digit repeat 1 or more times 
+}
+
+monomial {
+      coefficient 
+      variable
+}
+
+flags:
+      global match,
+      multiline
+
+tests:
+      "x³ + 2x² + x + 2",
+      "x³ + 3x² + x + 1"
+
+engine: 
+      python
+
+target: 
+      monomial

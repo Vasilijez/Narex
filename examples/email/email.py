@@ -2,7 +2,7 @@
 ######################### Raw regex ########################## 
 ##############################################################
 #
-#  {{regex}}
+#  [A-Za-z]{1,}(\.)?[A-Za-z]{1,}{1,}@[A-Za-z]{1,}\.\.[A-Za-z]{1,}
 #
 ##############################################################
 ########################### Engine ########################### 
@@ -13,26 +13,8 @@
 ##############################################################
 ########################### Tests ############################ 
 ##############################################################
-{%- if tests %}
-{%- for test in tests %}
 #
-#    test {{ loop.index0+1 }}:
-#      pattern: {{test.pattern}}
-{% if test.matches -%}
-{%- for match in test.matches -%}
-#      match {{ loop.index0+1 }}: {{match.group()}}
-{%- for group in match.groups() -%}
-#       group {{loop.index0}}: {{group}}
-{%- endfor %}
-{%- endfor %}
-{%- else -%}
-#        No matches.
-{%- endif %}
-{%- endfor %}
-{%- else %}
-#
-# None test has been defined.
-{%- endif %}
+# No tests defined.
 #
 ##############################################################
 ####################### Generated code ####################### 
@@ -40,23 +22,10 @@
 import re
 
 text = ""   # empty
-regex = r'{{regex}}'
+regex = '[A-Za-z]{1,}(\\.)?[A-Za-z]{1,}{1,}@[A-Za-z]{1,}\\.\\.[A-Za-z]{1,}'
 
-{% if "globalmatch" in model.optional.flags.values -%}
-match_strings = re.findall(
-    regex, 
-    text, 
-    flags={{flags}}
-)
-match_objects = re.finditer(
-    regex, 
-    text, 
-    flags={{flags}}
-)
-{% else %}
+
 match_object = re.search(
     regex, 
-    text, 
-    flags={{flags}}
+    text
 )
-{% endif %}

@@ -1,7 +1,7 @@
 from narex import load_metamodel_and_model_str
 from narex import PythonEngine
 
-def test_either():
+def test_either() -> None:
     m = """
         clause1 {
             one of 'something' either letter or letter or one of 'something2' letter
@@ -13,5 +13,5 @@ def test_either():
 
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
-    r = e.generate(m)
+    r = e.generate(m, cli_only=True)
     assert r == r"[something]([A-Za-z]|[A-Za-z]|[something2])[A-Za-z]"

@@ -1,36 +1,39 @@
 import click
-from narex import load_metamodel_and_model_path
-from narex.generators.python import PythonEngine
+from narex.generators.manager import GenStatus, generate
+from textx.metamodel import TextXMetaModel
+from typing import Any
 
-@click.group()
-def cli():
-    pass
-
-
-@click.command()
-@click.option('--path', default='', help='Enter path to model file')
-def run_command(path):
+def generate_with_print(
+        metamodel: TextXMetaModel, 
+        model: Any, 
+        output_path: str | None, 
+        overwrite: bool = False, 
+        debug: bool = False,
+        cli_only: bool = False, 
+        engine: str | None = None
+    ) -> None:
+    
     try:
-        mm, m = load_metamodel_and_model_path(path)
-        e = PythonEngine()
-        result = e.generate(m)
-        print(f"Result {result}")
+        status, output_file_path, result = generate(
+            metamodel, 
+            model, 
+            output_path, 
+            overwrite, 
+            debug, 
+            cli_only, 
+            engine
+        )
+
+        match status:
+            case GenStatus.SKIPPED:
+                click.secho(click.style(f"Skipping since the overwrite flag is not passed: {output_file_path}", fg='red'))
+            
+            case GenStatus.FULL:
+                click.secho(click.style(f"Full code generated and saved to: {output_file_path}", fg='blue'))
+            
+            case GenStatus.CLI_ONLY:
+                click.secho(click.style(f"Raw regex output: {result}", fg='green'))
+
     except Exception as e:
-        print(f"An error occured while running the model: \n{e}")
+        click.secho(click.style(f"An error occurred while running the model: \n{e}", fg='red'))
 
-
-@click.command()
-@click.option('--path', default='', help='Enter path to model file')
-def validate_command(path):
-    try:
-        _, m = load_metamodel_and_model_path(path)
-        # validate(m)   # useless for now
-    except Exception as e:
-        print(f"An error occured while validating the model: \n{e}")
-
-
-cli.add_command(validate_command)
-cli.add_command(run_command)
-
-if __name__ == '__main__':
-    cli()
