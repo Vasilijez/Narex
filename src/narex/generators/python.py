@@ -278,7 +278,7 @@ class PythonEngine:
 
         return regex
 
-    def interpret_flags(self, generate_str=True, flags=[]) -> int | str:
+    def interpret_flags(self, generate_str: bool = True, flags: List[str] = []) -> int | str:
         flags_str = []
         flags_int = set()
 
@@ -294,13 +294,12 @@ class PythonEngine:
                     flags_str.append("re.DOTALL")
                     flags_int.add(re.DOTALL)
 
-        flags_str = " | ".join(flags_str) 
         combined_flags = 0
         for f in flags_int:
             combined_flags |= f
 
         if generate_str:
-            return flags_str
+            return " | ".join(flags_str) 
         else:
             return combined_flags
 
