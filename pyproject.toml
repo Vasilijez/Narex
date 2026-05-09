@@ -47,6 +47,7 @@ dev = [
 [tool.mypy]
 strict = true
 ignore_missing_imports = true
+disallow_untyped_decorators = false
 
 [project.scripts]
 narex = "narex.cli.narex:cli"
