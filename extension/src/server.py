@@ -5,6 +5,8 @@ from lsprotocol import types
 from pygls.lsp.server import LanguageServer
 from textx import TextXSyntaxError, TextXSemanticError
 from narex import get_metamodel
+from typing import Any, List, Set
+from pygls.workspace import TextDocument
 
 DATE_FORMATS = [
     "%H:%M:%S",
@@ -14,7 +16,15 @@ DATE_FORMATS = [
 ]
 
 class NarexLanguageServer(LanguageServer):
-    def __init__(self, name, version, text_document_sync_kind = types.TextDocumentSyncKind.Incremental, notebook_document_sync = None, *args, **kwargs):
+    def __init__(
+        self,
+        name: str,
+        version: str,
+        text_document_sync_kind: types.TextDocumentSyncKind = types.TextDocumentSyncKind.Incremental,
+        notebook_document_sync: types.NotebookDocumentSyncOptions | None = None,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         super().__init__(name, version, text_document_sync_kind, notebook_document_sync, *args, **kwargs)
         self.mm = get_metamodel()
 
@@ -22,7 +32,7 @@ server = NarexLanguageServer("narex-server", "v1")
 
 @server.feature(types.TEXT_DOCUMENT_DID_OPEN)
 @server.feature(types.TEXT_DOCUMENT_DID_CHANGE)
-def grammar_check(ls: NarexLanguageServer, params):
+def grammar_check(ls: NarexLanguageServer, params: types.DidOpenTextDocumentParams | types.DidChangeTextDocumentParams) -> None:
 
     ### Processing the grammar rules validation ###
 
@@ -58,23 +68,23 @@ def print_msg(ls: NarexLanguageServer, message: str) -> None:
         message=message,
     ))
 
-def catch_current_word(ls, content: str) -> str:
+def catch_current_word(ls: NarexLanguageServer, content: str) -> str:
     match = regex.search(r'(\w+)$', content)
     word = match.group(1).lower() if match else ""
     print_msg(ls, f"current_word {word}")
     return word
 
-def slice_document_after_cursor(document, params) -> str:
+def slice_document_after_cursor(document: TextDocument, params: types.CompletionParams) -> str:
     offset = document.offset_at_position(params.position)
     content = document.source[:offset]
     return content
 
-def is_eligble_keyword(label, eligble_keywords):
+def is_eligble_keyword(label: str, eligble_keywords: Set[str]) -> bool:
     if label in eligble_keywords:
         return True
     return False
     
-def get_label(ls, rule, eligble_keywords) -> str | None:
+def get_label(ls: NarexLanguageServer, rule: Any, eligble_keywords: Set[str]) -> str | None:
 
     #
     #  rule                to_match                   rule_name                   name
@@ -119,7 +129,7 @@ def get_label(ls, rule, eligble_keywords) -> str | None:
 
     return None
 
-def create_and_sort_by_starts_with(params, current_word, label) -> types.CompletionItem:
+def create_and_sort_by_starts_with(current_word: str, label: str) -> types.CompletionItem:
     sort_priority = "0" if label.startswith(current_word) else "1"
 
     item = types.CompletionItem(
@@ -131,24 +141,24 @@ def create_and_sort_by_starts_with(params, current_word, label) -> types.Complet
 
     return item 
 
-def is_id_rule(rule) -> bool:
+def is_id_rule(rule: Any) -> bool:
     return hasattr(rule, 'rule_name') and rule.rule_name == 'ID'
 
-def get_offset_from_line_col(text, line, col):
+def get_offset_from_line_col(text: str, line: int, col: int) -> int:
     lines = text.splitlines(keepends=True)
     offset = sum(len(l) for l in lines[:line - 1]) + (col - 1)
     return offset
 
-def get_ref_names(partial_model) -> list[str]:
-    clause_refs = r'[^\d\W]\w*\b(?=\s*{)'
-    clause_refs = regex.findall(pattern=clause_refs, string=partial_model)
+def get_ref_names(partial_model: str) -> List[str]:
+    clause_refs_pat = r'[^\d\W]\w*\b(?=\s*{)'
+    clause_refs: List[str] = regex.findall(pattern=clause_refs_pat, string=partial_model)
 
-    group_refs = r'group\s*\K[^\d\W]\w*\b(?=\s*of)'
-    group_refs = regex.findall(pattern=group_refs, string=partial_model)
+    group_refs_pat = r'group\s*\K[^\d\W]\w*\b(?=\s*of)'
+    group_refs: List[str] = regex.findall(pattern=group_refs_pat, string=partial_model)
 
     return clause_refs + group_refs
 
-def get_eligble_keywords(ls) -> list[str]:
+def get_eligble_keywords(ls: NarexLanguageServer) -> Set[str]:
     illegal_rules = {
         'UnescapedString', 
         'EdgeValue', 
@@ -182,7 +192,7 @@ def get_eligble_keywords(ls) -> list[str]:
     return eligble_keywords
 
 @server.feature(types.TEXT_DOCUMENT_COMPLETION)
-def code_completion(ls: NarexLanguageServer, params):
+def code_completion(ls: NarexLanguageServer, params: types.CompletionParams) -> types.CompletionList:
 
     ### Based on the textX parser predicted rules are offered ###
  
@@ -193,20 +203,20 @@ def code_completion(ls: NarexLanguageServer, params):
     items = {}
 
     # Cut off document content after cursor
-    document = slice_document_after_cursor(document, params)
+    document_text = slice_document_after_cursor(document, params)
 
     # Catch current word
-    current_word = catch_current_word(ls, document)
+    current_word = catch_current_word(ls, document_text)
 
     eligble_keywords = get_eligble_keywords(ls)
 
     try:
-        m = ls.mm.model_from_str(document)
+        ls.mm.model_from_str(document_text)
 
     except TextXSyntaxError as e:
 
-        partial_offset = get_offset_from_line_col(document, e.line, e.col)
-        partial_model = document[:partial_offset]
+        partial_offset = get_offset_from_line_col(document_text, e.line, e.col)
+        partial_model = document_text[:partial_offset]
         ids = get_ref_names(partial_model)
 
         for rule in e.expected_rules:
@@ -214,22 +224,22 @@ def code_completion(ls: NarexLanguageServer, params):
             label = get_label(ls, rule, eligble_keywords)
 
             if label:
-                item = create_and_sort_by_starts_with(params, current_word, label)
+                item = create_and_sort_by_starts_with(current_word, label)
                 items[label] = item
 
             elif is_id_rule(rule):
                 for label in ids:
-                    item = create_and_sort_by_starts_with(params, current_word, label)
+                    item = create_and_sort_by_starts_with(current_word, label)
                     items[label] = item
         
     except (TextXSemanticError, Exception) as e:
         pass
 
-    return types.CompletionList(is_incomplete=False, items=items.values()) 
+    return types.CompletionList(is_incomplete=False, items=list(items.values())) 
 
 
 @server.feature(types.TEXT_DOCUMENT_HOVER)
-def hover(ls: NarexLanguageServer, params: types.HoverParams):
+def hover(ls: NarexLanguageServer, params: types.HoverParams) -> types.Hover | None:
     
     ### Used only for testing (learning) purposes ###
     ### 01/01/20
