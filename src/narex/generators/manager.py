@@ -2,6 +2,8 @@ from narex.generators.python import PythonEngine
 from narex.utils.loader import resolve_output_path, path_exists
 from enum import Enum
 from narex.utils.strings import normalize
+from textx.metamodel import TextXMetaModel
+from typing import Any, Tuple
 
 ENGINES = {
     'python'
@@ -12,7 +14,15 @@ class GenStatus(Enum):
     FULL = 2
     CLI_ONLY = 3
 
-def generate(metamodel, model, output_path, overwrite, debug, cli_only, engine):
+def generate(
+        metamodel: TextXMetaModel, 
+        model: Any, 
+        output_path: str | None, 
+        overwrite: bool = False, 
+        debug: bool = False,
+        cli_only: bool = False, 
+        engine: str | None = None
+    ) -> Tuple[GenStatus, str, str | None]:
 
     match override_engine(parameter=engine, model=model):
         case 'python':

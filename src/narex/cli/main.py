@@ -1,9 +1,28 @@
 import click
 from narex.generators.manager import GenStatus, generate
+from textx.metamodel import TextXMetaModel
+from typing import Any
 
-def generate_with_print(metamodel, model, output_path, overwrite, debug, cli_only, engine):
+def generate_with_print(
+        metamodel: TextXMetaModel, 
+        model: Any, 
+        output_path: str | None, 
+        overwrite: bool = False, 
+        debug: bool = False,
+        cli_only: bool = False, 
+        engine: str | None = None
+    ) -> None:
+    
     try:
-        status, output_file_path, result = generate(metamodel, model, output_path, overwrite, debug, cli_only, engine)
+        status, output_file_path, result = generate(
+            metamodel, 
+            model, 
+            output_path, 
+            overwrite, 
+            debug, 
+            cli_only, 
+            engine
+        )
 
         match status:
             case GenStatus.SKIPPED:

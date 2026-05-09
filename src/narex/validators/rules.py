@@ -1,6 +1,8 @@
 from textx import TextXSemanticError
+from typing import Any
+from textx.metamodel import TextXMetaModel
 
-def validate_class_reference(m, mm):
+def validate_class_reference(m: Any, mm: TextXMetaModel) -> None:
     global_clauses = []
     for clause in m.clauses:
         global_clauses.append(clause.name)
@@ -8,7 +10,7 @@ def validate_class_reference(m, mm):
     if m.target.clause.name not in global_clauses:
         raise TextXSemanticError("You can't use an inner clause reference as the target clause reference!")
 
-def validate_domain(domain):
+def validate_domain(domain: Any) -> None:
     if domain.between is None:
         return
     
@@ -34,7 +36,7 @@ def validate_domain(domain):
             if ('A' <= start <= 'Z' and 'A' <= end <= 'Z') == False:
                 raise TextXSemanticError("You can't use a non-big-letter value for `start` or `end` in `between`, if rule is `big_letter`!")
 
-def validate_repeat(repeat):
+def validate_repeat(repeat: Any) -> None:
     start = repeat.start
     end = None
     
@@ -65,7 +67,7 @@ def validate_repeat(repeat):
         if start == end:
             raise TextXSemanticError("You can't use the same start and end value in `repeat` rule!") 
 
-def validate_literal(literal):
+def validate_literal(literal: Any) -> Any:
     literal.value = literal.value[1:-1]
 
     if (len(literal.value) == 0):

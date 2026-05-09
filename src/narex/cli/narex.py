@@ -3,17 +3,24 @@ from narex import load_metamodel_and_model_path
 from narex.cli.main import generate_with_print
 
 @click.group()
-def cli():
+def cli() -> None:
     pass
 
 @click.command()
 @click.option('--path', default='', help='Enter path of model file.')
 @click.option('--cli-only', is_flag=True, help='Generate raw regex output to CLI only.')
 @click.option('--output-path', is_flag=False, help='Enter path to output directory.')
-@click.option('--engine', help='Enter a regex engine.')
+@click.option('--engine', is_flag=False, help='Enter a regex engine.')
 @click.option('--overwrite', is_flag=True, help='Overwrite an existing output file.')
-@click.option('--debug', default='python', help='Debug command executing.')
-def run_command(path, cli_only, output_path, engine, overwrite, debug):
+@click.option('--debug', default=False, help='Debug command executing.')
+def run_command(
+    path: str = '', 
+    cli_only: bool = False, 
+    output_path: str | None = None, 
+    engine: str | None = None, 
+    overwrite: bool = False, 
+    debug: bool = False) -> None:
+
     try:
         mm, m = load_metamodel_and_model_path(file_path=path)
         generate_with_print(mm, m, output_path, overwrite, debug, cli_only, engine)
@@ -23,7 +30,7 @@ def run_command(path, cli_only, output_path, engine, overwrite, debug):
 
 @click.command()
 @click.option('--path', default='', help='Enter path to model file')
-def validate_command(path):
+def validate_command(path: str = '') -> None:
     try:
         _, m = load_metamodel_and_model_path(path)
         click.secho(click.style("Your model is correct!", fg='green'))
