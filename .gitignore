@@ -1,0 +1,12 @@
+.venv
+venv/
+venv.bak/
+.mypy*
+.pytest*
+
+*.egg-info
+__pycache__
+
+dist/
+
+**/out_regex*

@@ -1,32 +1,39 @@
 # Narex
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+
 If you have ever used regular expressions, then you know how difficult they can be. Some people, when confronted with a problem, think _“I know, I’ll use regular expressions.”_ Now they have two problems [[1]](https://regex.info/blog/2006-09-15/247).
 
 Challenges of using regular expressions:
 - Expressions easily become unreadable, as they are extremely dense.
-- No standardization or cross-flavor compatibility. Depending on the flavor, it can vary significantly. Supported features and syntax often differ.
+- No standardization or cross-engine compatibility. Depending on the engine, it can vary significantly. Supported features and syntax often differ.
 - Unnatural pattern memorization. Humans quickly forget the syntax, as it is not intuitive.
 - The learning curve is steep, especially for non-tech users. Even though many non-tech users need data processing, regular expressions remain out of reach for them.
 
-The ultimate goal is to produce a DSL that uses natural language and enables cross-flavor compatibility.
+The ultimate goal is to produce a DSL that uses natural language and enables cross-engine compatibility.
 
-The main use case is for the user to define the desired flavor (Perl, Python, etc.) and write a regular expression using natural language. The output will be raw regular expression, which can be directly used within the specified flavor.
+The main use case is for the user to define the desired engine (Perl, Python, etc.) and write a regular expression using natural language. The output will be raw regular expression, which can be directly used within the specified engine.
 
-This DSL can be widely used by people from different backgrounds, as it uses natural language. Tricky regular expressions are abstracted, and a universal tool for cross-flavor support is provided. Learning this DSL frees you from ever having to remember regular expression syntax again.
+This DSL can be widely used by people from different backgrounds, as it uses natural language. Tricky regular expressions are abstracted, and a universal tool for cross-engine support is provided. Learning this DSL frees you from ever having to remember regular expression syntax again.
 
-The biggest issues are the vast number of flavors, subtle differences, and partially supported advanced features. Due to the complexity of implementing a DSL that handles advanced features and multiple engine flavors, support will be added gradually.
+The biggest issues are the vast number of engines, subtle differences, and partially supported advanced features. Due to the complexity of implementing a DSL that handles advanced features and multiple engine engines, support will be added gradually.
 
-In the beginning, only the Python flavor will be supported, covering its concepts.
+In the beginning, only the Python engine will be supported, covering its concepts.
 Some of the advanced supported concepts include:
-- `[named] backreference`
-- `group`
+- `[uncaptured] group [<name> of]`
+- `backreference <group_name>`
 - `[negative] lookahead | lookbehind`
-- `if then [else]`
 
-A user can also test regular expression by using `test:`, define desired flags with `flags:`, and specify the desired flavor using `flavor:`.
+A user can also test regular expression by using `tests:`, define desired flags with `flags:`, and specify the desired engine using `engine:`.
 
-## Examples
-#### Task 1: Match phone number 
+### Note
+#### Literal escaping
+The user shouldn't perform any escaping of literals, as this could produce an inaccurate regex. Each literal enclosed in `''` will be escaped individually (e.g. `'!@'`). If the user provides two consecutive literal rules (e.g. `'@'` and `'.com'`), they will not be merged and escaped together.
+#### Literal quotes
+The user shouldn't use double quotes `"` more than twice when defining a literal value (e.g. wrong `""@"`, correct `"@"`). Similarly, the user shouldn't use single quotes `'` more than twice when defining a literal value (e.g. wrong `''@'`, correct `'@'`).
+
+## Quick intro
+#### Match phone number 
 ``` py
 """ 
     MATCH: +381 62 123 4567
@@ -37,407 +44,268 @@ A user can also test regular expression by using `test:`, define desired flags w
     SKIP:  062/123/4567
 """
 
-carrier:
+carrier {
       digit repeat 2 times
+}
 
-state:
+state {
       '+'
       digit between 1 to 9
       digit repeat 2 to 3 times
       carrier
+}
 
-no_state:
+no_state {
       '0'
       carrier
+}
 
-local: 
+local {
       digit repeat 3 times
       maybe '-'
       digit repeat 4 times
+}
 
-separator:
+separator {
       maybe either '/' or '-' or whitespace 
+}
 
-phone_number:
+phone_number {
       starts
       either state or no_state
       maybe separator
       local
       ends
+}
 
-      flags:
-              'global match'
-              'multiline'
-      flavor:
-              'python'
-      test:
-              '+381 62 123 4567'   
+flags:
+      global match,
+      multiline
 
-phone_number 
+engine:
+      python
+
+tests:
+      "062/123-4567"
+
+target:
+      phone_number 
+```
+Generated code:
+``` python
+##############################################################
+######################### Raw regex ########################## 
+##############################################################
+#
+#  ^(\+[1-9]\d{2,3}\d{2}|0\d{2})(((\/|-|\s))?)?\d{3}(-)?\d{4}$
+#
+##############################################################
+########################### Engine ########################### 
+##############################################################
+#
+#  Python
+#
+##############################################################
+########################### Tests ############################ 
+##############################################################
+#
+#    test 1:
+#      pattern: 062/123-4567
+#      match 1: 062/123-4567
+#      group 0: 062
+#      group 1: /
+#      group 2: /
+#      group 3: /
+#      group 4: -
+#
+##############################################################
+####################### Generated code ####################### 
+##############################################################
+import re
+
+text = ""   # empty
+regex = '^(\\+[1-9]\\d{2,3}\\d{2}|0\\d{2})(((\\/|-|\\s))?)?\\d{3}(-)?\\d{4}$'
+
+match_strings = re.findall(
+    regex, 
+    text, 
+    flags=re.MULTILINE
+    
+)
+match_objects = re.finditer(
+    regex, 
+    text, 
+    flags=re.MULTILINE
+)
 ```
 
-#### Task 2: Are files found?
+More examples can be found in [examples](./examples/) directory.
 
-``` py
-"""  
-    MATCH: 1 file found?
-    MATCH: 2 files found? 
-    MATCH: 24 files found? 
-    SKIP:  No files found
-"""
+## Structure
+```
+Narex/
+|
+├── src/narex/
+|         ├── validators/
+|         ├── generators/
+|         ├── grammar/
+|         ├── utils/
+|         ├── cli/
+|
+├── extension/
+├── examples/
+├── tests/
+|
+├── .github/workflows/
+├── pyproject.toml
+├── LICENSE
+├── README.md
+```
+## Getting started:
+Prerequsities:
+- Python 3
 
-_whitespaces: 
-    whitespace repeat 1 or more times
+_Check `pyproject.toml` for more info._
 
-number_one:
-    '1'
-    _whitespaces   
+Before [activating the extension](#vscode-extension), be sure to follow the `Regular user workflow` or `Developer workflow`, as the extension requires dependencies to be installed. If something goes wrong, repeat the steps and restart the Visual Studio Code.
 
-condition:
-    lookbehind number_one
+#### Regular user workflow
 
-other_numbers:
-    digit between 2 and 9
-    digit repeat zero or more times
-    _whitespaces
+1. Create a virtual environment:
+``` sh
+python -m venv .venv
+```
+2. Activate the virtual environment (Windows):
+``` sh
+.\.venv\Scripts\activate 
+```
+3. Install dependencies:
+``` sh
+pip install git+https://github.com/Vasilijez/Narex.git
+```
+4. Run VSCode from activated terminal:
+``` sh
+code .
+```
+_Pulling of the source code is optional._
 
-file_found:
-    number_one
-    'file'
-    _whitespaces
-    'found?'
-
-files_found:  
-    other_numbers
-    'files'
-    _whitespaces
-    'found?'
-
-match:
-    starts
-    if condition then file_found else files_found 
-
-match
+#### Developer workflow
+1. Clone the project:
+``` sh
+git clone https://github.com/Vasilijez/Narex.git
+```
+2. Change directory to Narex:
+``` sh
+cd Narex
+```
+3. Create and activate the virtual environment (Windows): 
+``` sh
+python -m venv .venv
+.\.venv\Scripts\activate
+```
+5. Install mandatory dependencies:
+``` sh
+pip install -e .
+```
+6. Optionally, if developer needs all dependencies (e.g. tests):
+``` sh
+pip install -e ".[dev]"
+```
+7. Run VSCode from activated terminal:
+``` sh
+code .
 ```
 
-#### Task 3: Match repeated numbers from head and tail 
-``` py
-""" 
-    MATCH: 12asda12
-    MATCH: 54asdasd54
-    SKIP:  32asdsad43
-    SKIP:  43asdsadsa22
-"""
-head:
-      digit repeat 1 or more times
+### Using
+You can use either of the two CLIs, Narex or textX.
+This is possible as Narex belongs to the textX ecosystem. They share logic, although the commands are slightly different.
 
-tail:
-      backreference head   # (or `named backreference``, they are not the same!)
-  
-body:
-      letter repeat 1 or more times
+Run the project:
 
-match:
-      head 
-      body
-      tail
-
-match
+i. You can optionally validate the model before running:
+``` sh
+narex validate --path=<path>  # i.  Narex
+textx check <path>            # ii. textX
+```
+ii. You can just run (includes validation):
+``` sh
+narex run --path=<path> --full            # i.  Narex    
+textx generate <path> --target <engine>   # ii. textX
 ```
 
-#### Task 4: Match correct email format
-``` py
-"""  
-    MATCH: user@gmail.com 
-    MATCH: user@gmail.co.uk
-    SKIP:  .user@gmail.com
-    SKIP:  user!user@gmail.com
-    SKIP:  user!user@gmailcom.
-"""
+__Flags__ 
+1. Please use `--help` flag at the beginning to understand all possible flags for certain command within concrete CLI.
+2. `--path` and `--output-path` flags support both absolute and relative paths. For instance:
+``` sh
+--path=C:\Users\...\model.tx
+--path=./model.tx
+```
+3. `--cli-only` flag provides only the raw regex within CLI. In contrast, when the flag is omitted, the full code is generated in a standalone file.
+4. `--overwrite` flag provides overwriting the file if already exists.
+5. `--output-path` flag is used for specifing the output directory path of the generated file.
+6. `--engine` (Narex) or `--target` (textX) flag provides an engine selection. Engine can be defined within model clause `engine:` as well. Engine defined by using parameter has higher priority than the engine defined by using the model.
 
-user:
-      base_case:
-          letter repeat 1 or more times
-
-      base_case 
-      maybe '.' base_case repeat 1 or more times
-
-domain:
-      letter repeat 1 or more times
-      
-tld:
-      '.' 
-      letter repeat 1 or more times
-
-email: 
-      user
-      '@'
-      domain
-      '.'
-      tld
-
-email
+One example with as many flags as possible:
+``` sh
+narex run --path=input.nx --output-path=./dir --engine=python --overwrite     # i.  Narex
+textx generate <path> target python --output-path=./dir --overwrite           # ii. textX
 ```
 
-#### Task 5: Match all the coefficients of x²
-``` py
-""" 
-    x³ + x² + x + 1
-    3x² - 125x + 12
-    2x³ + 5x² + 8x - 15
-    6x² + 18 - 35x
-    12x³ + 95x² - 115
+### VSCode extension
+Prerequisites:
+- Python VSCode extension (don't care now, it will be prompted if missing).
 
-    MATCH: 3
-    MATCH: 5
-    MATCH: 6
-    MATCH: 95
-""" 
+#### Installation
+1. Navigate to the `extension` directory in order to find `narex-x.y.z.vsix` extension fille.
+2. Install the extension by following the step 4 from `Development`.
 
-variable:
-      lookahead x²
+#### Development
 
-coefficient:
-      digit repeat 1 or more times 
+1. If you want to play with the extension, open the `extension` subproject in VSCode and run the following command:
+``` sh
+npm install
+```
+NOTE: Don't forget to activate the root project `.venv` from the subproject directory. If something goes wrong use `CTRL` + `SHIFT` + `P` -> `Select interpreter: ...` and select `python.exe` from the `.venv/Scripts` directory (_very importantly_).
 
-monomial:
-      coefficient 
-      variable
+2. Click on the `F5` key in Windows to start extension debugging.
 
-      flags:
-              'global match'
-              'multiline'
-      flavor:
-              'python'
+3. Packaging is possible by running the following:
+``` sh
+vsce package
+```
+4. After packaging, the extension's `.vsix` file will be available. Install the extension by choosing the option `Install from vsix`. 
 
-monomial
+![alt text](image.png)
+
+NOTE: Don't move the extension `.vsix` file out of the the extension directory before installation, as it is relatively positioned. If something goes bad, then very likely dependencies cause the headaches, thus go back to step 1.
+
+### Automatic releasing
+You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
+1. Navigate to the main branch:
+```
+git checkout main
+```
+2. Make sure to pull the changes before tagging:
+``` sh 
+git pull
+```
+3. Create a new tag:
+``` sh
+git tag <tag-name>
+```
+4. Push the tag to the remote repository:
+``` sh
+git push origin <tag-name>
 ```
 
-#### Task 6: Match various date formats and capture year
-``` py
+### Static analysis
+You can do it on your own.
 
-""" 
-    MATCH: 04/06/25    CAPTURE: 25
-    MATCH: 18/12/05    CAPTURE: 05           
-    MATCH: 25/05/1998  CAPTURE: 1998     
-    SKIP:  99/99/9999
-"""
-
-month:
-      either '0' or '1'
-      digit between 0 and 2
-
-day:
-      digit between 0 and 3
-      digit
-
-year:
-      short_format:
-          digit repeat 2 times
-      long_format:    
-          digit repeat 4 times
-
-      either short_format or long_format
-
-date:
-      day
-      '/'
-      month
-      '/'
-      group year
-
-date
+Run the static analysis locally:
+``` sh
+mypy --strict <file-name>
 ```
-
-#### Task 7: Match all the positive numbers only
-``` py
-"""
-    10 -25 -35 45
-    -150 25 -35 -147
-    8 -88 -888 -8888
-    -3 -33 -333 -333
-
-    MATCH: 10
-    MATCH: 45
-    MATCH: 25
-    MATCH: 8
-""" 
-
-minus_sign:
-      negative lookbehind '-' 
-
-number:
-      digit repeat 1 or more times
-
-positive_number:
-      boundary 
-      minus_sign
-      number
-      
-      flags:
-              'global match'
-      flavor:
-              'multiline'
-              'python'
-
-positive_number
-```
-
-#### Task 8: Match simple number
-``` py
-""" 
-    MATCH: 1000 
-    MATCH: 99
-    SKIP:  0 
-"""
-
-non_zero_digit:
-      digit between 1 to 9 
-
-number:
-      non_zero_digit repeat 1 or more times
-      digit repeat 0 or more times
-
-number
-```
-
-#### Task 9: Match file with correct format
-``` py
-"""
-    MATCH: fajl_v1.pdf 
-    MATCH: fajl_v2.png
-    MATCH: fajl_v3.jpeg
-    SKIP:  random_name.gif
-"""
-
-version:
-      digit repeat 0 or more times     
-
-format:
-      either 'png' or 'pdf' or 'jpeg'
-  
-file:
-      boundary
-      'fajl_v' 
-      version
-      '.'
-      format
-      boundary
-
-file
-```
-
-#### Task 10: Match the price
-``` py
-""" 
-    MATCH: $3.45
-    MATCH: $23.32
-    MATCH: $400
-    SKIP:  €3.44
-    SKIP:  $.23
-"""
-
-whole_value:
-      digit between 1 to 9 repeat 0 or more times
-
-decimal_value:
-      '.' digit repeat 0 or more times
-
-price:
-      '$'
-      whole_value 
-      maybe decimal_value
-
-price
-```
-
-#### Task 11: Based upon condition, match number or message
-``` py
-""" 
-    MATCH: enabled 06012345678
-    MATCH: disabled 06012345678 disturbing
-    MATCH: enabled 06012345678
-    MATCH: enabled 06012345678
-    SKIP:  123#@$
-"""
-
-condition:
-      lookbehind 'enabled'
-
-read_number:
-      digit repeat 1 or more times
-  
-read_message:
-      letter repeat 1 or more times
-
-match:
-      if condition then read_number else read_message
-      ends 
-
-match
-```
-
-#### Task 12: Match exact characters
-``` py
-""" 
-    MATCH: one              
-    MATCH: two              
-    MATCH: three
-    MATCH: !    
-    MATCH: .    
-    MATCH: 3    
-    MATCH: 6    
-    MATCH: 9
-    SKIP:  ^
-"""
-
-number:
-      either 'one' or 'two' or 'three' or one of '369'
-
-char:
-      one of '!.'
-
-match:
-      either number or char      
-
-match
-```
-
-#### Task 13: Match various date formats and capture year
-``` py
-
-""" 
-    MATCH: 04/06/25    CAPTURE: 25
-    MATCH: 18/12/05    CAPTURE: 05           
-    MATCH: 25/05/1998  CAPTURE: 1998     
-    SKIP:  99/99/9999
-"""
-
-month:
-      either '0' or '1'
-      digit between 0 and 2
-
-day:
-      digit between 0 and 3
-      digit
-
-year:
-      short_format:
-          digit repeat 2 times
-      long_format:    
-          digit repeat 4 times
-
-      either short_format or long_format
-
-date:
-      day
-      '/'
-      month
-      '/'
-      group year
-
-date
-```
+Caveat: Static analysis is triggered automatically by GitHub Actions; therefore, it is smart to run a type checker from time to time before creating a pull request.
 
 
 ## References:

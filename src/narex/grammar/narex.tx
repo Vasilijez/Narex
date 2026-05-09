@@ -1,0 +1,242 @@
+
+Anchor:
+    clauses+=Clause 
+    optional=Optional
+    target=Target
+;
+
+Clause:
+    name=ValidName '{' 
+        clauses*=Clause 
+        inline_rules+=InlineRule['\n']
+    '}'
+;
+
+InlineRule:
+    rules+=Rule
+;
+
+Rule:
+    maybe?=Maybe 
+    type=RuleType
+    (repeat=Repeat)?
+;
+
+RuleType:
+    OneOf           |
+    Domain          |
+    Either          |
+    Starts          |
+    Ends            |
+    Lookaround      |
+    Group           |
+    Backreference   |
+    Literal         |
+    ClauseReference
+;
+
+Maybe:
+    'maybe'
+;
+
+Keyword:
+    'target' | 'tests' | 'engine' | 'flags'
+;
+
+ValidName:
+    !Keyword ID
+;
+
+ValidReference:
+    ID !':'
+;
+
+ClauseReference:
+    value=[Clause:ValidReference]
+;
+
+Group:
+    uncaptured?=Uncaptured 'group' (name=ID 'of')? rule=Rule
+;
+
+Uncaptured:
+    'uncaptured'
+;
+
+Backreference:
+    'backreference' group=[Group]
+;
+
+OneOf:
+    'one' 'of' set=STRING
+;
+
+Either:
+    'either' alternatives=Rule ('or' alternatives=Rule)+
+;
+
+Starts:
+    'starts'
+;
+
+Ends:
+    'ends'
+;
+
+Lookaround:
+    Lookbehind | Lookahead
+;
+
+Lookbehind:
+    negative?=Negative 'lookbehind' rule=Rule
+;
+
+Lookahead:
+    negative?=Negative 'lookahead' rule=Rule
+;
+
+Negative:
+    'negative'
+;
+
+//////////////////// Domain ////////////////////
+
+Domain:
+    (negation=Not)?
+    type=DomainType
+    (between=Between)?
+;
+
+DomainType:
+    BoundedDomain | SimpleDomain
+;
+
+BoundedDomain:
+    Digit | SmallLetter | BigLetter
+;
+
+SimpleDomain:
+    (Space | Whitespace | Alphanumeric | Anything | Letter) !Between
+;
+
+Not:
+    'not'
+;
+
+Digit:
+    'digit'
+;
+
+Space:
+    'space'
+;
+
+Whitespace:
+    'whitespace'
+;
+
+Alphanumeric:
+    'alphanumeric'
+;
+
+Anything:
+    'anything'
+;
+
+Letter:
+    'letter'
+;
+
+SmallLetter:
+    'small_letter'
+;
+
+BigLetter:
+    'big_letter'
+;
+
+Between:
+    'between' start=EdgeValue 'and' end=EdgeValue
+;
+
+EdgeValue:
+    /[a-zA-Z0-9]/
+;
+
+//////////////////// Repeat /////////////////////
+
+// Repeat rule only checks if it has a subject.
+// Simple rules (e.g. digit) don't need parentheses, complex ones do.
+Repeat:
+    'repeat' start=INT (end=End)? 'times'
+;
+
+End:
+    'or' 'more' | 'to' value=INT
+;
+
+Optional:
+    ((tests=Tests)? (engine=Engine)? (flags=Flags)?)#
+;
+
+Tests:
+    'tests' ':'  
+        values+=STRING[',']
+;
+
+Engine:
+    'engine' ':' 
+        value=EngineValue
+;
+
+EngineValue:
+    'python'
+;
+
+Flags:
+   'flags' ':' values+=FlagValue[',']
+;
+
+FlagValue:
+    GlobalMatch | Multiline | CaseInsensitive | SingleLine  
+;
+
+// Don't return after first match.
+GlobalMatch:
+    'global' 'match'
+;
+
+// Don't focus on only one line (even after `\n`).
+Multiline:
+    'multiline'
+;
+
+CaseInsensitive:
+    'case' 'insensitive'
+;
+
+// Dot all.
+SingleLine:
+    'single' 'line'
+;
+
+Target:
+    'target' ':' 
+        clause=[Clause]
+;
+
+//////////////////// Comments ////////////////////
+
+Comment:
+  /\/\/.*$/
+;
+
+//////////////////// Literal /////////////////////
+
+Literal:
+    value=UnescapedString
+;
+
+UnescapedString:
+    /("(?:[^"])*"|'(?:[^'])*')/
+;
