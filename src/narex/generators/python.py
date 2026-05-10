@@ -192,7 +192,9 @@ class PythonEngine:
         # 4. group g1 of 'y'             // used produced ref (narex ref)
         # TODO: Regex validations.
 
-        rule_exp = f"{self.interpret_rule('', group.rule)}"
+        rule_exp = ''
+        for rule in group.rules:
+            rule_exp += f"{self.interpret_rule(rule_exp, rule)}"
 
         if group.uncaptured:
 
@@ -209,6 +211,7 @@ class PythonEngine:
 
             # 3.
             if group.name is None:
+                s = regex + "(" + rule_exp + ")"
                 return regex + "(" + rule_exp + ")"
             
             # 4.
@@ -370,7 +373,10 @@ class PythonEngine:
     def interpret_tests(self, tests: List[str], regex: str, flags: int, is_global: bool) -> List[TestMatches]:
         test_matches = []
         for pattern in tests:
+            try:
                 matches = self.interpret_test(pattern, regex, flags, is_global)
+            except Exception as e:
+                raise Exception(f"Logic of regex pattern is very likely invalid. \nTest with defined pattern ``` {pattern} ``` has failed, more info: \n{e}")
             test_matches.append(TestMatches(pattern, matches))
 
         return test_matches
