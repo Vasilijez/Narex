@@ -195,6 +195,7 @@ Narex/
 ├── extension/
 ├── examples/
 ├── tests/
+├── docs/
 |
 ├── .github/workflows/
 ├── pyproject.toml
@@ -347,6 +348,8 @@ mypy --strict <file-name>
 ```
 Caveat: Static analysis is triggered automatically by GitHub Actions; therefore, it is smart to run a type checker from time to time before creating a pull request.
 
+## Contributing
+As this project is open source, everyone is welcome to contribute. If you have any suggestions, feel free to propose them by opening an issue. The most interesting ones can be analyzed and placed within the `/docs` directory. Like, [Reverse engineering analysis](/docs/reverse_engineering.md).
 
 ## References:
 [1] [Source of the famous “Now you have two problems” quote](https://regex.info/blog/2006-09-15/247) _(Author: Jeffrey Friedl, Accessed: _July 19, 2025_)_
