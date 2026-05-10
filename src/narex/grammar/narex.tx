@@ -41,7 +41,7 @@ Maybe:
 ;
 
 Keyword:
-    'target' | 'tests' | 'engine' | 'flags'
+    'target' | 'tests' | 'engine' | 'flags' | 'group'
 ;
 
 ValidName:
@@ -57,7 +57,7 @@ ClauseReference:
 ;
 
 Group:
-    uncaptured?=Uncaptured 'group' (name=ID 'of')? rule=Rule
+    uncaptured?=Uncaptured 'group' (name=ID)? '{' rules+=Rule '}'
 ;
 
 Uncaptured:

@@ -370,7 +370,7 @@ class PythonEngine:
     def interpret_tests(self, tests: List[str], regex: str, flags: int, is_global: bool) -> List[TestMatches]:
         test_matches = []
         for pattern in tests:
-            matches = self.interpret_test(pattern, regex, flags, is_global)
+                matches = self.interpret_test(pattern, regex, flags, is_global)
             test_matches.append(TestMatches(pattern, matches))
 
         return test_matches
