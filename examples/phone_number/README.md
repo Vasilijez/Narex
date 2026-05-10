@@ -1,0 +1,64 @@
+## Match phone number
+
+``` py
+""" 
+    MATCH: +381 62 123 4567
+    MATCH: 062/123-4567
+    MATCH: 062-123-4567
+    MATCH: 0621234567
+    MATCH: 062 123 4567
+    SKIP:  062.123.4567
+"""
+
+carrier {
+      digit repeat 2 times
+}
+
+state {
+      '+'
+      digit between 1 and 9
+      digit repeat 2 to 3 times
+}
+
+no_state {
+      '0'
+}
+
+separator {
+      maybe either '/' or '-' or whitespace
+}
+
+local {
+      digit repeat 3 times
+      separator
+      digit repeat 4 times
+}
+
+phone_number {
+      starts
+      either state or no_state
+      separator
+      carrier
+      separator
+      local
+      ends
+}
+
+flags:
+      global match,
+      multiline
+
+engine:
+      python
+
+tests:
+      "+381 62 123 4567",
+      "062/123-4567",
+      "062-123-4567",
+      "0621234567",
+      "062 123 4567",
+      "062.123.4567"
+
+target:
+      phone_number 
+```

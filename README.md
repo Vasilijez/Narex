@@ -41,7 +41,7 @@ The user shouldn't use double quotes `"` more than twice when defining a literal
     MATCH: 062-123-4567
     MATCH: 0621234567
     MATCH: 062 123 4567
-    SKIP:  062/123/4567
+    SKIP:  062.123.4567
 """
 
 carrier {
@@ -50,30 +50,30 @@ carrier {
 
 state {
       '+'
-      digit between 1 to 9
+      digit between 1 and 9
       digit repeat 2 to 3 times
-      carrier
 }
 
 no_state {
       '0'
-      carrier
+}
+
+separator {
+      maybe either '/' or '-' or whitespace
 }
 
 local {
       digit repeat 3 times
-      maybe '-'
+      separator
       digit repeat 4 times
-}
-
-separator {
-      maybe either '/' or '-' or whitespace 
 }
 
 phone_number {
       starts
       either state or no_state
-      maybe separator
+      separator
+      carrier
+      separator
       local
       ends
 }
@@ -86,7 +86,12 @@ engine:
       python
 
 tests:
-      "062/123-4567"
+      "+381 62 123 4567",
+      "062/123-4567",
+      "062-123-4567",
+      "0621234567",
+      "062 123 4567",
+      "062.123.4567"
 
 target:
       phone_number 
@@ -97,7 +102,7 @@ Generated code:
 ######################### Raw regex ########################## 
 ##############################################################
 #
-#  ^(\+[1-9]\d{2,3}\d{2}|0\d{2})(((\/|-|\s))?)?\d{3}(-)?\d{4}$
+#  ^(\+[1-9]\d{2,3}|0)((\/|-|\s))?\d{2}((\/|-|\s))?\d{3}((\/|-|\s))?\d{4}$
 #
 ##############################################################
 ########################### Engine ########################### 
@@ -109,14 +114,50 @@ Generated code:
 ########################### Tests ############################ 
 ##############################################################
 #
-#    test 1:
-#      pattern: 062/123-4567
-#      match 1: 062/123-4567
-#      group 0: 062
-#      group 1: /
-#      group 2: /
-#      group 3: /
-#      group 4: -
+#  test 1:
+#      pattern: 
+#              +381 62 123 4567
+#      match 1: 
+#              +381 62 123 4567
+#          group 1: 
+#               ...
+#
+#  test 2:
+#      pattern: 
+#              062/123-4567
+#      match 1: 
+#              062/123-4567
+#          group 1: 
+#               ...
+#
+#  test 3:
+#      pattern: 
+#              062-123-4567
+#      match 1: 
+#              062-123-4567
+#          group 1: 
+#               ...
+#
+#  test 4:
+#      pattern: 
+#              0621234567
+#      match 1: 
+#              0621234567
+#          group 1: 
+#               ...
+#
+#  test 5:
+#      pattern: 
+#              062 123 4567
+#      match 1: 
+#              062 123 4567
+#          group 1: 
+#               ...
+#
+#  test 6:
+#      pattern: 
+#              062.123.4567
+#      No matches
 #
 ##############################################################
 ####################### Generated code ####################### 
@@ -124,13 +165,12 @@ Generated code:
 import re
 
 text = ""   # empty
-regex = '^(\\+[1-9]\\d{2,3}\\d{2}|0\\d{2})(((\\/|-|\\s))?)?\\d{3}(-)?\\d{4}$'
+regex = '^(\\+[1-9]\\d{2,3}|0)((\\/|-|\\s))?\\d{2}((\\/|-|\\s))?\\d{3}((\\/|-|\\s))?\\d{4}$'
 
 match_strings = re.findall(
     regex, 
     text, 
     flags=re.MULTILINE
-    
 )
 match_objects = re.finditer(
     regex, 
