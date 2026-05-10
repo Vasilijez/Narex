@@ -14,7 +14,31 @@
 ########################### Tests ############################ 
 ##############################################################
 #
-# No tests defined.
+#  test 1:
+#      pattern: 
+#              12asda12
+#      match 1: 
+#              12asda12
+#          group 1: 
+#                  12
+#
+#  test 2:
+#      pattern: 
+#              54asdasd54
+#      match 1: 
+#              54asdasd54
+#          group 1: 
+#                  54
+#
+#  test 3:
+#      pattern: 
+#              32asdsad43
+#      No matches
+#
+#  test 4:
+#      pattern: 
+#              43asdsadsa22
+#      No matches
 #
 ##############################################################
 ####################### Generated code ####################### 

@@ -1,10 +1,10 @@
 from narex import load_metamodel_and_model_str
 from narex import PythonEngine
 
-def test_task_9() -> None:
+def test_repeated_numbers() -> None:
     m = """
         head {
-            group g1 of digit repeat 1 or more times
+            group g1 {digit repeat 1 or more times} 
         }
 
         tail {
@@ -20,6 +20,12 @@ def test_task_9() -> None:
             body
             tail
         }
+
+        tests:
+            "12asda12",
+            "54asdasd54",
+            "32asdsad43",
+            "43asdsadsa22"
 
         target:
             match

@@ -17,7 +17,7 @@ user {
       }
 
       username
-      uncaptured group {
+      uncaptured group g1 {
             extended_username
       } repeat 0 or more times
 }

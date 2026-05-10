@@ -5,9 +5,9 @@ def test_group_rules_recognition() -> None:
     m = """
         c1 {    
             group {'x'}
-            group g1 of {'y'}
+            group g1 {'y'}
             uncaptured group {'y'}
-            uncaptured group g2 of {'y'}
+            uncaptured group g2 {'y'}
         }
 
         target:
@@ -41,8 +41,8 @@ def test_lookaround_group_name() -> None:
     m = """
         c {
             starts
-            maybe one of 'something2' group g1 of {'x'}
-            group g2 of {letter}
+            maybe one of 'something2' group g1 {'x'}
+            group g2 {letter}
         }
 
         target:
