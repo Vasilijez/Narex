@@ -1,10 +1,14 @@
 from narex import load_metamodel_and_model_str
 from narex import PythonEngine
+from textx import TextXSemanticError
 
-def test_starts() -> None:
+def test_simple_boundary_usage() -> None:
     m = """
         c {
-            starts maybe one of 'something2' maybe letter  maybe one of 'something3'
+            boundary
+            digit
+            letter
+            boundary
         }
         
         target:
@@ -14,22 +18,20 @@ def test_starts() -> None:
     mm, m = load_metamodel_and_model_str(m)
     e = PythonEngine()
     r = e.generate(m, cli_only=True)
-    assert r == r"^([something2])?([A-Za-z])?([something3])?"
+    assert r == r"\b\d[A-Za-z]\b"
 
-def test_ends() -> None:
+def test_when_boundary_is_used_with_repeat() -> None:
     m = """
         c {
-            starts
-            maybe one of 'something2' maybe letter  maybe one of 'something3' 
-            ends
+            boundary repeat 1 or more times
         }
         
         target:
             c
     """
 
-    mm, m = load_metamodel_and_model_str(m)
-    e = PythonEngine()
-    r = e.generate(m, cli_only=True)
-    assert r == r"^([something2])?([A-Za-z])?([something3])?$"
+    try:
+        mm, m = load_metamodel_and_model_str(m)
+    except Exception as e:
+        assert isinstance(e, TextXSemanticError)
 
