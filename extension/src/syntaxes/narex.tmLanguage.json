@@ -26,7 +26,7 @@
             "patterns":
              [{
                 "name": "keyword.control.narex",
-                "match": "either|one\\s*of|maybe|backreference|uncaptured|starts|ends|lookbehind|lookahead|negative|not|digit|space|whitespace|alphanumeric|anything|between|and|repeat|times|or\\s*more|to|tests|engine|flags|global\\s*match|multiline|case\\s*insensitive|single\\s*line|target|group|of|digit|letter|small_letter|big_letter"
+                "match": "either|one\\s*of|maybe|backreference|uncaptured|starts|ends|lookbehind|lookahead|negative|not|digit|space|whitespace|alphanumeric|anything|between|and|repeat|times|or\\s*more|to|tests|engine|flags|global\\s*match|multiline|case\\s*insensitive|single\\s*line|target|group|of|digit|letter|small_letter|big_letter|or"
             }]
         },
         "strings": 
