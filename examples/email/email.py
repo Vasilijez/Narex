@@ -2,7 +2,7 @@
 ######################### Raw regex ########################## 
 ##############################################################
 #
-#  (x)(y)(?:y)(?:y)
+#  ^[A-Za-z]{1,}(?:\.[A-Za-z]{1,}){0,}@[A-Za-z]{1,}(\.[A-Za-z]{1,}){1,}$
 #
 ##############################################################
 ########################### Engine ########################### 
@@ -14,7 +14,36 @@
 ########################### Tests ############################ 
 ##############################################################
 #
-# No tests defined
+#  test 1:
+#      pattern: 
+#              user@gmail.com
+#      match 1: 
+#              user@gmail.com
+#          group 1: 
+#                  .com
+#
+#  test 2:
+#      pattern: 
+#              user@gmail.co.uk
+#      match 1: 
+#              user@gmail.co.uk
+#          group 1: 
+#                  .uk
+#
+#  test 3:
+#      pattern: 
+#              .user@gmail.com
+#      No matches
+#
+#  test 4:
+#      pattern: 
+#              user!user@gmail.com
+#      No matches
+#
+#  test 5:
+#      pattern: 
+#              user!user@gmailcom.
+#      No matches
 #
 ##############################################################
 ####################### Generated code ####################### 
@@ -22,7 +51,7 @@
 import re
 
 text = ""   # empty
-regex = '(x)(y)(?:y)(?:y)'
+regex = '^[A-Za-z]{1,}(?:\\.[A-Za-z]{1,}){0,}@[A-Za-z]{1,}(\\.[A-Za-z]{1,}){1,}$'
 
 
 match_object = re.search(

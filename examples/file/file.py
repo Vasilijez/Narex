@@ -2,7 +2,7 @@
 ######################### Raw regex ########################## 
 ##############################################################
 #
-#  \d{1,}(?=x²)
+#  \bfajl_v\d{0,}\.(png|pdf|jpeg)\b
 #
 ##############################################################
 ########################### Engine ########################### 
@@ -16,19 +16,32 @@
 #
 #  test 1:
 #      pattern: 
-#              x³ + x² + x + 1
-#              3x² - 125x + 12
-#              2x³ + 5x² + 8x - 15
-#              6x² + 18 - 35x
-#              12x³ + 95x² - 115
+#              fajl_v1.pdf
 #      match 1: 
-#              3
-#      match 2: 
-#              5
-#      match 3: 
-#              6
-#      match 4: 
-#              95
+#              fajl_v1.pdf
+#          group 1: 
+#                  pdf
+#
+#  test 2:
+#      pattern: 
+#              fajl_v2.png
+#      match 1: 
+#              fajl_v2.png
+#          group 1: 
+#                  png
+#
+#  test 3:
+#      pattern: 
+#              fajl_v3.jpeg
+#      match 1: 
+#              fajl_v3.jpeg
+#          group 1: 
+#                  jpeg
+#
+#  test 4:
+#      pattern: 
+#              random_name.gif
+#      No matches
 #
 ##############################################################
 ####################### Generated code ####################### 
@@ -36,15 +49,10 @@
 import re
 
 text = ""   # empty
-regex = '\\d{1,}(?=x²)'
+regex = '\\bfajl_v\\d{0,}\\.(png|pdf|jpeg)\\b'
 
-match_strings = re.findall(
+
+match_object = re.search(
     regex, 
-    text, 
-    flags=re.MULTILINE
-)
-match_objects = re.finditer(
-    regex, 
-    text, 
-    flags=re.MULTILINE
+    text
 )

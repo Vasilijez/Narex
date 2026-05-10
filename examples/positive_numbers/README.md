@@ -30,6 +30,12 @@ flags:
       global match,
       multiline
 
+tests:
+"10 -25 -35 45
+-150 25 -35 -147
+8 -88 -888 -8888
+-3 -33 -333 -333"
+
 engine:
       python
 

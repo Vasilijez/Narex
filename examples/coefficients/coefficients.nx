@@ -16,8 +16,11 @@ flags:
       multiline
 
 tests:
-      "x³ + 2x² + x + 2",
-      "x³ + 3x² + x + 1"
+"x³ + x² + x + 1
+3x² - 125x + 12
+2x³ + 5x² + 8x - 15
+6x² + 18 - 35x
+12x³ + 95x² - 115"
 
 engine: 
       python

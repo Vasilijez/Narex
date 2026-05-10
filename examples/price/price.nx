@@ -1,9 +1,10 @@
 whole_value {
-    digit between 1 and 9 repeat 0 or more times
+    digit between 1 and 9 repeat 1 or more times
+    digit between 0 and 9 repeat 0 or more times
 }
 
 decimal_value {
-    '.' digit repeat 0 or more times
+    '.' digit repeat 1 or more times
 }
 
 price {
@@ -11,6 +12,13 @@ price {
     whole_value 
     maybe decimal_value
 }
+
+tests:
+    "$3.45",
+    "$23.32",
+    "$400",
+    "€3.44",
+    "$.23"
 
 target:
     price

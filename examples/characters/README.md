@@ -9,7 +9,6 @@
     MATCH: 3    
     MATCH: 6    
     MATCH: 9
-    SKIP:  ^
 """
 
 number {
@@ -21,8 +20,22 @@ char {
 }
 
 match {
-      either number or char      
+      either number or char
 }
+
+tests:
+      "asdasdsadasonesaagsdgs",
+      "one two three",
+      "two three",
+      "three",
+      "vxvcxv",
+      "vxvcxv!",
+      "vxvcxv.ad",
+      "asd.",
+      "144555",
+      "1443",
+      "54456",
+      "9"
 
 target:
       match
