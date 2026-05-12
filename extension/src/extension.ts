@@ -6,19 +6,24 @@ import * as fs from 'fs';
 export async function activate(context: vscode.ExtensionContext) {
 	
 	// Get Python path from the environment by
-	// leveraging Python VSCode extension context awareness.
+	// leveraging VSCode, Microsoft, Python extension context awareness.
 	const pythonExt = vscode.extensions.getExtension('ms-python.python');
     if (!pythonExt) {
-        const msg = "Please install the Python extension.";
+        const msg = "Please install the Python extension on VSCode marketplace.";
         suggestSolution(msg);
         return;
     }
     await pythonExt.activate();
-    const api: any = pythonExt.exports;
-    const pythonPath = api.settings.getExecutionDetails().execCommand[0];
+    const api = pythonExt.exports;
+
+    const uri = vscode.workspace.workspaceFolders?.[0].uri;
+    const env = await api.environments.getActiveEnvironmentPath(uri);
+    const pythonPath = env.path;
+
+    vscode.window.showInformationMessage(`Selected Python: ${pythonPath}`);
 
     if (!pythonPath || !fs.existsSync(pythonPath)) {
-        const msg = "No Python interpreter selected. Please select a valid environment.";
+        const msg = "No Python interpreter selected. Please select correct Python in VSCode.";
         suggestSolution(msg);
         return;
     }
@@ -27,6 +32,16 @@ export async function activate(context: vscode.ExtensionContext) {
 
     if (!fs.existsSync(serverPath)) {
         const msg = "LSP script (server.py) is missing from the extension folder.";
+        suggestSolution(msg);
+        return;
+    }
+
+    // Check whether all Python dependencies exist
+    try {
+        const { execSync } = require('child_process');
+        execSync(`"${pythonPath}" "${serverPath}" --check`, { timeout: 1000 }); 
+    } catch (e) {
+        const msg = "Python dependencies are missing. Install them and select correct Python in VSCode.";
         suggestSolution(msg);
         return;
     }
