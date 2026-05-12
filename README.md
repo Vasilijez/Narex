@@ -208,7 +208,7 @@ Prerequsities:
 
 _Check `pyproject.toml` for more info._
 
-Before [activating the extension](#vscode-extension), be sure to follow the `Regular user workflow` or `Developer workflow`, as the extension requires dependencies to be installed. If something goes wrong, repeat the steps and restart the Visual Studio Code.
+__NOTE:__ Don't activate the extension yet. If you already did, check [VSCode extension](#vscode-extension) section.
 
 #### Regular user workflow
 
@@ -296,9 +296,13 @@ textx generate <path> target python --output-path=./dir --overwrite           # 
 Prerequisites:
 - Python VSCode extension (don't care now, it will be prompted if missing).
 
+Before activating the extension, be sure to follow either the [Regular user workflow](#regular-user-workflow) or the [Developer workflow](#developer-workflow), as the extension requires all dependencies to be installed. If something goes wrong, check Troubleshooting.
+
 #### Installation
-1. Navigate to the `extension` directory in order to find `narex-x.y.z.vsix` extension fille.
-2. Install the extension by following the step 4 from `Development`.
+1. Navigate to the `extension` directory in order to find the `narex-x.y.z.vsix` extension file.
+2. Install the extension by choosing the `Install from VSIX `option.
+
+![alt text](image.png)
 
 #### Development
 
@@ -306,21 +310,32 @@ Prerequisites:
 ``` sh
 npm install
 ```
-NOTE: Don't forget to activate the root project `.venv` from the subproject directory. If something goes wrong use `CTRL` + `SHIFT` + `P` -> `Select interpreter: ...` and select `python.exe` from the `.venv/Scripts` directory (_very importantly_).
 
-2. Click on the `F5` key in Windows to start extension debugging.
+2. Press the `F5` key in Windows to start extension debugging.
 
 3. Packaging is possible by running the following:
 ``` sh
 vsce package
 ```
-4. After packaging, the extension's `.vsix` file will be available. Install the extension by choosing the option `Install from vsix`. 
+4. After packaging, the extension's `.vsix` file will be available.
 
-![alt text](image.png)
+#### Troubleshooting
 
-NOTE: Don't move the extension `.vsix` file out of the the extension directory before installation, as it is relatively positioned. If something goes bad, then very likely dependencies cause the headaches, thus go back to step 1.
+Skip this section if the extension works fine for you. Continue if you still have headaches.
 
-### Automatic releasing
+You must choose Python from one of the following:
+
+- i. Virtual environment from an already running VSCode instance.
+- ii. Global Python from an already running VSCode instance.
+- iii. Terminal with an activated virtual environment used to open VSCode (explained earlier).
+
+Therefore, your setup must have all Narex dependencies installed in order for the extension to work properly. The main hurdle is buggy VSCode behavior. For instance, you may create a virtual environment and install all dependencies, but the extension still may not work. Activating the virtual environment can be done by command, but sometimes VSCode refuses to choose Python from the virtual environment, even if the virtual environment is activated in the terminal.
+
+Try restarting the extension by sequentially clicking the `Disable` and then `Enable` button, then check the Python path selected by VSCode. The Python path will be explicitly shown each time you rerun the extension. If you don't see something like: `Selected Python: c:\Users\John\Documents\GitHub\test\.venv\Scripts\python.exe` then you definitely didn't activate the virtual environment inside VSCode (green `(.venv)` is not enough). You will very likely see the path to the global Python `.exe`, where you don't have the required dependencies installed. 
+
+The solution is to press `CTRL + SHIFT + P`, choose `Select Interpreter: ...`, and select `python.exe` from the `.venv/Scripts` directory.
+
+### Releasing
 You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
 1. Navigate to the main branch:
 ```
