@@ -33,7 +33,7 @@ The user shouldn't perform any escaping of literals, as this could produce an in
 The user shouldn't use double quotes `"` more than twice when defining a literal value (e.g. wrong `""@"`, correct `"@"`). Similarly, the user shouldn't use single quotes `'` more than twice when defining a literal value (e.g. wrong `''@'`, correct `'@'`).
 
 ## Quick intro
-#### Match phone number 
+### Match phone number 
 ``` py
 """ 
     MATCH: +381 62 123 4567
@@ -96,7 +96,7 @@ tests:
 target:
       phone_number 
 ```
-Generated code:
+### Generated code:
 ``` python
 ##############################################################
 ######################### Raw regex ########################## 
@@ -230,32 +230,7 @@ code .
 ```
 _Pulling of the source code is optional._
 
-#### Developer workflow
-1. Clone the project:
-``` sh
-git clone https://github.com/Vasilijez/Narex.git
-```
-2. Change directory to Narex:
-``` sh
-cd Narex
-```
-3. Create and activate the virtual environment (Windows): 
-``` sh
-python -m venv .venv
-.\.venv\Scripts\activate
-```
-5. Install mandatory dependencies:
-``` sh
-pip install -e .
-```
-6. Optionally, if developer needs all dependencies (e.g. tests):
-``` sh
-pip install -e ".[dev]"
-```
-7. Run VSCode from activated terminal:
-``` sh
-code .
-```
+If you are a contributor, check the [developer workflow](#developer-workflow-getting-started).
 
 ### Using
 You can use either of the two CLIs, Narex or textX.
@@ -296,28 +271,13 @@ textx generate <path> target python --output-path=./dir --overwrite           # 
 Prerequisites:
 - Python VSCode extension (don't care now, it will be prompted if missing).
 
-Before activating the extension, be sure to follow either the [Regular user workflow](#regular-user-workflow) or the [Developer workflow](#developer-workflow), as the extension requires all dependencies to be installed. If something goes wrong, check Troubleshooting.
+Before activating the extension, be sure to follow getting started either for [regular user](#regular-user-workflow) or for [developer](#developer-workflow-getting-started), as the extension requires all dependencies to be installed. If something goes wrong, check Troubleshooting.
 
 #### Installation
 1. Navigate to the `extension` directory in order to find the `narex-x.y.z.vsix` extension file.
 2. Install the extension by choosing the `Install from VSIX `option.
 
 ![alt text](image.png)
-
-#### Development
-
-1. If you want to play with the extension, open the `extension` subproject in VSCode and run the following command:
-``` sh
-npm install
-```
-
-2. Press the `F5` key in Windows to start extension debugging.
-
-3. Packaging is possible by running the following:
-``` sh
-vsce package
-```
-4. After packaging, the extension's `.vsix` file will be available.
 
 #### Troubleshooting
 
@@ -334,6 +294,51 @@ Therefore, your setup must have all Narex dependencies installed in order for th
 Try restarting the extension by sequentially clicking the `Disable` and then `Enable` button, then check the Python path selected by VSCode. The Python path will be explicitly shown each time you rerun the extension. If you don't see something like: `Selected Python: c:\Users\John\Documents\GitHub\test\.venv\Scripts\python.exe` then you definitely didn't activate the virtual environment inside VSCode (green `(.venv)` is not enough). You will very likely see the path to the global Python `.exe`, where you don't have the required dependencies installed. 
 
 The solution is to press `CTRL + SHIFT + P`, choose `Select Interpreter: ...`, and select `python.exe` from the `.venv/Scripts` directory.
+
+## Contributing
+As this project is open source, everyone is welcome to contribute. If you have any suggestions, feel free to propose them by opening an issue. The most interesting ones can be analyzed and placed within the `/docs` directory. Like, [Reverse engineering analysis](/docs/reverse_engineering.md).
+
+### Developer workflow (getting started)
+1. Clone the project:
+``` sh
+git clone https://github.com/Vasilijez/Narex.git
+```
+2. Change directory to Narex:
+``` sh
+cd Narex
+```
+3. Create and activate the virtual environment (Windows): 
+``` sh
+python -m venv .venv
+.\.venv\Scripts\activate
+```
+5. Install mandatory dependencies:
+``` sh
+pip install -e .
+```
+6. Optionally, if developer needs all dependencies (e.g. tests):
+``` sh
+pip install -e ".[dev]"
+```
+7. Run VSCode from activated terminal:
+``` sh
+code .
+```
+
+### VSCode extension
+
+1. If you want to play with the extension, open the `extension` subproject in VSCode and run the following command:
+``` sh
+npm install
+```
+
+2. Press the `F5` key in Windows to start extension debugging.
+
+3. Packaging is possible by running the following:
+``` sh
+vsce package
+```
+4. After packaging, the extension's `.vsix` file will be available.
 
 ### Releasing
 You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
@@ -361,10 +366,7 @@ Run the static analysis locally:
 ``` sh
 mypy --strict <file-name>
 ```
-Caveat: Static analysis is triggered automatically by GitHub Actions; therefore, it is smart to run a type checker from time to time before creating a pull request.
-
-## Contributing
-As this project is open source, everyone is welcome to contribute. If you have any suggestions, feel free to propose them by opening an issue. The most interesting ones can be analyzed and placed within the `/docs` directory. Like, [Reverse engineering analysis](/docs/reverse_engineering.md).
+Caveat: Static analysis is triggered automatically by GitHub Actions. Therefore, it is smart to run a type checker from time to time before creating a pull request.
 
 ## References:
 [1] [Source of the famous “Now you have two problems” quote](https://regex.info/blog/2006-09-15/247) _(Author: Jeffrey Friedl, Accessed: _July 19, 2025_)_
