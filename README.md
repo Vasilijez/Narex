@@ -10,29 +10,20 @@ Challenges of using regular expressions:
 - Unnatural pattern memorization. Humans quickly forget the syntax, as it is not intuitive.
 - The learning curve is steep, especially for non-tech users. Even though many non-tech users need data processing, regular expressions remain out of reach for them.
 
+## Roadmap
+
 The ultimate goal is to produce a DSL that uses natural language and enables cross-engine compatibility.
 
 The main use case is for the user to define the desired engine (Perl, Python, etc.) and write a regular expression using natural language. The output will be raw regular expression, which can be directly used within the specified engine.
 
 This DSL can be widely used by people from different backgrounds, as it uses natural language. Tricky regular expressions are abstracted, and a universal tool for cross-engine support is provided. Learning this DSL frees you from ever having to remember regular expression syntax again.
 
-The biggest issues are the vast number of engines, subtle differences, and partially supported advanced features. Due to the complexity of implementing a DSL that handles advanced features and multiple engine engines, support will be added gradually.
-
-In the beginning, only the Python engine will be supported, covering its concepts.
-Some of the advanced supported concepts include:
-- `[uncaptured] group [<name> of]`
-- `backreference <group_name>`
-- `[negative] lookahead | lookbehind`
-
-A user can also test regular expression by using `tests:`, define desired flags with `flags:`, and specify the desired engine using `engine:`.
-
-### Note
-#### Literal escaping
-The user shouldn't perform any escaping of literals, as this could produce an inaccurate regex. Each literal enclosed in `''` will be escaped individually (e.g. `'!@'`). If the user provides two consecutive literal rules (e.g. `'@'` and `'.com'`), they will not be merged and escaped together.
-#### Literal quotes
-The user shouldn't use double quotes `"` more than twice when defining a literal value (e.g. wrong `""@"`, correct `"@"`). Similarly, the user shouldn't use single quotes `'` more than twice when defining a literal value (e.g. wrong `''@'`, correct `'@'`).
+The biggest issues are the vast number of engines, subtle differences, and partially supported advanced features. Due to the complexity of implementing a DSL that handles advanced features and multiple engine engines, support will be added gradually. Currently, only Python engine is supported.
 
 ## Quick intro
+
+Before we start, consider that more examples can be found in [examples](./examples/) directory.
+
 ### Match phone number 
 ``` py
 """ 
@@ -96,6 +87,8 @@ tests:
 target:
       phone_number 
 ```
+
+User defines sub-regexes within clauses. The better the clause naming is, the easier it is for anyone to understand the regex. Therefore, the clause is the main concept. Each clause can contain multiple sub-clauses, which must be defined first, and each clause must contain at least one rule. Understanding the rules is quite simple, as they are already known from regex. Besides clauses, the user can also test the regular expression by using `tests`, define desired flags with `flags`, and specify the desired `engine` using engine.
 ### Generated code:
 ``` python
 ##############################################################
@@ -179,7 +172,14 @@ match_objects = re.finditer(
 )
 ```
 
-More examples can be found in [examples](./examples/) directory.
+As we can see, the chosen engine is Python, hence we got generated code for Python. The generated code file has comments separated into sections. We have the raw regex output, which can be useful for easier debugging by comparing it with the written model. Then we have information about the chosen engine. Finally, we have concrete code which is specific to the engine and supported libraries. This output depends on the chosen flags.
+
+### Notes
+
+#### Literal escaping
+The user shouldn't perform any escaping of literals, as this could produce an inaccurate regex. Each literal enclosed in `''` will be escaped individually (e.g. `'!@'`). If the user provides two consecutive literal rules (e.g. `'@'` and `'.com'`), they will not be merged and escaped together.
+#### Literal quotes
+The user shouldn't use double quotes `"` more than twice when defining a literal value (e.g. wrong `""@"`, correct `"@"`). Similarly, the user shouldn't use single quotes `'` more than twice when defining a literal value (e.g. wrong `''@'`, correct `'@'`).
 
 ## Structure
 ```
@@ -202,6 +202,7 @@ Narex/
 ├── LICENSE
 ├── README.md
 ```
+
 ## Getting started:
 Prerequsities:
 - Python 3
