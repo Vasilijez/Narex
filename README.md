@@ -22,7 +22,7 @@ The biggest issues are the vast number of engines, subtle differences, and parti
 
 ## Quick intro
 
-Before we start, consider that more examples can be found in [examples](./examples/) directory.
+Before we start, consider that more examples can be found in [examples](./examples/) directory, while the full rules specification with many small examples can be found in [docs/rules_specification](./docs/rules_specification.md).
 
 ### Match phone number 
 ``` py
@@ -87,8 +87,8 @@ tests:
 target:
       phone_number 
 ```
+User defines sub-regexes within clauses. The better the clause naming is, the easier it is for anyone to understand the regex. Therefore, the clause is the main concept. Each clause can contain multiple sub-clauses, which must be defined first, and each clause must contain at least one rule. Understanding the rules is quite simple, as they are already known from regex. Besides clauses, the user can also test the regular expression by using `tests`, define desired flags with `flags`, and specify the desired `engine` using engine. The last required keyword is `target` which holds one of the defined clause references.
 
-User defines sub-regexes within clauses. The better the clause naming is, the easier it is for anyone to understand the regex. Therefore, the clause is the main concept. Each clause can contain multiple sub-clauses, which must be defined first, and each clause must contain at least one rule. Understanding the rules is quite simple, as they are already known from regex. Besides clauses, the user can also test the regular expression by using `tests`, define desired flags with `flags`, and specify the desired `engine` using engine.
 ### Generated code:
 ``` python
 ##############################################################
@@ -173,13 +173,6 @@ match_objects = re.finditer(
 ```
 
 As we can see, the chosen engine is Python, hence we got generated code for Python. The generated code file has comments separated into sections. We have the raw regex output, which can be useful for easier debugging by comparing it with the written model. Then we have information about the chosen engine. Finally, we have concrete code which is specific to the engine and supported libraries. This output depends on the chosen flags.
-
-### Notes
-
-#### Literal escaping
-The user shouldn't perform any escaping of literals, as this could produce an inaccurate regex. Each literal enclosed in `''` will be escaped individually (e.g. `'!@'`). If the user provides two consecutive literal rules (e.g. `'@'` and `'.com'`), they will not be merged and escaped together.
-#### Literal quotes
-The user shouldn't use double quotes `"` more than twice when defining a literal value (e.g. wrong `""@"`, correct `"@"`). Similarly, the user shouldn't use single quotes `'` more than twice when defining a literal value (e.g. wrong `''@'`, correct `'@'`).
 
 ## Structure
 ```
