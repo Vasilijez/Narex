@@ -27,8 +27,6 @@ def test_backreference_correct_group_name() -> None:
     regex = e.generate(m, cli_only=True)
     assert regex == r"(\d){1,}test\1"
 
-# test_backreference() -> None: bad case when the group doesn't exist
-
 def test_backreference_missing_group_name() -> None:
     m = """
         c1 {
