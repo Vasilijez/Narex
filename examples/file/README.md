@@ -24,5 +24,11 @@ file {
     boundary
 }
 
+tests:
+    "fajl_v1.pdf",
+    "fajl_v2.png",
+    "fajl_v3.jpeg",
+    "random_name.gif"
+
 target:
     file

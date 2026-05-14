@@ -75,8 +75,7 @@ def validate_literal(literal: Any) -> Any:
 
     return literal
 
-# # def validate(m):
-#     print(f"anchor {m}")
-#     for clause in m.clauses:
-#         print(f"clause {clause}")
-
+def validate_unrepeatable_rules(rule: Any) -> Any:
+    if rule.type in ['starts', 'ends', 'boundary']:
+        if rule.repeat:
+            raise TextXSemanticError(f"You can't use repeat for `{rule.type}` rule!")

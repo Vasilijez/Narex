@@ -1,0 +1,26 @@
+head {
+      group g1 {digit repeat 1 or more times} 
+}
+
+tail {
+      backreference g1
+}
+  
+body {
+      letter repeat 1 or more times
+}
+
+match {
+      head 
+      body
+      tail
+}
+
+tests:
+      "12asda12",
+      "54asdasd54",
+      "32asdsad43",
+      "43asdsadsa22"
+
+target:
+      match

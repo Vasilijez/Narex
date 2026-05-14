@@ -1,6 +1,6 @@
 from textx import metamodel_from_file
 from os.path import dirname, join, abspath, pardir, isabs, exists, splitext, basename
-from narex.validators.rules import validate_class_reference, validate_domain, validate_repeat, validate_literal
+from narex.validators.rules import validate_class_reference, validate_domain, validate_repeat, validate_literal, validate_unrepeatable_rules
 from typing import Tuple, Any
 from textx.metamodel import TextXMetaModel
 
@@ -29,7 +29,8 @@ def get_metamodel(debug: bool = False) -> TextXMetaModel:
     mm.register_obj_processors({
         'Domain': validate_domain,
         'Repeat': validate_repeat,
-        'Literal': validate_literal
+        'Literal': validate_literal,
+        'Rule': validate_unrepeatable_rules
     })
 
     return mm

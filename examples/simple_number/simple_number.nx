@@ -7,5 +7,10 @@ number {
       digit repeat 0 or more times
 }
 
+tests:
+      "1000",
+      "99",
+      "0"
+
 target:
       number
