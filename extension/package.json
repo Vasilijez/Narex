@@ -3,6 +3,7 @@
   "displayName": "narex",
   "description": "Use natural language to generate regular expressions.",
   "version": "0.0.2",
+  "publisher": "Vasilijez",
   "engines": {
     "vscode": "^1.110.0"
   },

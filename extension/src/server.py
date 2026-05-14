@@ -162,13 +162,13 @@ def get_eligble_keywords(ls: NarexLanguageServer) -> Set[str]:
         'CaseInsensitive',
         'SingleLine',
     }
-
+    
     # Keywords of narex rules
     eligble_keywords = {k.lower() for k in ls.mm.namespaces['narex'].keys() if k.lower() not in illegal_rules}
     # Keywords defined within the rules
-    # eligble_keywords.add('{')
-    # eligble_keywords.add('}')
-    # eligble_keywords.add(':')
+    eligble_keywords.add('{')
+    eligble_keywords.add('}')
+    eligble_keywords.add(':')
     eligble_keywords.add('one')
     eligble_keywords.add('of')
     eligble_keywords.add('or')
