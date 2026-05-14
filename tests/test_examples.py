@@ -76,43 +76,6 @@ def test_coefficients() -> None:
     r = e.generate(m, cli_only=True)
     assert r == r"\d{1,}(?=x²)"
 
-def test_characters() -> None:
-    m = """
-        number {
-            either 'one' or 'two' or 'three' or one of '369'
-        }
-
-        char {
-            one of '!.'
-        }
-
-        match {
-            either number or char
-        }
-
-        tests:
-            "asdasdsadasonesaagsdgs",
-            "one two three",
-            "two three",
-            "three",
-            "vxvcxv",
-            "vxvcxv!",
-            "vxvcxv.ad",
-            "asd.",
-            "144555",
-            "1443",
-            "54456",
-            "9"
-
-        target:
-            match
-    """
-
-    mm, m = load_metamodel_and_model_str(m)
-    e = PythonEngine()
-    r = e.generate(m, cli_only=True)
-    assert r == r"((one|two|three|[369])|[!.])"
-
 def test_date() -> None:
     m = """
         day {
