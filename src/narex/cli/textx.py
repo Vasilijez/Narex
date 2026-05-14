@@ -7,9 +7,8 @@ from typing import Any
 
 @language('narex', '*.nx')
 def textx_language() -> TextXMetaModel:
-    # TODO: Centralize description
     """
-    Narex language
+        Use natural language to generate regular expressions.
     """
     return get_metamodel()
 
