@@ -247,8 +247,6 @@ class PythonEngine:
 
     def interpret_rule(self, regex: str, rule: Any) -> str:
 
-        # if debug == True:
-        #     print(f"r.type.__class__.__name__ {r.type.__class__.__name__}")
         if rule.maybe:
             regex += PythonEngine.Maybe.start()
 
