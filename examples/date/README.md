@@ -8,13 +8,13 @@
     SKIP:  99/99/9999
 """
 
-month {
-      either '0' or '1'
-      digit between 0 and 2
-}
-
 day {
       digit between 0 and 3
+      digit
+}
+
+month {
+      either '0' or '1'
       digit
 }
 
@@ -27,7 +27,7 @@ year {
           digit repeat 4 times
       }
 
-      either short_format or long_format
+      either long_format or short_format
 }
 
 date {
@@ -35,8 +35,14 @@ date {
       '/'
       month
       '/'
-      group year
+      year
 }
+
+tests:
+      "04/06/25",
+      "18/12/05",
+      "25/05/1998",
+      "99/99/9999"
 
 target:
       date

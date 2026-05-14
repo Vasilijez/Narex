@@ -17,8 +17,6 @@ def test_repeat_something_or_more() -> None:
     r = e.generate(m, cli_only=True)
     assert r == r"[A-Za-z]{1,}"
 
-# error
-# maybe...one of and then repeat?!
 def test_repeat_something_times() -> None:
     m = """
     c1 {

@@ -65,6 +65,6 @@ def override_engine(parameter: str | None, model: Any) -> Any:
     raise Exception("Engine must be defined either within the model or within the `--engine` flag!")
 
 def is_engine_defined(model: object) -> bool:
-    if hasattr(model, "optional") and hasattr(model.optional, "engine"):
+    if hasattr(model, "optional") and hasattr(model.optional, "engine") and model.optional.engine != None:
         return True
     return False

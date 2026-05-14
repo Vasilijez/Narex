@@ -167,6 +167,9 @@ class PythonEngine:
     def interpret_ends(self) -> str:
         return "$"
     
+    def interpret_boundary(self) -> str:
+        return r"\b"
+    
     def interpret_look_ahead(self, regex: str, lookahead: Any) -> str:
         sign = "!" if lookahead.negative else "="
         regex += "(?" + sign
@@ -183,13 +186,14 @@ class PythonEngine:
     
     def interpret_group(self, regex: str, group: Any) -> str:
         # Cases:
-        # 1. uncaptured group g2 of 'y'  // produced regex alias (as it can't be referenced by `\1`, but it can by `g2`)
-        # 2. uncaptured group 'y'        // unproduced ref (none narex ref, however it consumes input and is contained in the match)
-        # 3. group 'x'                   // produced unused ref (it can be referenced by `\1`, but it won't, only narex refs are used)
-        # 4. group g1 of 'y'             // used produced ref (narex ref)
-        # TODO: Regex validations.
+        # 1. uncaptured group g2 {'y'}     // produced regex alias (as it can't be referenced by `\1`, but it can by `g2`)
+        # 2. uncaptured group {'y'}        // unproduced ref (none narex ref, however it consumes input and is contained in the match)
+        # 3. group {'x'}                   // produced unused ref (it can be referenced by `\1`, but it won't, only narex refs are used)
+        # 4. group g1 {'y'}                // used produced ref (narex ref)
 
-        rule_exp = f"{self.interpret_rule('', group.rule)}"
+        rule_exp = ''
+        for rule in group.rules:
+            rule_exp += f"{self.interpret_rule(rule_exp, rule)}"
 
         if group.uncaptured:
 
@@ -206,6 +210,7 @@ class PythonEngine:
 
             # 3.
             if group.name is None:
+                s = regex + "(" + rule_exp + ")"
                 return regex + "(" + rule_exp + ")"
             
             # 4.
@@ -241,8 +246,6 @@ class PythonEngine:
 
     def interpret_rule(self, regex: str, rule: Any) -> str:
 
-        # if debug == True:
-        #     print(f"r.type.__class__.__name__ {r.type.__class__.__name__}")
         if rule.maybe:
             regex += PythonEngine.Maybe.start()
 
@@ -271,6 +274,8 @@ class PythonEngine:
                 regex += self.interpret_starts()
             case 'ends':
                 regex += self.interpret_ends()
+            case 'boundary':
+                regex += self.interpret_boundary()
             
         if rule.repeat:
             regex += self.interpret_repeat(rule.repeat)
@@ -365,7 +370,10 @@ class PythonEngine:
     def interpret_tests(self, tests: List[str], regex: str, flags: int, is_global: bool) -> List[TestMatches]:
         test_matches = []
         for pattern in tests:
-            matches = self.interpret_test(pattern, regex, flags, is_global)
+            try:
+                matches = self.interpret_test(pattern, regex, flags, is_global)
+            except Exception as e:
+                raise Exception(f"Logic of regex pattern is very likely invalid. \nTest with defined pattern ``` {pattern} ``` has failed, more info: \n{e}")
             test_matches.append(TestMatches(pattern, matches))
 
         return test_matches

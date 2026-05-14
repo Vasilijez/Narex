@@ -8,13 +8,6 @@ from narex import get_metamodel
 from typing import Any, List, Set
 from pygls.workspace import TextDocument
 
-DATE_FORMATS = [
-    "%H:%M:%S",
-    "%d/%m/%y",
-    "%Y-%m-%d",
-    "%Y-%m-%dT%H:%M:%S",
-]
-
 class NarexLanguageServer(LanguageServer):
     def __init__(
         self,
@@ -84,7 +77,7 @@ def is_eligble_keyword(label: str, eligble_keywords: Set[str]) -> bool:
         return True
     return False
     
-def get_label(ls: NarexLanguageServer, rule: Any, eligble_keywords: Set[str]) -> str | None:
+def get_label(rule: Any, eligble_keywords: Set[str]) -> str | None:
 
     #
     #  rule                to_match                   rule_name                   name
@@ -108,18 +101,12 @@ def get_label(ls: NarexLanguageServer, rule: Any, eligble_keywords: Set[str]) ->
     #  ...
     #
 
-    r = rule
     if hasattr(rule, 'to_match'):
         # small_letter -> smallletter (rule in eligble_keywords)
         label = rule.to_match.replace("_", "")
         assert isinstance(rule.to_match, str)
         if is_eligble_keyword(label, eligble_keywords):
             return rule.to_match
-    
-    # if hasattr(rule, 'rule_name'):
-    #     label = rule.rule_name.lower() if type(rule.rule_name) == "str" else rule.rule_name
-    #     if is_eligble_keyword(label, eligble_keywords):
-    #         return label
     
     if hasattr(rule, 'name'):
         label = rule.name
@@ -168,13 +155,10 @@ def get_eligble_keywords(ls: NarexLanguageServer) -> Set[str]:
         'CaseInsensitive',
         'SingleLine',
     }
-
+    
     # Keywords of narex rules
     eligble_keywords = {k.lower() for k in ls.mm.namespaces['narex'].keys() if k.lower() not in illegal_rules}
     # Keywords defined within the rules
-    # eligble_keywords.add('{')
-    # eligble_keywords.add('}')
-    # eligble_keywords.add(':')
     eligble_keywords.add('one')
     eligble_keywords.add('of')
     eligble_keywords.add('or')
@@ -221,7 +205,7 @@ def code_completion(ls: NarexLanguageServer, params: types.CompletionParams) -> 
 
         for rule in e.expected_rules:
 
-            label = get_label(ls, rule, eligble_keywords)
+            label = get_label(rule, eligble_keywords)
 
             if label:
                 item = create_and_sort_by_starts_with(current_word, label)
@@ -236,53 +220,6 @@ def code_completion(ls: NarexLanguageServer, params: types.CompletionParams) -> 
         pass
 
     return types.CompletionList(is_incomplete=False, items=list(items.values())) 
-
-
-@server.feature(types.TEXT_DOCUMENT_HOVER)
-def hover(ls: NarexLanguageServer, params: types.HoverParams) -> types.Hover | None:
-    
-    ### Used only for testing (learning) purposes ###
-    ### 01/01/20
-    
-    pos = params.position
-    document_uri = params.text_document.uri
-    document = ls.workspace.get_text_document(document_uri)
-
-    try:
-        line = document.lines[pos.line]
-    except IndexError:
-        return None
-
-    for fmt in DATE_FORMATS:
-        try:
-            value = datetime.strptime(line.strip(), fmt)
-            break
-        except ValueError:
-            pass
-
-    else:
-        # No valid datetime found.
-        return None
-
-    hover_content = [
-        f"# {value.strftime('%a %d %b %Y')}",
-        "",
-        "| Format | Value |",
-        "|:-|-:|",
-        *[f"| `{fmt}` | {value.strftime(fmt)} |" for fmt in DATE_FORMATS],
-    ]
-
-    return types.Hover(
-        contents=types.MarkupContent(
-            kind=types.MarkupKind.Markdown,
-            value="\n".join(hover_content),
-        ),
-        range=types.Range(
-            start=types.Position(line=pos.line, character=0),
-            end=types.Position(line=pos.line + 1, character=0),
-        ),
-    )
-
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(message)s")

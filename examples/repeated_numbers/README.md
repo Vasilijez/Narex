@@ -1,6 +1,6 @@
 ## Match repeated numbers from the beginning and the end
 
-``` nx
+``` py
 """ 
     MATCH: 12asda12
     MATCH: 54asdasd54
@@ -14,7 +14,7 @@
 # within the group to be repeated.
 
 head {
-      group g1 of digit repeat 1 or more times
+      group g1 {digit repeat 1 or more times} 
 }
 
 tail {
@@ -30,3 +30,13 @@ match {
       body
       tail
 }
+
+tests:
+      "12asda12",
+      "54asdasd54",
+      "32asdsad43",
+      "43asdsadsa22"
+
+target:
+      match
+```

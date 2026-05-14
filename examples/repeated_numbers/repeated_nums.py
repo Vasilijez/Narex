@@ -2,7 +2,7 @@
 ######################### Raw regex ########################## 
 ##############################################################
 #
-#  \d{1,}(?=x²)
+#  (\d{1,})[A-Za-z]{1,}\1
 #
 ##############################################################
 ########################### Engine ########################### 
@@ -16,19 +16,29 @@
 #
 #  test 1:
 #      pattern: 
-#              x³ + x² + x + 1
-#              3x² - 125x + 12
-#              2x³ + 5x² + 8x - 15
-#              6x² + 18 - 35x
-#              12x³ + 95x² - 115
+#              12asda12
 #      match 1: 
-#              3
-#      match 2: 
-#              5
-#      match 3: 
-#              6
-#      match 4: 
-#              95
+#              12asda12
+#          group 1: 
+#                  12
+#
+#  test 2:
+#      pattern: 
+#              54asdasd54
+#      match 1: 
+#              54asdasd54
+#          group 1: 
+#                  54
+#
+#  test 3:
+#      pattern: 
+#              32asdsad43
+#      No matches
+#
+#  test 4:
+#      pattern: 
+#              43asdsadsa22
+#      No matches
 #
 ##############################################################
 ####################### Generated code ####################### 
@@ -36,15 +46,10 @@
 import re
 
 text = ""   # empty
-regex = '\\d{1,}(?=x²)'
+regex = '(\\d{1,})[A-Za-z]{1,}\\1'
 
-match_strings = re.findall(
+
+match_object = re.search(
     regex, 
-    text, 
-    flags=re.MULTILINE
-)
-match_objects = re.finditer(
-    regex, 
-    text, 
-    flags=re.MULTILINE
+    text
 )

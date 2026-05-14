@@ -28,6 +28,7 @@ RuleType:
     Either          |
     Starts          |
     Ends            |
+    Boundary        |
     Lookaround      |
     Group           |
     Backreference   |
@@ -40,7 +41,7 @@ Maybe:
 ;
 
 Keyword:
-    'target' | 'tests' | 'engine' | 'flags'
+    'target' | 'tests' | 'engine' | 'flags' | 'group'
 ;
 
 ValidName:
@@ -56,7 +57,7 @@ ClauseReference:
 ;
 
 Group:
-    uncaptured?=Uncaptured 'group' (name=ID 'of')? rule=Rule
+    uncaptured?=Uncaptured 'group' (name=ID)? '{' rules+=Rule '}'
 ;
 
 Uncaptured:
@@ -81,6 +82,10 @@ Starts:
 
 Ends:
     'ends'
+;
+
+Boundary:
+    'boundary'
 ;
 
 Lookaround:
@@ -166,7 +171,7 @@ EdgeValue:
 //////////////////// Repeat /////////////////////
 
 // Repeat rule only checks if it has a subject.
-// Simple rules (e.g. digit) don't need parentheses, complex ones do.
+// Simple rules (e.g. digit) don't need parenthesis, complex ones do.
 Repeat:
     'repeat' start=INT (end=End)? 'times'
 ;
