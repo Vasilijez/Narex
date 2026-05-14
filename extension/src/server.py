@@ -8,13 +8,6 @@ from narex import get_metamodel
 from typing import Any, List, Set
 from pygls.workspace import TextDocument
 
-DATE_FORMATS = [
-    "%H:%M:%S",
-    "%d/%m/%y",
-    "%Y-%m-%d",
-    "%Y-%m-%dT%H:%M:%S",
-]
-
 class NarexLanguageServer(LanguageServer):
     def __init__(
         self,
@@ -166,9 +159,6 @@ def get_eligble_keywords(ls: NarexLanguageServer) -> Set[str]:
     # Keywords of narex rules
     eligble_keywords = {k.lower() for k in ls.mm.namespaces['narex'].keys() if k.lower() not in illegal_rules}
     # Keywords defined within the rules
-    eligble_keywords.add('{')
-    eligble_keywords.add('}')
-    eligble_keywords.add(':')
     eligble_keywords.add('one')
     eligble_keywords.add('of')
     eligble_keywords.add('or')
