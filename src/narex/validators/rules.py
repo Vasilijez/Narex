@@ -75,6 +75,14 @@ def validate_literal(literal: Any) -> Any:
 
     return literal
 
+def validate_one_of(one_of: Any) -> Any:
+    one_of.set = one_of.set[1:-1]
+
+    if (len(one_of.set) == 0):
+        raise TextXSemanticError("You can't use empty value for `one of` rule!")
+
+    return one_of
+
 def validate_unrepeatable_rules(rule: Any) -> Any:
     if rule.type in ['starts', 'ends', 'boundary']:
         if rule.repeat:
