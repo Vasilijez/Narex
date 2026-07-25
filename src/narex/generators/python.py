@@ -412,11 +412,11 @@ class PythonEngine:
 
         if cli_only == False:
             flags = tests = []
-            if model.optional:
-                if model.optional.flags:
-                    flags = model.optional.flags.values
-                if model.optional.tests:
-                    tests = model.optional.tests.values
+            if model.config:
+                if model.config.flags:
+                    flags = model.config.flags.values
+                if model.config.tests:
+                    tests = model.config.tests.values
 
             flags_as_int = self.interpret_flags(False, flags)
             assert isinstance(flags_as_int, int)
