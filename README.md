@@ -248,8 +248,8 @@ __Flags__
 1. Please use `--help` flag at the beginning to understand all possible flags for certain command within concrete CLI.
 2. `--path` and `--output-path` flags support both absolute and relative paths. For instance:
 ``` sh
---path=C:\Users\...\model.tx
---path=./model.tx
+--path=C:\Users\...\model.nx
+--path=./model.nx
 ```
 3. `--cli-only` flag provides only the raw regex within CLI. In contrast, when the flag is omitted, the full code is generated in a standalone file.
 4. `--overwrite` flag provides overwriting the file if already exists.
