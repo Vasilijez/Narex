@@ -39,7 +39,7 @@ export async function activate(context: vscode.ExtensionContext) {
     // Check whether all Python dependencies exist
     try {
         const { execSync } = require('child_process');
-        execSync(`"${pythonPath}" "${serverPath}" --check`, { timeout: 1000 }); 
+        execSync(`"${pythonPath}" "${serverPath}"`, { timeout: 40000 });
     } catch (e) {
         const msg = "Python dependencies are missing. Install them and select correct Python in VSCode.";
         suggestSolution(msg);
