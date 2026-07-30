@@ -329,11 +329,13 @@ npm install
 
 2. Press the `F5` key in Windows to start extension debugging.
 
-3. Packaging is possible by running the following:
+3. If you made some changes, don't forget to re-run the command from 1.
+
+4. Packaging is possible by running the following:
 ``` sh
 vsce package
 ```
-4. After packaging, the extension's `.vsix` file will be available.
+5. After packaging, the extension's `.vsix` file will be available.
 
 ### Releasing
 You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
