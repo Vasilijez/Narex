@@ -259,7 +259,7 @@ __Flags__
 One example with as many flags as possible:
 ``` sh
 narex run --path=input.nx --output-path=./dir --engine=python --overwrite     # i.  Narex
-textx generate <path> --target python --output-path=./dir --overwrite         # ii. textX
+textx generate input.nx --target python --output-path=./dir --overwrite       # ii. textX
 ```
 
 ### VSCode extension
