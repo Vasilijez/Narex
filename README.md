@@ -240,7 +240,7 @@ textx check <path>            # ii. textX
 ```
 ii. You can just run (includes validation):
 ``` sh
-narex run --path=<path> --full            # i.  Narex    
+narex run --path=<path> --cli-only        # i.  Narex    
 textx generate <path> --target <engine>   # ii. textX
 ```
 
