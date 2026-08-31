@@ -12,7 +12,7 @@ from narex.grammar import GRAMMAR_PATH
 import os
 NAREX_DIR = os.path.dirname(os.path.abspath(__file__))
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 __all__ = [
     'load_metamodel_and_model_path', 

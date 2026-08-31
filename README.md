@@ -240,7 +240,7 @@ textx check <path>            # ii. textX
 ```
 ii. You can just run (includes validation):
 ``` sh
-narex run --path=<path> --full            # i.  Narex    
+narex run --path=<path> --cli-only        # i.  Narex    
 textx generate <path> --target <engine>   # ii. textX
 ```
 
@@ -248,8 +248,8 @@ __Flags__
 1. Please use `--help` flag at the beginning to understand all possible flags for certain command within concrete CLI.
 2. `--path` and `--output-path` flags support both absolute and relative paths. For instance:
 ``` sh
---path=C:\Users\...\model.tx
---path=./model.tx
+--path=C:\Users\...\model.nx
+--path=./model.nx
 ```
 3. `--cli-only` flag provides only the raw regex within CLI. In contrast, when the flag is omitted, the full code is generated in a standalone file.
 4. `--overwrite` flag provides overwriting the file if already exists.
@@ -259,7 +259,7 @@ __Flags__
 One example with as many flags as possible:
 ``` sh
 narex run --path=input.nx --output-path=./dir --engine=python --overwrite     # i.  Narex
-textx generate <path> target python --output-path=./dir --overwrite           # ii. textX
+textx generate input.nx --target python --output-path=./dir --overwrite       # ii. textX
 ```
 
 ### VSCode extension
@@ -329,11 +329,13 @@ npm install
 
 2. Press the `F5` key in Windows to start extension debugging.
 
-3. Packaging is possible by running the following:
+3. If you made some changes, don't forget to re-run the command from 1.
+
+4. Packaging is possible by running the following:
 ``` sh
 vsce package
 ```
-4. After packaging, the extension's `.vsix` file will be available.
+5. After packaging, the extension's `.vsix` file will be available.
 
 ### Releasing
 You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.

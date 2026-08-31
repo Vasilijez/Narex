@@ -17,8 +17,12 @@ bounded_domain = {
     'digit', 'small_letter', 'big_letter'
 }
 
-special_chars = {
+special_chars_global = {
     '\\', '.', ',', '#', '^', '$', '*', '+', '?', '(', ')', '[', ']', '{', '}', '|', '/'
+}
+
+special_chars_one_of = {
+    '\\', '[', ']', '^', '-'
 }
 
 class GroupReference:
@@ -117,9 +121,23 @@ class PythonEngine:
         @staticmethod
         def end() -> str:
             return ")"
-        
+    
     def interpret_one_of(self, o: Any) -> str:
-        return f"[{o.set}]"
+        # The user is expected not to escape non-literal values.
+        escaped_regex = []
+        escaped_regex.append('[')
+        print(f"one of is {o.set}")
+
+        for char in o.set:
+            if char in special_chars_one_of:
+                # Insert backslash before a special char.
+                char = rf"\{char}"
+            escaped_regex.append(char)
+
+        escaped_regex.append(']')
+        merge = ''.join(escaped_regex)
+
+        return merge
 
     def interpret_domain(self, regex: str, domain: Any) -> str:
         if domain.negation:
@@ -230,9 +248,10 @@ class PythonEngine:
     def interpret_literal(self, literal: Any) -> str:
         # The user is expected not to escape non-literal values.
         escaped_regex = []
+        print(f"literal is {literal.value}")
 
         for char in literal.value:
-            if char in special_chars:
+            if char in special_chars_global:
                 # Insert backslash before a special char.
                 char = rf"\{char}"
             escaped_regex.append(char)
@@ -393,11 +412,11 @@ class PythonEngine:
 
         if cli_only == False:
             flags = tests = []
-            if model.optional:
-                if model.optional.flags:
-                    flags = model.optional.flags.values
-                if model.optional.tests:
-                    tests = model.optional.tests.values
+            if model.config:
+                if model.config.flags:
+                    flags = model.config.flags.values
+                if model.config.tests:
+                    tests = model.config.tests.values
 
             flags_as_int = self.interpret_flags(False, flags)
             assert isinstance(flags_as_int, int)
