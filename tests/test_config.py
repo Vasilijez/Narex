@@ -2,7 +2,7 @@ from narex import load_metamodel_and_model_str
 from narex import PythonEngine
 
 
-def test_optional_engine_first() -> None:
+def test_config_engine_first() -> None:
     m = """
         clause1 {
             letter
@@ -23,7 +23,7 @@ def test_optional_engine_first() -> None:
     r = e.generate(m, cli_only=True)
     assert r == r"[A-Za-z]"
 
-def test_optional_tests_first() -> None:
+def test_config_tests_first() -> None:
     m = """
         clause1 {
             letter
@@ -45,7 +45,7 @@ def test_optional_tests_first() -> None:
     assert r == r"[A-Za-z]"
 
 
-def test_optional_flags() -> None:
+def test_config_flags() -> None:
     m = """
         clause1 {
             letter
