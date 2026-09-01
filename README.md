@@ -1,7 +1,7 @@
 # Narex
-![Narex logo](docs/art/narex-logo.png)
+![Narex logo](https://raw.githubusercontent.com/Vasilijez/Narex/refs/heads/main/docs/art/narex-logo.png)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![PyPI version](https://img.shields.io/pypi/v/narex.svg)](https://pypi.org/project/narex/)
 
 If you have ever used regular expressions, then you know how difficult they can be. Some people, when confronted with a problem, think _“I know, I’ll use regular expressions.”_ Now they have two problems [[1]](https://regex.info/blog/2006-09-15/247).
 
@@ -23,7 +23,7 @@ The biggest issues are the vast number of engines, subtle differences, and parti
 
 ## Quick intro
 
-Before we start, consider that more examples can be found in [examples](./examples/) directory, while the full rules specification with many small examples can be found in [docs/rules_specification](./docs/rules_specification.md).
+Before we start, consider that more examples can be found in [examples](https://github.com/Vasilijez/Narex/tree/main/examples) directory, while the full rules specification with many small examples can be found in [docs/rules_specification](https://github.com/Vasilijez/Narex/blob/main/docs/rules_specification.md).
 
 ### Match phone number 
 ``` py
@@ -216,14 +216,21 @@ python -m venv .venv
 .\.venv\Scripts\activate 
 ```
 3. Install dependencies:
+- By using GitHub project link:
 ``` sh
 pip install git+https://github.com/Vasilijez/Narex.git
 ```
+- By using Narex name:
+``` sh
+pip install narex
+``` 
+_Both commands are valid and can be used interchangeably._
+
 4. Run VSCode from activated terminal:
 ``` sh
 code .
 ```
-_Pulling of the source code is optional._
+_Pulling the source code is optional, as installing a virtual environment. Running of `pip install narex` is sufficient._
 
 If you are a contributor, check the [developer workflow](#developer-workflow-getting-started).
 
@@ -272,7 +279,7 @@ Before activating the extension, be sure to follow getting started either for [r
 1. Navigate to the `extension` directory in order to find the `narex-x.y.z.vsix` extension file.
 2. Install the extension by choosing the `Install from VSIX `option.
 
-![alt text](image.png)
+![alt text](https://raw.githubusercontent.com/Vasilijez/Narex/refs/heads/main/image.png)
 
 #### Troubleshooting
 
@@ -291,7 +298,7 @@ Try restarting the extension by sequentially clicking the `Disable`, `Restart Ex
 The solution is to press `CTRL + SHIFT + P`, choose `Select Interpreter: ...`, and select `python.exe` from the `.venv/Scripts` directory.
 
 ## Contributing
-As this project is open source, everyone is welcome to contribute. If you have any suggestions, feel free to propose them by opening an issue. The most interesting ones can be analyzed and placed within the `/docs` directory. Like, [Reverse engineering analysis](/docs/reverse_engineering.md).
+As this project is open source, everyone is welcome to contribute. If you have any suggestions, feel free to propose them by opening an issue. The most interesting ones can be analyzed and placed within the `/docs` directory. Like, [Reverse engineering analysis](https://github.com/Vasilijez/Narex/blob/main/docs/reverse_engineering.md).
 
 ### Developer workflow (getting started)
 1. Clone the project:
@@ -338,7 +345,7 @@ vsce package
 5. After packaging, the extension's `.vsix` file will be available.
 
 ### Releasing
-You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
+You can automatically trigger the release & deploy process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
 1. Navigate to the main branch:
 ```
 git checkout main
