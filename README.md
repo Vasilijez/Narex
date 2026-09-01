@@ -1,5 +1,5 @@
 # Narex
-![Narex logo](docs/art/narex-logo.png)
+![Narex logo](https://raw.githubusercontent.com/Vasilijez/Narex/refs/heads/main/docs/art/narex-logo.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
@@ -23,7 +23,7 @@ The biggest issues are the vast number of engines, subtle differences, and parti
 
 ## Quick intro
 
-Before we start, consider that more examples can be found in [examples](./examples/) directory, while the full rules specification with many small examples can be found in [docs/rules_specification](./docs/rules_specification.md).
+Before we start, consider that more examples can be found in [examples](https://github.com/Vasilijez/Narex/tree/main/examples) directory, while the full rules specification with many small examples can be found in [docs/rules_specification](https://github.com/Vasilijez/Narex/blob/main/docs/rules_specification.md).
 
 ### Match phone number 
 ``` py
@@ -272,7 +272,7 @@ Before activating the extension, be sure to follow getting started either for [r
 1. Navigate to the `extension` directory in order to find the `narex-x.y.z.vsix` extension file.
 2. Install the extension by choosing the `Install from VSIX `option.
 
-![alt text](image.png)
+![alt text](https://raw.githubusercontent.com/Vasilijez/Narex/refs/heads/main/image.png)
 
 #### Troubleshooting
 
@@ -291,7 +291,7 @@ Try restarting the extension by sequentially clicking the `Disable`, `Restart Ex
 The solution is to press `CTRL + SHIFT + P`, choose `Select Interpreter: ...`, and select `python.exe` from the `.venv/Scripts` directory.
 
 ## Contributing
-As this project is open source, everyone is welcome to contribute. If you have any suggestions, feel free to propose them by opening an issue. The most interesting ones can be analyzed and placed within the `/docs` directory. Like, [Reverse engineering analysis](/docs/reverse_engineering.md).
+As this project is open source, everyone is welcome to contribute. If you have any suggestions, feel free to propose them by opening an issue. The most interesting ones can be analyzed and placed within the `/docs` directory. Like, [Reverse engineering analysis](https://github.com/Vasilijez/Narex/blob/main/docs/reverse_engineering.md).
 
 ### Developer workflow (getting started)
 1. Clone the project:
