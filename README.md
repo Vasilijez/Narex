@@ -216,15 +216,16 @@ python -m venv .venv
 .\.venv\Scripts\activate 
 ```
 3. Install dependencies:
-i. By using GitHub project link:
+- By using GitHub project link:
 ``` sh
 pip install git+https://github.com/Vasilijez/Narex.git
 ```
-ii. By using Narex name:
+- By using Narex name:
 ``` sh
 pip install narex
 ``` 
 _Both commands are valid and can be used interchangeably._
+
 4. Run VSCode from activated terminal:
 ``` sh
 code .
