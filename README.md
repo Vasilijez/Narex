@@ -1,7 +1,7 @@
 # Narex
 ![Narex logo](https://raw.githubusercontent.com/Vasilijez/Narex/refs/heads/main/docs/art/narex-logo.png)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![PyPI version](https://img.shields.io/pypi/v/mkdocs-badges)](https://pypi.org/project/narex/)
 
 If you have ever used regular expressions, then you know how difficult they can be. Some people, when confronted with a problem, think _“I know, I’ll use regular expressions.”_ Now they have two problems [[1]](https://regex.info/blog/2006-09-15/247).
 
@@ -216,14 +216,20 @@ python -m venv .venv
 .\.venv\Scripts\activate 
 ```
 3. Install dependencies:
+i. By using GitHub project link:
 ``` sh
 pip install git+https://github.com/Vasilijez/Narex.git
 ```
+ii. By using Narex name:
+``` sh
+pip install narex
+``` 
+_Both commands are valid and can be used interchangeably._
 4. Run VSCode from activated terminal:
 ``` sh
 code .
 ```
-_Pulling of the source code is optional._
+_Pulling the source code is optional, as installing a virtual environment. Running of `pip install narex` is sufficient._
 
 If you are a contributor, check the [developer workflow](#developer-workflow-getting-started).
 
@@ -338,7 +344,7 @@ vsce package
 5. After packaging, the extension's `.vsix` file will be available.
 
 ### Releasing
-You can automatically trigger the release process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
+You can automatically trigger the release & deploy process by pushing a tag that starts with the letter `v`. For instance, `v1.2.3`.
 1. Navigate to the main branch:
 ```
 git checkout main
